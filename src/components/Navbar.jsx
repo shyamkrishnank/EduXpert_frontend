@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {Navbar, Input, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
 import { CiSearch } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";

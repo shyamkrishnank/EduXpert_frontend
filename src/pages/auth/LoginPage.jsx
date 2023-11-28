@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Navbar1 from '../../components/Navbar'
-import {CardHeader,RadioGroup, Radio, Input ,Card, CardBody} from "@nextui-org/react";import { ToastContainer, toast } from 'react-toastify';
+import {CardHeader,RadioGroup, Radio, Input ,Card, CardBody} from "@nextui-org/react"
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { API_URL } from '../../constants/url';
@@ -97,18 +98,6 @@ function LoginPage() {
         
       </Card>
     </div>
-    <ToastContainer
-   position="top-center"
-   autoClose={3000}
-   hideProgressBar={false}
-   newestOnTop={false}
-   closeOnClick
-   rtl={false}
-   pauseOnFocusLoss
-   draggable
-   pauseOnHover
-   theme="colored"
-     />
     </div>
   )
 }

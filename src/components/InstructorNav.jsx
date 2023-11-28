@@ -1,7 +1,7 @@
 import React from "react";
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
+import {Navbar, NavbarBrand, NavbarContent, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
 import { useDispatch } from "react-redux";
-import { logged, logout } from "../Slices/AuthSlice";
+import {  logout } from "../Slices/AuthSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function InstructorNav () { 
@@ -16,7 +16,7 @@ export default function InstructorNav () {
     <Navbar isBordered>
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
-           <img className="w-20" src="/logo.png" ></img>
+           <img  onClick={()=>navigate("/instructor")} className="w-20 cursor-pointer" src="/logo.png" ></img>
         </NavbarBrand>
       </NavbarContent>
 
@@ -46,12 +46,7 @@ export default function InstructorNav () {
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="settings">My Settings</DropdownItem>
-            <DropdownItem key="team_settings">Team Settings</DropdownItem>
-            <DropdownItem key="analytics">Analytics</DropdownItem>
-            <DropdownItem key="system">System</DropdownItem>
-            <DropdownItem key="configurations">Configurations</DropdownItem>
-            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+            <DropdownItem onClick={()=>navigate('/instructor/profile')} key="settings">My Profile</DropdownItem>
             <DropdownItem onClick={handleClick} key="logout" color="danger">
               Log Out
             </DropdownItem>

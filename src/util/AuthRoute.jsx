@@ -6,6 +6,7 @@ import { logged } from "../Slices/AuthSlice"
  const AuthRoute = () =>{
     const dispatch = useDispatch()
     const user = localStorage.getItem('auth_token')?JSON.parse(localStorage.getItem('auth_token')):null
+
     dispatch(logged(user))
     return(
             <Outlet />
