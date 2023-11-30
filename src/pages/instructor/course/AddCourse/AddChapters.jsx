@@ -33,10 +33,10 @@ function AddChapters() {
             />
         </div>
         <div className='mt-12'>
-          {video?<ReactPlayer  height="30vh" width="auto"  url={URL.createObjectURL(video)}/>:
+          {video?<ReactPlayer  height="30vh" width="auto"  url={URL.createObjectURL(video)} controls/>:
               <Image
                 width={400}
-                height={100}
+                height={300}
                 src="/uploadimage.jpg"
                 className='mt-3'
               />}
