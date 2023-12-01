@@ -7,13 +7,15 @@ import InstructorNav from '../../../../components/InstructorNav';
 import axios from 'axios';
 import {  toast } from 'react-toastify';
 import { API_URL } from '../../../../constants/url';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { currentCourse } from '../../../../Slices/CourseIdSlice';
 
 
 
 function AddTitle() {
   const [title,setTitle] = useState("")
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [description,setDescription] = useState("")
   const [category,setCategory] = useState("")
@@ -42,7 +44,8 @@ function AddTitle() {
    formData.append('image',thumbnail)
    axios.post(`${API_URL}/course/upload_course`,formData)
    .then(response=>{
-    console.log(response.data)
+    localStorage.setItem('course_id',response.data.id)
+    dispatch(currentCourse(response.data))
     toast.success('Well done!', {
       position: "top-left",
       autoClose: 3000,

@@ -67,7 +67,6 @@ function Profile() {
               <div className='mx-16'> 
               <input type='file' value={''} onChange={e=>{setImage(e.target.files[0])}}  ref={imageRef} className='hidden' />
                 <Image
-                    isZoomed
                     width={200}
                     height={200}
                     alt="/profileicon.jpg"
@@ -89,7 +88,6 @@ function Profile() {
                <div className='col-start-1 mt-6 col-end-7 justify-self-center'>
                  <Button onClick={handleSubmit} color="success" variant="bordered" >Save Changes</Button>
                  <h1 className='mt-3 text-danger cursor-pointer'>Change Password ?</h1>
-                 <h1>Change Email ?</h1>
                 </div>
             </div> 
             <div>

@@ -18,8 +18,7 @@ const authSlice = createSlice({
             state.logged_id = jwtDecode(JSON.stringify(action.payload)).user_id
             localStorage.setItem('auth_token',JSON.stringify(action.payload))
         },
-        logout : ()=> initialState
-        
+        logout : ()=> initialState  
     }
 })
 
