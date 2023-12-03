@@ -7,26 +7,23 @@ import axios from 'axios'
 
 function UseCurrentCourse() {
    const dispatch = useDispatch()
-   const title = useSelector(state=>state.currentCourse.title)
-   const [courseTitle,setCourseTitle] = useState(title)
-   console.log(title)
+   const current = useSelector(state=>state.currentCourse)
+   const [course,setCourse] = useState(current)
    useEffect(()=>{
-    if (title){
-      setCourseTitle(title)
-    }
-    else{
+    if (current.id == ""){
         const id = localStorage.getItem('course_id')
         axios.get(`${API_URL}/course/get_course/${id}`)
         .then(response=>{
             dispatch(currentCourse(response.data))
-            setCourseTitle(response.data.course_title)
+            setCourse(response.data)
+            console.log(response.data)
         })
         .catch(error=>[
             console.log(error.message)
         ])
     }
      },[])
-    return courseTitle
+    return [course,setCourse]
 }
 
 export default UseCurrentCourse

@@ -17,6 +17,7 @@ import AdminLogin from './pages/admin/AdminLogin'
 import AddChapters from './pages/instructor/course/AddCourse/AddChapters'
 import ToastContainer from './components/ToastDiv'
 import Profile from './pages/instructor/profile/Profile'
+import CourseView from './pages/instructor/course/CourseView';
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
                 <Route path =  ""  element={<CoursePage />} />
                 <Route path = "addtitle" element={<AddTitle />} />
                 <Route path='addchapter' element={<AddChapters />} />
+                <Route path='view' element={<CourseView/>} />
             </Route>
             <Route path='profile' >
               <Route path='' element={<Profile />} />

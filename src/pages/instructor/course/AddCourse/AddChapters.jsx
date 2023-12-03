@@ -6,7 +6,9 @@ import ReactPlayer from 'react-player'
 import UseCurrentCourse from '../../../../hooks/UseCurrentCourse'
 import {IoMdCheckmark , IoMdAdd } from "react-icons/io";
 import {  toast } from 'react-toastify';
-import { courseChapterSubmit } from '../../../../contents/instructor/Course'
+import { courseChapterSubmit, courseDelete } from '../../../../contents/instructor/Course'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 
 
@@ -17,8 +19,13 @@ function AddChapters() {
       description: "",
       video : ""
     }
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const user_id = useSelector(state=>state.auth.logged_id) 
+    const course_id = useSelector(state=>state.currentCourse.id) 
     const [formFields,setFormFields] = useState([objects])
-    const title = UseCurrentCourse()
+    const [data] = UseCurrentCourse()
+    const title = data.course_title
     const handleInputChange = (e,index) =>{
       const data = [...formFields]
       data[index][e.target.name] = e.target.value
@@ -40,6 +47,20 @@ function AddChapters() {
 
     const addChapter = () =>{
       const index = formFields.length - 1
+      if(index == 2){
+        toast.error('You can only add 3 chapters at a time!', {
+          position: "top-left",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+
+      }
+      else{
       const current = formFields[index]
       if (current['title'] == ""|| current['description'] == "" || current['video']==""){
         toast.error('Please complete the existing chapter !', {
@@ -59,14 +80,23 @@ function AddChapters() {
         setFormFields([...formFields,obj])
       } 
     }
-    const handleSubmit = (formFields) =>{
-       const result = courseChapterSubmit(formFields)
     }
+   function  handleSubmit (formFields){
+       const data = {
+        user_id : user_id,
+        course_id : course_id
+        }
+        courseChapterSubmit(formFields,data,navigate)
+
+      }
   return (
     <div> 
         <InstructorNav />
         <Sidebar /> 
-        <div className='ml-28'><h1 className='text-2xl italic font-bold'>{title}-Chapters</h1></div>
+        <div className='ml-28 flex mt-4'>
+          <div className='w-4/5'><span className='text-2xl italic font-bold'>{title}-Chapters</span></div>
+          <div className='w-1/5 justify-end'> <Button color="danger" onClick={()=>courseDelete(navigate,dispatch)} variant="bordered" > Delete Course </Button></div>
+        </div>
         {formFields.map((form,index)=>{
           return(
         <div key={index} className='grid grid-cols-12 gap-4 mt-6 ml-32 mr-3'>

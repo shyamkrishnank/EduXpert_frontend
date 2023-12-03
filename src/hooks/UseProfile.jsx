@@ -9,7 +9,6 @@ function UseProfile() {
     useEffect(()=>{
          axios.get(`${API_URL}/users/profile/${id}`)
         .then(response=>{
-            console.log(response.data)
             setUserData(response.data)
         })
         .catch(error=>{

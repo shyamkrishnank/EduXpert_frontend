@@ -9,7 +9,6 @@ function ObjectToForm(obj) {
         }
         formData.append(key,obj[key])
     }
-  console.log(formData)
   return formData
 
 }

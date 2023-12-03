@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
     id : "",
-    title :"",
-    description:""
+    course_title :"",
+    course_description:"",
 }
 
 
@@ -13,12 +13,14 @@ const CourseIdSlice = createSlice({
     reducers : {
         currentCourse : (state,action)=>{
             state.id = action.payload.id,
-            state.title = action.payload.course_title,
-            state.description = action.payload.description
-        }
+            state.course_title = action.payload.course_title,
+            state.course_description = action.payload.course_description   
+        },
+
+        deleteCourse : ()=> initialState 
     }
 
 })
 
 export default CourseIdSlice.reducer
-export const { currentCourse } = CourseIdSlice.actions
+export const { currentCourse,deleteCourse } = CourseIdSlice.actions

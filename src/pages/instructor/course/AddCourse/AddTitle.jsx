@@ -10,6 +10,7 @@ import { API_URL } from '../../../../constants/url';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { currentCourse } from '../../../../Slices/CourseIdSlice';
+import { FaRupeeSign } from "react-icons/fa";
 
 
 
@@ -20,10 +21,11 @@ function AddTitle() {
   const [description,setDescription] = useState("")
   const [category,setCategory] = useState("")
   const [thumbnail,setThumbnail] = useState("")
+  const [price,setPrice] = useState("")
   const [course,setCourse] = useState({})
   const created_by = useSelector(state=>state.auth.logged_id)
   const handleSubmit=()=>{
-    if (title == "" || description == "" || category == "" || thumbnail == ""){
+    if (title == "" || description == "" || category == "" || thumbnail == "" || price == ""){
       toast.error('Please fill all fields!', {
         position: "top-center",
         autoClose: 3000,
@@ -42,6 +44,7 @@ function AddTitle() {
    formData.append('course_category',course[category])
    formData.append('created_by',created_by)
    formData.append('image',thumbnail)
+   formData.append('price',price)
    axios.post(`${API_URL}/course/upload_course`,formData)
    .then(response=>{
     localStorage.setItem('course_id',response.data.id)
@@ -75,18 +78,21 @@ function AddTitle() {
   })
   },[])
   return (
-    <div className='static'>
+    <>
         <InstructorNav />
         <Sidebar />
-        <h1 className='absolute left-36 text-2xl mx-4 italic font-bold'>Step 1 - Course </h1>
-        <div className='absolute left-36 top-28 w-5/6 '>
-        <Input
+        <div className='ml-28 flex mt-4'>
+          <div className='w-4/5'><span className='text-2xl italic font-bold'>Course Name</span></div>
+        </div>
+        <div className='flex ml-32 mt-8'>
+          <div className='w-3/5'>
+          <Input
             isRequired
             type="email"
             label="Course titile"
             defaultValue=""
             value={title}
-            className='w-6/12 text-xl '
+            className='w-9/12 text-xl '
             onChange={e=>setTitle(e.target.value)}
             size={'lg'}
             />
@@ -94,7 +100,7 @@ function AddTitle() {
             isRequired
             label="Discription"
             placeholder="Enter your description"
-            className='w-6/12 text-xl my-6'
+            className='w-9/12 text-xl my-6'
             value={description}
             onChange={e=>setDescription(e.target.value)}
             size={'lg'}
@@ -106,9 +112,8 @@ function AddTitle() {
                 value={category}
                 onChange={e=>setCategory(e.target.value)}
                 list="options"
-                className="w-6/12 text-xl"
+                className="w-9/12 text-xl"
               />
-
               <datalist id="options" className="mt-2">
                 {Object.entries(course).map(([key, value]) => (
                   <option 
@@ -118,15 +123,36 @@ function AddTitle() {
                   />
                 ))}
               </datalist>
+              <Input
+                    isRequired
+                    type="number"
+                    label="price"
+                    className='w-9/12 text-xl my-6'  
+                    value={price}
+                    onChange={e=>setPrice(e.target.value)}
+                    endContent={<FaRupeeSign/> }
+                    description="You can change the price later." 
+                    size={'lg'}
+                />
 
-             <Image
+          </div>
+
+          <div className='w-2/5'>
+            
+          <Image
                 width={300}
                 height={200}
                 src={thumbnail?URL.createObjectURL(thumbnail):"/uploadimage.jpg"}
                 className='mt-3'
               />
               <input onChange={e=>setThumbnail(e.target.files[0])} type='file' />
-        </div >
+
+          </div>
+
+        </div>
+      
+
+
 
         <div className='absolute bottom-28 right-80'>
             <Button 
@@ -135,8 +161,7 @@ function AddTitle() {
             Continue
         </Button> 
         </div>
-      
-    </div>
+     </>
   )
 }
 
