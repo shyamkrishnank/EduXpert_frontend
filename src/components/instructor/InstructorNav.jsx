@@ -1,15 +1,15 @@
 import React from "react";
 import {Navbar, NavbarBrand, NavbarContent, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
 import { useDispatch } from "react-redux";
-import {  logout } from "../Slices/AuthSlice";
+import {  logout } from "../../Slices/AuthSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function InstructorNav () { 
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const handleClick = () =>{
+        localStorage.removeItem('auth_token')
         dispatch(logout())
-        localStorage.removeItem("auth_token")
         navigate('/login')
     }
   return (

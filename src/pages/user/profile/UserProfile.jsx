@@ -1,17 +1,14 @@
-import React, {  useRef, useState } from 'react'
-import InstructorNav from '../../../components/instructor/InstructorNav'
-import Sidebar from '../../../components/instructor/Sidebar'
-import {Image,Input, Textarea, Button, useDisclosure} from '@nextui-org/react'
+import React, { useRef, useState } from 'react'
+import Navbar1 from '../../../components/user/Navbar'
 import UseProfile from '../../../hooks/UseProfile'
-import axios from 'axios'
 import { API_URL } from '../../../constants/url'
+import { Button, Image, Input, Textarea } from '@nextui-org/react'
+import ObjectToForm from '../../instructor/util/ObjectToForm'
+import axios from 'axios'
 import { toast } from 'react-toastify'
-import ObjectToForm from '../util/ObjectToForm'
 
-
-
-function Profile() {
-  const [image,setImage] = useState('')
+function UserProfile() {
+const [image,setImage] = useState('')
   const imageRef = useRef('')
   const [user,setUser] = UseProfile()
   const handleImage = (e) =>{
@@ -58,8 +55,7 @@ function Profile() {
 
   return (
     <div>
-        <InstructorNav />
-        <Sidebar />
+        <Navbar1 />
         <div className='mt-6 mx-28'>
             <h1 className='text-2xl mb-4 italic font-bold'>Personal Info</h1>
             <p>You can edit your personal informations here</p>
@@ -97,4 +93,4 @@ function Profile() {
   )
 }
 
-export default Profile
+export default UserProfile

@@ -1,7 +1,7 @@
 import React from 'react'
-import Navbar1 from '../../../components/Navbar'
-import Sidebar from '../../../components/Sidebar'
-import InstructorNav from '../../../components/InstructorNav'
+import Navbar1 from '../../../components/user/Navbar'
+import Sidebar from '../../../components/instructor/Sidebar'
+import InstructorNav from '../../../components/instructor/InstructorNav'
 
 function InstructorPage() { 
   return (

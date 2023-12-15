@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Navbar1 from '../../components/Navbar'
+import Navbar1 from '../../components/user/Navbar'
 import {CardHeader,RadioGroup, Radio, Input ,Card, CardBody} from "@nextui-org/react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -67,7 +67,17 @@ function SignupPage() {
       }
       axios.post(`${API_URL}/users/register/`,data)
       .then(()=>{
-        navigate('otp',{state:{'email':email}})  
+        toast.success('OTP has been sented to your mail!', {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+          navigate('otp',{state:{'email':email}})  
       })
       .catch(()=>{
         toast.error('Something Went Wrong!', {

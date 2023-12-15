@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Navbar1 from '../../components/Navbar'
+import Navbar1 from '../../components/user/Navbar'
 import {CardHeader, Input ,Card, CardBody} from "@nextui-org/react"
 import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -37,7 +37,7 @@ function LoginPage() {
         }
         axios.post(`${API_URL}/users/login/`,data)
         .then(response=>{
-           toast.success('All fields required!', {
+           toast.success('Successfully Signed In', {
             position: "top-center",
             autoClose: 3000,
             hideProgressBar: true,

@@ -14,7 +14,16 @@ export function courseChapterSubmit(obj,extra,navigate) {
     formData.append('course_id', extra.course_id)
     axios.post(`${API_URL}/course/chapter_upload`,formData)
     .then(response=>{
-        localStorage.removeItem('current_course')
+        toast.success('Chapter Addedd Successfully', {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
         return navigate('/instructor/course')
     })
     .catch(error=>{

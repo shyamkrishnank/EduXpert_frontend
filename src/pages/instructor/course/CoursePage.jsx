@@ -1,9 +1,9 @@
 import React from 'react'
-import Sidebar from '../../../components/Sidebar'
+import Sidebar from '../../../components/instructor/Sidebar'
 import {Button} from "@nextui-org/react";
 import { IoIosAdd } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
-import InstructorNav from '../../../components/InstructorNav';
+import InstructorNav from '../../../components/instructor/InstructorNav';
 import {Card, CardHeader, CardBody, Image} from "@nextui-org/react";
 import UseInsCourse from '../../../hooks/UseInsCourse';
 import { API_URL } from '../../../constants/url';
@@ -16,15 +16,14 @@ function CoursePage() {
   const dispatch = useDispatch()
   const courses = UseInsCourse()
   const handleClick = (id) =>{
-    console.log('hello')
-    localStorage.setItem('course_id',id)
-    navigate('/instructor/course/view')  
+    navigate(`/instructor/course/view/${id}`)  
   }
   const addCourse = () => {
     dispatch(deleteCourse())
     navigate('addtitle')
-
     }
+
+    console.log('from course');
   return (
     <div>
         <InstructorNav />
@@ -38,7 +37,7 @@ function CoursePage() {
             </Button></div>
         </div>
         <div className='grid grid-cols-6 gap-4 mt-8 ml-32 mr-12'>
-          {courses.map((course,index)=>{
+          {courses && courses.map((course,index)=>{
             console.log(course)
             return(
           <div key={index} onClick={()=>handleClick(course.id)}  className='col-span-2'>
@@ -55,7 +54,7 @@ function CoursePage() {
                   src={course.image?`${API_URL}${course.image}`:null}
                   width={270}
                 />
-                <h3>Not active</h3>
+                <h4 >{course.status}</h4>
               </CardBody>
           </Card>
           </div>

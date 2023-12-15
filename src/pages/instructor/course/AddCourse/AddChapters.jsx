@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import InstructorNav from '../../../../components/InstructorNav'
-import Sidebar from '../../../../components/Sidebar'
+import InstructorNav from '../../../../components/instructor/InstructorNav'
+import Sidebar from '../../../../components/instructor/Sidebar'
 import { Input,Textarea,Image,Button } from "@nextui-org/react"
 import ReactPlayer from 'react-player'
 import UseCurrentCourse from '../../../../hooks/UseCurrentCourse'
@@ -8,7 +8,7 @@ import {IoMdCheckmark , IoMdAdd } from "react-icons/io";
 import {  toast } from 'react-toastify';
 import { courseChapterSubmit, courseDelete } from '../../../../contents/instructor/Course'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 
 
@@ -21,10 +21,10 @@ function AddChapters() {
     }
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const user_id = useSelector(state=>state.auth.logged_id) 
-    const course_id = useSelector(state=>state.currentCourse.id) 
+    const user_id = useSelector(state=>state.auth.id) 
     const [formFields,setFormFields] = useState([objects])
-    const [data] = UseCurrentCourse()
+    const {course_id} = useParams()
+    const [data] = UseCurrentCourse(course_id)
     const title = data.course_title
     const handleInputChange = (e,index) =>{
       const data = [...formFields]
@@ -47,8 +47,8 @@ function AddChapters() {
 
     const addChapter = () =>{
       const index = formFields.length - 1
-      if(index == 2){
-        toast.error('You can only add 3 chapters at a time!', {
+      if(index == 1){
+        toast.error('You can only add 2 chapters at a time!', {
           position: "top-left",
           autoClose: 3000,
           hideProgressBar: true,
@@ -63,7 +63,7 @@ function AddChapters() {
       else{
       const current = formFields[index]
       if (current['title'] == ""|| current['description'] == "" || current['video']==""){
-        toast.error('Please complete the existing chapter !', {
+        toast.error('Please complete the existing chapter!', {
           position: "top-left",
           autoClose: 3000,
           hideProgressBar: true,
@@ -82,13 +82,28 @@ function AddChapters() {
     }
     }
    function  handleSubmit (formFields){
-       const data = {
-        user_id : user_id,
-        course_id : course_id
-        }
-        courseChapterSubmit(formFields,data,navigate)
+       const index = formFields.length - 1 
+       if (formFields[index].title === "" || formFields[index].description === "" || formFields[index].video === ""){
+        return toast.error('You forget to complete the fields?', {
+          position: "top-left",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
 
-      }
+       }
+       else{
+        const data = {
+          user_id : user_id,
+          course_id : course_id
+          }
+          courseChapterSubmit(formFields,data,navigate)
+        }
+       }   
   return (
     <div> 
         <InstructorNav />

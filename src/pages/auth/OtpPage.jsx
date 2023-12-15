@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Navbar1 from '../../components/Navbar'
+import Navbar1 from '../../components/user/Navbar'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
@@ -19,6 +19,16 @@ function OtpPage(prop) {
        axios.post(`${API_URL}/users/otp/`,data)
        .then(response=>{
           if (response.data.message === 'success'){
+            toast.success('Please Login to Enter!', {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+              });
              navigate('/login')
           }
           else{

@@ -5,10 +5,10 @@ import { API_URL } from '../constants/url'
 import axios from 'axios'
 
 
-function UseCurrentCourse(id) {
+function UseCurrentChapter(id) {
    const [course,setCourse] = useState("")
    useEffect(()=>{
-        axios.get(`${API_URL}/course/get_course/${id}`)
+        axios.get(`${API_URL}/course/ins_chapter/${id}`)
         .then(response=>{
             setCourse(response.data)
             console.log(response.data)
@@ -21,4 +21,4 @@ function UseCurrentCourse(id) {
     return [course,setCourse]
 }
 
-export default UseCurrentCourse
+export default UseCurrentChapter

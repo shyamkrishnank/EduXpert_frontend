@@ -1,15 +1,56 @@
 import React, { useState } from 'react'
 import {CardHeader, Input ,Card, CardBody} from "@nextui-org/react";import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import AdminNav from '../../components/admin/AdminNav';
+import AdminNav from '../../../components/admin/AdminNav';
+import axios from 'axios';
+import { API_URL } from '../../../constants/url';
+import { useDispatch } from 'react-redux';
+import { logged } from '../../../Slices/AuthSlice';
+import { useNavigate } from 'react-router-dom';
+
 
 
 function AdminLogin() {
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const handleSubmit = () =>{
+     const data = {
+        'email' : email,
+        'password' : password
+      }
+      axios.post(`${API_URL}/eduadmin/login`,data)
+      .then(response=>{
+        dispatch(logged(response.data))
+        toast.success('Welcome Admin', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+          navigate('/eduadmin')
         
-
+          
+      })
+      .catch(error=>{
+        toast.error(`${error.response.data.message}`, {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+        
+      })
+    
     }
   return (
     <div>

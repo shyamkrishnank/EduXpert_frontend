@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import Sidebar from '../../../../components/Sidebar'
+import Sidebar from '../../../../components/instructor/Sidebar'
 import {Input} from "@nextui-org/react";
 import {Textarea} from "@nextui-org/react";
 import {Button , Image} from "@nextui-org/react";
-import InstructorNav from '../../../../components/InstructorNav';
+import InstructorNav from '../../../../components/instructor/InstructorNav';
 import axios from 'axios';
 import {  toast } from 'react-toastify';
 import { API_URL } from '../../../../constants/url';
@@ -23,7 +23,7 @@ function AddTitle() {
   const [thumbnail,setThumbnail] = useState("")
   const [price,setPrice] = useState("")
   const [course,setCourse] = useState({})
-  const created_by = useSelector(state=>state.auth.logged_id)
+  const created_by = useSelector(state=>state.auth.id)
   const handleSubmit=()=>{
     if (title == "" || description == "" || category == "" || thumbnail == "" || price == ""){
       toast.error('Please fill all fields!', {
@@ -47,7 +47,6 @@ function AddTitle() {
    formData.append('price',price)
    axios.post(`${API_URL}/course/upload_course`,formData)
    .then(response=>{
-    localStorage.setItem('course_id',response.data.id)
     dispatch(currentCourse(response.data))
     toast.success('Well done!', {
       position: "top-left",
@@ -59,7 +58,7 @@ function AddTitle() {
       progress: undefined,
       theme: "colored",
       });
-    navigate('/instructor/course/addchapter')
+    navigate(`/instructor/course/addchapter/${response.data.id}`)
 
    })
    .catch(error=>{

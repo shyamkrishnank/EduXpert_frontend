@@ -7,17 +7,31 @@ import OtpPage from './pages/auth/OtpPage'
 import SignupPage from './pages/auth/SignupPage'
 import Landingpage from './pages/auth/LandingPage'
 import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
-import PrivateRoute from './util/PrivateRoute'
 import InstructorPage from './pages/instructor/home/InstructorPage'
-import UserPage from './pages/user/UserPage'
+import UserPage from './pages/user/home/UserPage'
 import CoursePage from './pages/instructor/course/CoursePage'
 import AddTitle from './pages/instructor/course/AddCourse/AddTitle'
-import AuthRoute from './util/AuthRoute'
-import AdminLogin from './pages/admin/AdminLogin'
+import AuthUserRoute from './util/AuthUserRoute'
+import AdminLogin from './pages/admin/login/AdminLogin'
 import AddChapters from './pages/instructor/course/AddCourse/AddChapters'
 import ToastContainer from './components/ToastDiv'
 import Profile from './pages/instructor/profile/Profile'
 import CourseView from './pages/instructor/course/CourseView';
+import CourseChapter from './pages/instructor/course/CourseChapter';
+import AdminHome from './pages/admin/home/AdminHome';
+import AdminCourse from './pages/admin/course/AdminCourse';
+import AdminCourseView from './pages/admin/course/AdminCourseView';
+import AdminUsers from './pages/admin/users/AdminUsers';
+import AdminUserView from './pages/admin/users/AdminUserView';
+import AdminInstructors from './pages/admin/Instructor/AdminInstructor';
+import AdminInstructorView from './pages/admin/Instructor/AdminInstructorView';
+import UserProfile from './pages/user/profile/UserProfile';
+import UserCourseView from './pages/user/course/UserCourseView';
+import AuthInstructorRoute from './util/AuthInstructorRoute';
+import InitialAuth from './util/InitialAuth';
+import AuthAdminAuth from './util/AuthAdminRoute';
+import Loading from './components/loading/Loading';
+import UserCourseDetail from './pages/user/course/UserCourseDetail';
 
 
 function App() {
@@ -26,31 +40,53 @@ function App() {
     <>
    <Router>
     <Routes>
-      <Route path='' element={<PrivateRoute/>}>
-          <Route path='' element={<Landingpage />} /> 
-          <Route path='signup/otp' element={<OtpPage/>} />
-          <Route path='login' element={<LoginPage />} />
-          <Route path='signup' element={<SignupPage/>} />
-      </Route> 
-         <Route path='instructor' element={<AuthRoute />}>
-            <Route path = "" element={<InstructorPage />} />
-            <Route path="course" >
-                <Route path =  ""  element={<CoursePage />} />
-                <Route path = "addtitle" element={<AddTitle />} />
-                <Route path='addchapter' element={<AddChapters />} />
-                <Route path='view' element={<CourseView/>} />
-            </Route>
+      <Route path='loading' element={<Loading/>} />
+        <Route path='/'  element={<InitialAuth />}>
+           <Route path='home' element={<Landingpage />} /> 
+           <Route path='signup/otp' element={<OtpPage/>} />
+           <Route path='login' element={<LoginPage />} />
+           <Route path='signup' element={<SignupPage/>} /> 
+           <Route path='admin' element={<AdminLogin />} />  
+        </Route> 
+         <Route path='instructor' element={<AuthInstructorRoute />}  >
+          <Route index element={<InstructorPage />} />
+          <Route path="course" >
+              <Route index  element={<CoursePage />} />
+              <Route path = "addtitle" element={<AddTitle />} />
+              <Route path='addchapter/:course_id' element={<AddChapters />} />
+              <Route path='view/:course_id' element={<CourseView/>} />
+              <Route path='chapters/:course_id' element={<CourseChapter />} />
+             </Route>
             <Route path='profile' >
-              <Route path='' element={<Profile />} />
-
+              <Route index element={<Profile />} />
             </Route>
          </Route>
-         <Route path='user' element={<AuthRoute />}>
-            <Route path="" element={<UserPage />} />
+         <Route path='user' element={<AuthUserRoute />}>
+            <Route index element={<UserPage />} />
+            <Route path='profile' element={<UserProfile />} />
+            <Route path='course' >
+                <Route path=':category_id' element={<UserCourseView />} />
+                <Route path='view/:course_id' element={<UserCourseDetail />} />
+            </Route>
+            
          </Route>
-         <Route path="eduadmin">
-             <Route path='' element={<AdminLogin />} />
-             
+         <Route path="eduadmin" element={<AuthAdminAuth />}>
+             <Route index element={<AdminHome />} />
+             <Route path='course' >
+                <Route path ="" element={<AdminCourse />} />
+                 <Route path='view' element={<AdminCourseView/>} />
+             </Route>
+             <Route path='users' >
+                <Route path="" element={<AdminUsers />} />
+                <Route path='view' element={<AdminUserView />} />
+
+             </Route>
+             <Route path='instructors'>
+              <Route path="" element={<AdminInstructors />} />
+              <Route path='view' element={<AdminInstructorView />} />
+
+             </Route>
+
          </Route>
     </Routes>
    </Router> 

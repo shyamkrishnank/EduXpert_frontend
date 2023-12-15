@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react'
-import InstructorNav from '../../../components/InstructorNav'
-import Sidebar from '../../../components/Sidebar'
+import InstructorNav from '../../../components/instructor/InstructorNav'
+import Sidebar from '../../../components/instructor/Sidebar'
 import { Button, Image, Input, Textarea } from '@nextui-org/react'
 import { FaRupeeSign } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import UseCurrentCourse from '../../../hooks/UseCurrentCourse';
 import { API_URL } from '../../../constants/url';
@@ -14,9 +14,10 @@ import axios from 'axios';
 function CourseView() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const { course_id } = useParams()
     const imageRef = useRef()
     const [image,setImage] = useState("")
-    const [course,setCourse] = UseCurrentCourse()
+    const [course,setCourse] = UseCurrentCourse(course_id)
     const addImage = () =>{
         imageRef.current.click()
     }
@@ -28,12 +29,16 @@ function CourseView() {
         }
         axios.post(`${API_URL}/course/edit_course/${id}`,formData)
         .then(respone=>{
-            console.log(respone.data)
+            navigate(`/instructor/course/chapters/${course_id}`)
         })
         .catch(error=>{
             console.log(error)
 
         })
+    }
+    const handleContinue = () =>{
+        navigate(`/instructor/course/chapters/${course_id}`)
+
     }
   return (
     <>
@@ -91,7 +96,7 @@ function CourseView() {
         <div  className='mt-7 flex justify-center'>
             <div className='ml-36'>
             <Button onClick={handleSave} className='mr-4' color="primary">Save Changes and Continue</Button>
-            <Button onClick={""} color="success">  Continue</Button> 
+            <Button onClick={handleContinue} color="success">  Continue</Button> 
       
             </div>
            

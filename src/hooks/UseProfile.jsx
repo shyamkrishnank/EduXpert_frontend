@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import axios from 'axios'
 
 function UseProfile() {
-    const id = useSelector(state=>state.auth.logged_id)
+    const id = useSelector(state=>state.auth.id)
     const [userData,setUserData] = useState('')
     useEffect(()=>{
          axios.get(`${API_URL}/users/profile/${id}`)
