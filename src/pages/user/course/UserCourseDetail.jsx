@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import Navbar1 from '../../../components/user/Navbar'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import { API_URL } from '../../../constants/url'
 import { BreadcrumbItem, Breadcrumbs, Button, Image, Link } from '@nextui-org/react'
 import { StripDate } from '../../../contents/dateStrip/utilities'
 import { FaRupeeSign } from "react-icons/fa";
 import Footer from '../../../components/user/Footer'
+import RazorPay from '../../../contents/user/RazorPay'
+import useRazorpay from 'react-razorpay'
+import { useSelector } from 'react-redux'
+import SuccessModal from '../../../contents/user/SuccessModal'
+
 
 
 function UserCourseDetail() {
   const {course_id}= useParams()
+  const [model,setModel] = useState(false)
+  const [Razorpay] = useRazorpay()
+  const navigate = useNavigate()
+  const user_id = useSelector(state=>state.auth.id)
   const [courseDetails,setCourseDetails] = useState()
   console.log(course_id)
   useEffect(()=>{
@@ -25,9 +34,28 @@ function UserCourseDetail() {
     })
 
   },[])
+  const handleBuyCourse = () =>{ 
+   const data = {
+      "id" : course_id,
+      "amount" : courseDetails.price
+    }
+    axios.post(`${API_URL}/order/razorpay`, data)
+    .then((response)=>{
+     RazorPay(response.data,Razorpay,user_id)
+      .then(response=>{
+        setModel(true)
+      })
+    })
+    .catch(error=>{
+      console.log(error)
+    })
+
+  }
   return (
     <div >
         <Navbar1 />
+        {/* {model ? <SuccessModal  />: null} */}
+        <SuccessModal />
         <div className='flex py-8 w-full mt-5 bg-slate-900'>
           <div className='flex-col w-6/12 flex pl-32 pt-5'>
             <div>
@@ -62,9 +90,9 @@ function UserCourseDetail() {
               <div className='my-3'> 
                  <h1 className='text-2xl font-bold'>Course Content</h1>
               </div>
-              {courseDetails && courseDetails.chapters.map(chapter=>{
+              {courseDetails && courseDetails.chapters.map((chapter,index)=>{
                 return(
-                 <p className='font-semibold'>. {chapter.title}</p>
+                 <p key={index} className='font-semibold'>. {chapter.title}</p>
               )})}
             </div>
           </div>
@@ -73,7 +101,7 @@ function UserCourseDetail() {
                       <div className='w-full flex justify-center mb-2 text-lg font-bold font-serif'><h1>BUY THE COURSE</h1></div>
                       <div><p className='text-xm'>Unlock a world of knowledge with our premium course — purchase now and enjoy lifetime access to empower your learning journey</p></div>
                       <div className='mt-6 flex  text-4xl font-bold '><FaRupeeSign className='mt-2' size={30} /> {courseDetails && courseDetails.price}.00</div>
-                      <div className='mt-2 '><Button fullWidth color="success" variant="ghost"> Buy Now </Button> </div>
+                      <div className='mt-2 '><Button onClick={handleBuyCourse} fullWidth color="success" variant="ghost"> Buy Now </Button> </div>
                  </div>
           </div>
         </div>

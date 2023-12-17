@@ -4,6 +4,7 @@ import { Button, Card, CardBody, CardHeader, Image, Skeleton } from '@nextui-org
 import axios from 'axios'
 import { API_URL } from '../../../constants/url'
 import Footer from '../../../components/user/Footer'
+import SuccessModal from '../../../contents/user/SuccessModal'
 
 
 function UserPage() {
@@ -51,7 +52,7 @@ function UserPage() {
         </div>
         <div className='flex my-5 pl-6'>
           {course && course.map(course=>{return(
-          <div className='flex-1'>
+          <div className='flex-1 flex justify-center'>
            <Card className="w-[400px] h-56 cursor-pointer">
               <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">
                 <h4 className="font-bold text-large">{course.course_title}</h4>
