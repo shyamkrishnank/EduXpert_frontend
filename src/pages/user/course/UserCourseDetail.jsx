@@ -11,6 +11,8 @@ import RazorPay from '../../../contents/user/RazorPay'
 import useRazorpay from 'react-razorpay'
 import { useSelector } from 'react-redux'
 import SuccessModal from '../../../contents/user/SuccessModal'
+import axiosInstance from '../../../axios/AxiosInstance'
+import UserOrderedCourse from '../../../contents/user/UserOrderedCourse'
 
 
 
@@ -21,11 +23,12 @@ function UserCourseDetail() {
   const navigate = useNavigate()
   const user_id = useSelector(state=>state.auth.id)
   const [courseDetails,setCourseDetails] = useState()
-  console.log(course_id)
   useEffect(()=>{
-    axios.get(`${API_URL}/course/get_course/${course_id}`)
+   const data ={
+      'user_id':user_id
+    }
+    axiosInstance.post(`/course/get_course/${course_id}`,data)
     .then(response=>{
-      console.log(response.data.course_category.category_name)
       setCourseDetails(response.data)
       console.log(response.data)
     })
@@ -54,8 +57,9 @@ function UserCourseDetail() {
   return (
     <div >
         <Navbar1 />
-        {/* {model ? <SuccessModal  />: null} */}
-        <SuccessModal />
+        {model ? <SuccessModal  />: null}
+        {courseDetails && courseDetails.message == 'not purchased' && 
+        <div>
         <div className='flex py-8 w-full mt-5 bg-slate-900'>
           <div className='flex-col w-6/12 flex pl-32 pt-5'>
             <div>
@@ -105,6 +109,10 @@ function UserCourseDetail() {
                  </div>
           </div>
         </div>
+        </div>
+        }
+       {courseDetails && courseDetails.message == 'purchased' && <UserOrderedCourse prop={courseDetails} />}
+
         <Footer />
     </div>
   )

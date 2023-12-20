@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import Navbar1 from '../../../components/user/Navbar'
 import { Button, Card, CardBody, CardHeader, Image, Skeleton } from '@nextui-org/react'
-import axios from 'axios'
 import { API_URL } from '../../../constants/url'
 import Footer from '../../../components/user/Footer'
-import SuccessModal from '../../../contents/user/SuccessModal'
+import axiosInstance from '../../../axios/AxiosInstance'
+import { useNavigate } from 'react-router-dom'
 
 
 function UserPage() {
   const [course,setCourse] = useState([{},{},{}])
+  const navigate = useNavigate()
   useEffect(()=>{
-    axios.get(`${API_URL}/course/userhome`)
+    axiosInstance.get(`${API_URL}/course/userhome`)
     .then(response=>{
       console.log(response.data)
       setCourse(response.data)
@@ -20,6 +21,10 @@ function UserPage() {
     })
 
   },[])
+
+  const handleClick = (id)=>{
+    navigate(`/user/course/view/${id}`)
+  }
   return (
     <div>
         <Navbar1 />
@@ -52,7 +57,7 @@ function UserPage() {
         </div>
         <div className='flex my-5 pl-6'>
           {course && course.map(course=>{return(
-          <div className='flex-1 flex justify-center'>
+          <div onClick={()=>handleClick(course.id)} className='flex-1 flex justify-center'>
            <Card className="w-[400px] h-56 cursor-pointer">
               <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">
                 <h4 className="font-bold text-large">{course.course_title}</h4>

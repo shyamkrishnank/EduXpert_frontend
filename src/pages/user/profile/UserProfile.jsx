@@ -4,8 +4,8 @@ import UseProfile from '../../../hooks/UseProfile'
 import { API_URL } from '../../../constants/url'
 import { Button, Image, Input, Textarea } from '@nextui-org/react'
 import ObjectToForm from '../../instructor/util/ObjectToForm'
-import axios from 'axios'
 import { toast } from 'react-toastify'
+import axiosInstance from '../../../axios/AxiosInstance'
 
 function UserProfile() {
 const [image,setImage] = useState('')
@@ -33,7 +33,7 @@ const [image,setImage] = useState('')
     if (image){
       data.append('image',image)
     }
-    axios.post(`${API_URL}/users/profile/${id}`,data)
+    axiosInstance.post(`/users/profile/${id}`,data)
     .then(()=>{
       toast.success('Profile Edited Successfully!', {
         position: "top-right",

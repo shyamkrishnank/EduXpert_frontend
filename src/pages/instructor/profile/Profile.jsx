@@ -83,6 +83,8 @@ function Profile() {
                 <div><Input label='Phone'  value={user.phone?user.phone:null} onChange={e=>setUser(prev=>({...prev,phone:e.target.value?e.target.value:null}))} type='text'/></div>
                 <div><Input label='Social Link'  value={user.sociallink?user.sociallink:null} onChange={e=>setUser(prev=>({...prev,sociallink:e.target.value?e.target.value:null}))} type='text'/></div>
                 <div><Textarea  label="Bio"  value={user.bio?user.bio:null} onChange={e=>setUser(prev=>({...prev,bio:e.target.value}))} /></div>
+                <div><Input label='Experience'  value={user.experience?user.experience:0} onChange={e=>setUser(prev=>({...prev,experience:e.target.value?e.target.value:null}))} type='number'/></div>
+
 
              </div>
                <div className='col-start-1 mt-6 col-end-7 justify-self-center'>

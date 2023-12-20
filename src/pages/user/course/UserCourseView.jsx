@@ -2,10 +2,11 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { API_URL } from '../../../constants/url'
 import Navbar1 from '../../../components/user/Navbar'
-import { Card, CardBody, CardHeader,Image } from '@nextui-org/react'
+import { Button, Card, CardBody, CardHeader,Image } from '@nextui-org/react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Footer from '../../../components/user/Footer'
 import { useSelector } from 'react-redux'
+import axiosInstance from '../../../axios/AxiosInstance'
 
 function UserCourseView() {
     const {category_id} = useParams()
@@ -16,7 +17,7 @@ function UserCourseView() {
       navigate(`/user/course/view/${id}`)
     }
     useEffect(()=>{
-     axios.get(`${API_URL}/course/course_view/${category_id}`)
+     axiosInstance.get(`${API_URL}/course/course_view/${category_id}`)
      .then(response=>{
         setCourses(response.data.course)
         setCategory(response.data.category)
@@ -55,7 +56,10 @@ function UserCourseView() {
           </div>
             )
           }):
-          <div className=' w-full col-span-6 justify-center text-xl font-bold'><h2>Sorry No Courses Avail At This Moment !</h2></div>
+          <div className='col-span-6 h-64 flex flex-col gap-2  items-center justify-center'>
+              <div><h1 className='text-xl font-semibold'>Sorry ! No course available now</h1></div>
+              <div><Button color='success' onClick={()=>navigate('/user')} variant="bordered">Back Home</Button></div>
+       </div> 
           }
 
         </div> 

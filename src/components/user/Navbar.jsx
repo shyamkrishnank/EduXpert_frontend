@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {Navbar, Input, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Dropdown, DropdownTrigger, Avatar, DropdownMenu, DropdownItem, NavbarMenuItem} from "@nextui-org/react";
 import { CiSearch } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,10 +20,12 @@ import axios from "axios";
         navigate('/login') 
   }
   const handleCourse = (key,value) =>{
-    console.log(key,value)
     navigate(`/user/course/${[value]}`)   
   }
-  useEffect(()=>{
+  const handleLearning =(key,value)=>{
+    navigate(`/user/mylearning/`)
+  }
+  useMemo(()=>{
     axios.get(`${API_URL}/course/course_category`)
     .then(response=>{
       setCategory(response.data.data)
@@ -89,6 +91,9 @@ import axios from "axios";
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem onClick={()=>navigate('/user/profile')} key="settings">My Profile</DropdownItem>
+            <DropdownItem onClick={handleLearning} key="logout" color="danger">
+              My Learnings
+            </DropdownItem>
             <DropdownItem onClick={handleClick} key="logout" color="danger">
               Log Out
             </DropdownItem>

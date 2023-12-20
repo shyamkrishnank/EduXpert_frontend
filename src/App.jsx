@@ -32,6 +32,8 @@ import InitialAuth from './util/InitialAuth';
 import AuthAdminAuth from './util/AuthAdminRoute';
 import Loading from './components/loading/Loading';
 import UserCourseDetail from './pages/user/course/UserCourseDetail';
+import OrderPage from './pages/user/course/OrderPage';
+import InstructorProfile from './pages/user/instructor/InstructorProfile';
 
 
 function App() {
@@ -68,7 +70,8 @@ function App() {
                 <Route path=':category_id' element={<UserCourseView />} />
                 <Route path='view/:course_id' element={<UserCourseDetail />} />
             </Route>
-            
+            <Route path='mylearning' element={<OrderPage/>} /> 
+            <Route path='instructor/:instructor_id' element={<InstructorProfile/>} />
          </Route>
          <Route path="eduadmin" element={<AuthAdminAuth />}>
              <Route index element={<AdminHome />} />
