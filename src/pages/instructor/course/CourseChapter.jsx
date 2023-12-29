@@ -53,6 +53,10 @@ function CourseChapter() {
     const handleDelete = () =>{
       
     }
+
+    const handleText = (id) =>{
+      
+    }
   const handleSubmit = () =>{
     if (chapter.title === "" || chapter.description === "" || chapter.video === ""){
       toast.error('Please fill all fields!', {
@@ -71,7 +75,7 @@ function CourseChapter() {
       Object.entries(chapter).forEach(([key,value])=>{
         formData.append(key,value)
       })
-      formData.append('course_id',course_id)
+      formData.append('course',course_id)
       axios.post(`${API_URL}/course/add_chapter`, formData)
       .then(response=>{
         setCourse(response.data) 

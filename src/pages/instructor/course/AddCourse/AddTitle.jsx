@@ -37,6 +37,19 @@ function AddTitle() {
         theme: "colored",
         });
     }
+    else if(price <= 0 ){
+      toast.error('Please enter the valid amount !', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,  
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+
+    }
     else{
    const formData = new FormData
    formData.append("course_title",title)

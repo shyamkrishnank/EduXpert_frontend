@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux'
 import SuccessModal from '../../../contents/user/SuccessModal'
 import axiosInstance from '../../../axios/AxiosInstance'
 import UserOrderedCourse from '../../../contents/user/UserOrderedCourse'
+import { toast } from 'react-toastify'
 
 
 
@@ -42,11 +43,23 @@ function UserCourseDetail() {
       "id" : course_id,
       "amount" : courseDetails.price
     }
+    console.log(data)
     axios.post(`${API_URL}/order/razorpay`, data)
     .then((response)=>{
      RazorPay(response.data,Razorpay,user_id)
       .then(response=>{
-        setModel(true)
+        // setModel(true)
+        toast.success('Course Ordered Successfully!', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          })
+        navigate('/user/mylearning')
       })
     })
     .catch(error=>{
@@ -72,7 +85,7 @@ function UserCourseDetail() {
               <h1 className='text-4xl font-bold text-white'>{courseDetails && courseDetails.course_title}</h1>
             </div>
             <div className='mt-3'>
-               <h1 className='text-white'>Instructor : <Link className='cursor-pointer underline-offset-1' showAnchorIcon>{courseDetails && courseDetails.created_by.get_full_name}</Link></h1>
+               <h1 className='text-white'>Instructor : <Link onClick={()=>navigate(`/user/instructor/${courseDetails.created_by.id}`)} className='cursor-pointer underline-offset-1' showAnchorIcon>{courseDetails && courseDetails.created_by.get_full_name}</Link></h1>
             </div>
             <div className='mt-3'>
                <h1 className='text-white'>Created at :<span className='text-xm'>{courseDetails && StripDate(courseDetails.created_at) }</span> </h1>

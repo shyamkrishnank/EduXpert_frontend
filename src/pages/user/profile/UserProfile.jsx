@@ -33,7 +33,7 @@ const [image,setImage] = useState('')
     if (image){
       data.append('image',image)
     }
-    axiosInstance.post(`/users/profile/${id}`,data)
+    axiosInstance.post(`${API_URL}/users/profile/${id}`,data)
     .then(()=>{
       toast.success('Profile Edited Successfully!', {
         position: "top-right",

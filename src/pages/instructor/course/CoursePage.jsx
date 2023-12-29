@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Sidebar from '../../../components/instructor/Sidebar'
 import {Button} from "@nextui-org/react";
 import { IoIosAdd } from "react-icons/io";
@@ -12,9 +12,9 @@ import { deleteCourse } from '../../../Slices/CourseIdSlice';
 
 
 function CoursePage() {
+  const [courses,setCourses] = UseInsCourse()
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const courses = UseInsCourse()
   const handleClick = (id) =>{
     navigate(`/instructor/course/view/${id}`)  
   }
@@ -22,8 +22,6 @@ function CoursePage() {
     dispatch(deleteCourse())
     navigate('addtitle')
     }
-
-    console.log('from course');
   return (
     <div>
         <InstructorNav />

@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Image} from "@nextui-org/react";
+import { useNavigate } from 'react-router-dom';
 
 function SuccessModal() {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
-  console.log('from modal')
+  const navigate = useNavigate()
   useEffect(()=>{
     onOpen()
   },[])
@@ -34,7 +35,7 @@ function SuccessModal() {
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onPress={onClose}>
+                <Button  color="primary" onPress={()=>navigate('/user/mylearning')}>
                   View Course
                 </Button>
               </ModalFooter>

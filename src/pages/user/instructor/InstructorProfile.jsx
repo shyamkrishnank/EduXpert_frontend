@@ -55,7 +55,7 @@ function InstructorProfile() {
             </div>  
             <div className='basis-2/4 flex flex-col gap-4'>
                 <div className='pl-8'> <Image width={200} src={`${API_URL}${instructor.image}`} alt="NextUI Album Cover" classNames="m-5"/> </div>
-                <div className='pl-16'><Button color="success" className='text-white' variant="solid" startContent={""}> Send Message </Button></div>
+                <div className='pl-16'><Button color="success" onClick={()=>navigate(`/user/chat/${instructor.id}`)} className='text-white' variant="solid" startContent={""}> Send Message </Button></div>
             </div>
         </div> 
         <div className='grid grid-cols-6 gap-4 px-40'>

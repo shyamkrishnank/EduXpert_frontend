@@ -7,7 +7,7 @@ import store from './store.jsx';
 import {GoogleOAuthProvider} from '@react-oauth/google'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  <React.Fragment>
       <NextUIProvider>
         <GoogleOAuthProvider clientId="622861176382-amsrvfsjbkqqrtrm6993085l0ufnf5ul.apps.googleusercontent.com">
           <Provider store={store} > 
@@ -15,5 +15,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           </Provider>
         </GoogleOAuthProvider>
       </NextUIProvider>
-  </React.StrictMode>,
+  </React.Fragment>
 )

@@ -10,6 +10,7 @@ import { API_URL } from '../../../constants/url';
 import { courseDelete } from '../../../contents/instructor/Course';
 import ObjectToForm from '../util/ObjectToForm';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function CourseView() {
     const navigate = useNavigate()
@@ -22,6 +23,33 @@ function CourseView() {
         imageRef.current.click()
     }
     const handleSave = () => {
+        if (course.title == " " || course.course_description == "" || course.price == " "){
+            toast.error('Please fill all the fields!', {
+                position: "top-left",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                });
+
+        }
+        else if(course.price <= 0){
+            toast.error('Please enter the valid amount!', {
+                position: "top-left",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                });
+
+        }
+        else{
         const id = course.id
         const formData = ObjectToForm(course)
         if(image){
@@ -35,6 +63,7 @@ function CourseView() {
             console.log(error)
 
         })
+    }
     }
     const handleContinue = () =>{
         navigate(`/instructor/course/chapters/${course_id}`)

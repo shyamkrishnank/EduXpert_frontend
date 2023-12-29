@@ -13,7 +13,7 @@ function Sidebar() {
         <ul className='list-none w=100 flex flex-col justify-items-center grid my-20 space-y-10'>
             <li> <LiaHomeSolid size={40} onClick={()=>navigate(`${url}`)} className='cursor-pointer' color='white' /></li>
             <li onClick={()=>navigate(`${url}course`)}><GiBlackBook size={40}color='white' className='cursor-pointer'/></li>
-            <li> <PiChatsLight size={40} color='white' className='cursor-pointer' /> </li>  
+            <li onClick={()=>navigate(`${url}chats`)}> <PiChatsLight size={40} color='white' className='cursor-pointer' /> </li>  
             <li><GiThumbUp size={40} color='white'className='cursor-pointer'  /></li>
             <li><GiTakeMyMoney size={40} color='white'className='cursor-pointer' /></li>
         </ul>

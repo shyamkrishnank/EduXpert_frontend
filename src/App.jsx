@@ -34,6 +34,8 @@ import Loading from './components/loading/Loading';
 import UserCourseDetail from './pages/user/course/UserCourseDetail';
 import OrderPage from './pages/user/course/OrderPage';
 import InstructorProfile from './pages/user/instructor/InstructorProfile';
+import ChatPage from './pages/user/chat/ChatPage';
+import ChatPageIns from './pages/instructor/chat/ChatPageIns';
 
 
 function App() {
@@ -62,6 +64,9 @@ function App() {
             <Route path='profile' >
               <Route index element={<Profile />} />
             </Route>
+            <Route path='chats'>
+              <Route index element={<ChatPageIns />} />
+            </Route>
          </Route>
          <Route path='user' element={<AuthUserRoute />}>
             <Route index element={<UserPage />} />
@@ -72,6 +77,7 @@ function App() {
             </Route>
             <Route path='mylearning' element={<OrderPage/>} /> 
             <Route path='instructor/:instructor_id' element={<InstructorProfile/>} />
+            <Route path='chat/:instructor_id' element={<ChatPage />} />
          </Route>
          <Route path="eduadmin" element={<AuthAdminAuth />}>
              <Route index element={<AdminHome />} />

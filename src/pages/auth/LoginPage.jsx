@@ -9,6 +9,8 @@ import { useDispatch } from 'react-redux';
 import { logged } from '../../Slices/AuthSlice'; 
 import { useNavigate } from 'react-router-dom';
 import GoogleBtn from '../../components/google/GoogleBtn';
+import axiosInstance from '../../axios/AxiosInstance';
+import { jwtDecode } from 'jwt-decode';
 
 
 function LoginPage() {
@@ -35,7 +37,7 @@ function LoginPage() {
             'email':email,
             'password':password,
         }
-        axios.post(`${API_URL}/users/login/`,data)
+        axiosInstance.post(`${API_URL}/users/login/`,data)
         .then(response=>{
            toast.success('Successfully Signed In', {
             position: "top-center",
@@ -47,7 +49,9 @@ function LoginPage() {
             progress: undefined,
             theme: "colored",
             });
+            console.log(response.data)
             dispatch(logged(response.data))
+            jwtDecode(response.data.access_token)
             if (response.data.is_staff){
                 naviate('/instructor')
             }

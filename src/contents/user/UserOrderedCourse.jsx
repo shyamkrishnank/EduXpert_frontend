@@ -1,6 +1,5 @@
 import { Accordion, AccordionItem, Checkbox, Chip, Input, Link, Textarea, useAccordion } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
-import { MdDelete } from 'react-icons/md'
 import ReactPlayer from 'react-player'
 import { API_URL } from '../../constants/url'
 import axiosInstance from '../../axios/AxiosInstance'
