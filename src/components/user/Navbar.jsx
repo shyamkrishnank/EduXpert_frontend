@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../Slices/AuthSlice";
 import { API_URL } from "../../constants/url";
-import axios from "axios";
+import axiosInstance from "../../axios/AxiosInstance";
 
 
 
@@ -16,6 +16,9 @@ import axios from "axios";
   const dispatch = useDispatch()
   const handleClick = () =>{
         localStorage.removeItem('auth_token')
+        localStorage.removeItem('refresh_token')
+        axiosInstance.defaults.headers['Authorization'] = null
+        axiosInstance.defaults.headers['Refresh-token'] = null
         dispatch(logout())
         navigate('/login') 
   }
@@ -26,7 +29,7 @@ import axios from "axios";
     navigate(`/user/mylearning/`)
   }
   useMemo(()=>{
-    axios.get(`${API_URL}/course/course_category`)
+    axiosInstance.get(`${API_URL}/course/course_category`)
     .then(response=>{
       setCategory(response.data.data)
     })
@@ -68,7 +71,7 @@ import axios from "axios";
             input: "text-small",
             inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
           }}
-          placeholder="Type to search..."
+          placeholder="Search courses..."
           size="sm"
           startContent={<CiSearch size={18} />}
           type="search"
@@ -91,7 +94,7 @@ import axios from "axios";
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem onClick={()=>navigate('/user/profile')} key="settings">My Profile</DropdownItem>
-            <DropdownItem onClick={handleLearning} key="logout" color="danger">
+            <DropdownItem onClick={handleLearning} key="mylearnings" color="danger">
               My Learnings
             </DropdownItem>
             <DropdownItem onClick={handleClick} key="logout" color="danger">

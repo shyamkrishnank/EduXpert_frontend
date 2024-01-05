@@ -1,6 +1,6 @@
-import axios from 'axios'
 import React from 'react'
 import { API_URL } from '../../constants/url'
+import axiosInstance from '../../axios/AxiosInstance'
 
 async function RazorPay(data,RazorPay,user_id){
     return new Promise((resolve, reject) => {
@@ -25,7 +25,7 @@ async function RazorPay(data,RazorPay,user_id){
                 'order_id' : response.razorpay_order_id,
                 'signature' : response.razorpay_signature
             }
-            axios.post(`${API_URL}/order/save`,order_data)
+            axiosInstance.post(`/order/save`,order_data)
             .then(response=>{
                 resolve(true) 
             })

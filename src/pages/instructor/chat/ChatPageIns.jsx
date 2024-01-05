@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import InstructorNav from '../../../components/instructor/InstructorNav'
 import Sidebar from '../../../components/instructor/Sidebar'
@@ -18,6 +18,7 @@ function ChatPageIns() {
     const [id,setId] = useState("")
     const [chats, setChats] = useState([])
     const [users,setUsers] = useState([])
+    const socket = useRef(null);
 
       useEffect(()=>{
          axiosInstance.get(`chat/data/${instructor_id}`)
@@ -26,39 +27,55 @@ function ChatPageIns() {
           console.log(response.data)
           if (response.data.length > 0){
             setId(response.data[0].id)
-            axiosInstance.get(`chat/${response.data[0].id}`)
-            .then(response=>{
-                    setChats(response.data)
-                    console.log('chata',response.data)
-              })
-              .catch(error=>{
-                console.log(error)
-              })
-                  }
+                          }
           console.log(response.data)
         })
         .catch(error=>{
           console.log(error)
         })
        },[])
-      const socket  = useMemo(()=>new WebSocket(`ws://127.0.0.1:8000/ws/chat/?token=${token}&chat_with=${id}`),[id]) 
-      socket.onopen = () =>{
-        console.log('connected successfully')
+
+
+      const handleClick = (user_id) =>{
+        setId(user_id)
+        axiosInstance.get(`chat/${user_id}`)
+        .then(response=>{ 
+            setChats(response.data)
+            console.log(response.data)
+          })
+          .catch(error=>{
+            console.log(error)
+          })
+
       }
-      socket.onclose = () =>{
-        console.log('connection lost');
-      }
-      socket.onerror = (e) =>{
-        console.log(e)
-      }
-      socket.onmessage = (e)=>{
-        setChats(prev=>[...prev,JSON.parse(e.data)])  
+
+
+
+      useEffect(()=>{
+        socket.current  = new WebSocket(`ws://127.0.0.1:8000/ws/chat/?token=${token}&chat_with=${id}`)
+        socket.current.onopen = () =>{
+          console.log('connected successfully')
+        }
+       socket.current.onclose = () =>{
+          console.log('connection lost');
+        }
+       socket.current.onerror = (e) =>{
+          console.log(e)
+        }
+       socket.current.onmessage = (e)=>{
+        setChats(prev=>[...prev,JSON.parse(e.data)])    
         console.log(e)  
-       }
-  
+         }
+         return () => {
+          socket.current.close();
+        };
+      },[id])
+     
+
+
       const handleSubmit = () =>{
         if (message){
-          socket.send(JSON.stringify(
+          socket.current.send(JSON.stringify(
             {
               'message':message,
             }
@@ -66,6 +83,8 @@ function ChatPageIns() {
           setMessage("")    
         } 
       }
+
+
       
       const scrollToBottom = () => {
         if (scrollContainerRef.current) {
@@ -73,15 +92,20 @@ function ChatPageIns() {
         }
       };
 
+
       useEffect(() => {
         scrollToBottom();
-      });
+      })
+
     
   
     return (
       <div >
          <InstructorNav />
          <Sidebar /> 
+         <div className='ml-28 flex mt-4'>
+            <div className='w-4/5'><span className='text-4xl italic font-bold'>Messages</span></div>
+        </div>
             {users.length > 0 ? 
             <div className='px-14 mt-8 ml-14 '>
             <div className='flex flex-row h-96'>
@@ -90,7 +114,9 @@ function ChatPageIns() {
                   users && users.map((user=>{
                     return(
                     <div className='flex flex-row mb-5'>
-                      <User   
+                      <User 
+                      className='cursor-pointer' 
+                      onClick={()=>handleClick(user.id)} 
                       name={user.get_full_name}
                       avatarProps={{
                         src: user.image ? `${API_URL}${user.image}`:null

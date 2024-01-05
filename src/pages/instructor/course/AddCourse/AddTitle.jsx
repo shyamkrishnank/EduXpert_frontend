@@ -4,13 +4,13 @@ import {Input} from "@nextui-org/react";
 import {Textarea} from "@nextui-org/react";
 import {Button , Image} from "@nextui-org/react";
 import InstructorNav from '../../../../components/instructor/InstructorNav';
-import axios from 'axios';
 import {  toast } from 'react-toastify';
 import { API_URL } from '../../../../constants/url';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { currentCourse } from '../../../../Slices/CourseIdSlice';
 import { FaRupeeSign } from "react-icons/fa";
+import axiosInstance from '../../../../axios/AxiosInstance';
 
 
 
@@ -37,7 +37,7 @@ function AddTitle() {
         theme: "colored",
         });
     }
-    else if(price <= 0 ){
+    else if(price < 0 ){
       toast.error('Please enter the valid amount !', {
         position: "top-center",
         autoClose: 3000,
@@ -58,7 +58,7 @@ function AddTitle() {
    formData.append('created_by',created_by)
    formData.append('image',thumbnail)
    formData.append('price',price)
-   axios.post(`${API_URL}/course/upload_course`,formData)
+   axiosInstance.post(`${API_URL}/course/upload_course`,formData)
    .then(response=>{
     dispatch(currentCourse(response.data))
     toast.success('Well done!', {
@@ -80,7 +80,7 @@ function AddTitle() {
   }
   }
   useEffect(()=>{
-    axios.get(`${API_URL}/course/course_category`)
+    axiosInstance.get(`${API_URL}/course/course_category`)
     .then(response=>{
       console.log(response)
       setCourse(response.data.data)

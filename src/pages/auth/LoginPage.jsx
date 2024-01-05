@@ -3,14 +3,12 @@ import Navbar1 from '../../components/user/Navbar'
 import {CardHeader, Input ,Card, CardBody} from "@nextui-org/react"
 import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
 import { API_URL } from '../../constants/url';
 import { useDispatch } from 'react-redux';
 import { logged } from '../../Slices/AuthSlice'; 
 import { useNavigate } from 'react-router-dom';
 import GoogleBtn from '../../components/google/GoogleBtn';
 import axiosInstance from '../../axios/AxiosInstance';
-import { jwtDecode } from 'jwt-decode';
 
 
 function LoginPage() {
@@ -20,7 +18,7 @@ function LoginPage() {
     const naviate = useNavigate()
     const handleSubmit =  () =>{
         if ( email === "" || password === "" ){
-            toast.success('Successfully LoggedIn', {
+            toast.error('Please enter valid details ', {
               position: "top-center",
               autoClose: 3000,
               hideProgressBar: true,
@@ -39,19 +37,17 @@ function LoginPage() {
         }
         axiosInstance.post(`${API_URL}/users/login/`,data)
         .then(response=>{
-           toast.success('Successfully Signed In', {
-            position: "top-center",
-            autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            });
-            console.log(response.data)
             dispatch(logged(response.data))
-            jwtDecode(response.data.access_token)
+            toast.success('Successfully Signed In', {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+              });
             if (response.data.is_staff){
                 naviate('/instructor')
             }
@@ -97,7 +93,7 @@ function LoginPage() {
           </button>
           <h1 className='text-green-950 text-xl font-medium my-1'>OR</h1>
         </div>
-        <div className='w-full justify-self-center'> <GoogleBtn /> </div>
+        <div className='w-full justify-self-center'> <GoogleBtn url={'/users/googlelogin/'} isLogin={true}/> </div>
         
       </Card>
     </div>

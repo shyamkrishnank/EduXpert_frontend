@@ -4,9 +4,9 @@ import AdminNav from '../../../components/admin/AdminNav'
 import AdminSideBar from '../../../components/admin/AdminSideBar'
 import { Table, TableCell, TableBody,TableColumn, TableHeader, TableRow, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Avatar } from '@nextui-org/react'
 import {Pagination} from "@nextui-org/react";
-import axios from 'axios';
 import { API_URL } from '../../../constants/url';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../../../axios/AxiosInstance';
 
 function AdminUsers() {
   const initialPage = `${API_URL}/eduadmin/users`
@@ -14,7 +14,7 @@ function AdminUsers() {
   const [pageCount, setPageCount] = useState(0)
   const [users,setUsers] = useState([])
   const fetchData = (url=initialPage)=>{
-      axios.get(url)
+      axiosInstance.get(url)
       .then(response=>{
           console.log(response.data)
           setUsers(response.data.results)

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import AdminNav from '../../../components/admin/AdminNav'
 import AdminSideBar from '../../../components/admin/AdminSideBar'
 import { Button, Card, CardBody, CardHeader, Image, Input, Textarea } from '@nextui-org/react'
-import axios from 'axios'
 import { API_URL } from '../../../constants/url'
 import ReactPlayer from 'react-player'
 import { StripDate } from '../../../contents/dateStrip/utilities'
+import axiosInstance from '../../../axios/AxiosInstance'
 
 
 function AdminCourseView() {
@@ -13,7 +13,7 @@ function AdminCourseView() {
     const [activebtn,setactivebtn] =  useState()
     const id = localStorage.getItem('course_id')
     useEffect(()=>{
-        axios.get(`${API_URL}/eduadmin/course_details/${id}`)
+        axiosInstance.get(`${API_URL}/eduadmin/course_details/${id}`)
         .then(response=>{
             console.log(response.data)
             setCourse(response.data)
@@ -26,7 +26,7 @@ function AdminCourseView() {
     },[])
     const handleActive = () =>{
         setactivebtn('lodding')
-        axios.get(`${API_URL}/eduadmin/course_status/${id}`)
+        axiosInstance.get(`${API_URL}/eduadmin/course_status/${id}`)
         .then(response=>{
             setactivebtn(response.data.status)
         })

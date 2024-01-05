@@ -14,39 +14,46 @@ function ChatPage() {
   const scrollContainerRef = useRef();
   const [message, setMessage] = useState()
   const token = useSelector(state=>state.auth.user.access_token)
-  const socket = useMemo(()=>new WebSocket(`ws://127.0.0.1:8000/ws/chat/?token=${token}&chat_with=${instructor_id}`),[])
   const [chats, setChats] = useState([])
-  socket.onopen = () =>{
-    console.log('connected successfully')
-  }
-  socket.onclose = () =>{
-    console.log('connection lost');
-  }
-  socket.onerror = (e) =>{
-    console.log(e)
-  }
-  socket.onmessage = (e)=>{
-    console.log(e)
-    setChats(prev=>[...prev,JSON.parse(e.data)])    
-   }
-    useEffect(()=>{
-       axiosInstance.get(`chat/${instructor_id}`)
-      .then(response=>{
-        setChats(response.data)
-      })
-      .catch(error=>{
-        console.log(error)
-      })
-    },[])
+  const socket = useRef("")
+
+  useEffect(()=>{
+    axiosInstance.get(`chat/${instructor_id}`)
+    .then(response=>{
+      setChats(response.data)
+    })
+    .catch(error=>{
+      console.log(error)
+    })
+    socket.current = new WebSocket(`ws://127.0.0.1:8000/ws/chat/?token=${token}&chat_with=${instructor_id}`)
+    socket.current.onopen = () =>{
+      console.log('connected successfully')
+    }
+    socket.current.onclose = () =>{
+      console.log('connection lost');
+    }
+    socket.current.onerror = (e) =>{
+      console.log(e)
+    }
+    socket.current.onmessage = (e)=>{
+      setChats(prev=>[...prev,JSON.parse(e.data)])    
+     }
+     return () => {
+      socket.current.close();
+    };
+  },[])
+
+ 
 
     const handleSubmit = () =>{
-          socket.send(JSON.stringify(
+          socket.current.send(JSON.stringify(
             {
               'message':message,
             }
           ))
           setMessage(" ")
     }
+
     const scrollToBottom = () => {
       if (scrollContainerRef.current) {
         scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;

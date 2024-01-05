@@ -3,10 +3,10 @@ import InstructorNav from '../../../components/instructor/InstructorNav'
 import Sidebar from '../../../components/instructor/Sidebar'
 import {Image,Input, Textarea, Button, useDisclosure} from '@nextui-org/react'
 import UseProfile from '../../../hooks/UseProfile'
-import axios from 'axios'
 import { API_URL } from '../../../constants/url'
 import { toast } from 'react-toastify'
 import ObjectToForm from '../util/ObjectToForm'
+import axiosInstance from '../../../axios/AxiosInstance'
 
 
 
@@ -36,7 +36,7 @@ function Profile() {
     if (image){
       data.append('image',image)
     }
-    axios.post(`${API_URL}/users/profile/${id}`,data)
+    axiosInstance.post(`${API_URL}/users/profile/${id}`,data)
     .then(()=>{
       toast.success('Profile Edited Successfully!', {
         position: "top-right",

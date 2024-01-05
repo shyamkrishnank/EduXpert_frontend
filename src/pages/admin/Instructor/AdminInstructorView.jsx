@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import AdminNav from '../../../components/admin/AdminNav'
 import AdminSideBar from '../../../components/admin/AdminSideBar'
 import { Accordion, AccordionItem, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Image, Input, Listbox, ListboxItem, Textarea } from '@nextui-org/react'
-import axios from 'axios'
 import { API_URL } from '../../../constants/url'
 import { useNavigate } from 'react-router-dom'
 import {StripDate} from '../../../contents/dateStrip/utilities'
+import axiosInstance from '../../../axios/AxiosInstance'
 
 function AdminInstructorView() {
 
@@ -15,7 +15,7 @@ function AdminInstructorView() {
     const [activebtn, setactivebtn] = useState("")
     const handleActive = () =>{
         setactivebtn("lodding")
-        axios.get(`${API_URL}/eduadmin/instructor_status/${id}`)
+        axiosInstance.get(`${API_URL}/eduadmin/instructor_status/${id}`)
         .then(response=>{
             
             setactivebtn(response.data.status)
@@ -32,7 +32,7 @@ function AdminInstructorView() {
 
     }
     useEffect(()=>{
-        axios.get(`${API_URL}/eduadmin/instructors_details/${id}`)
+        axiosInstance.get(`${API_URL}/eduadmin/instructors_details/${id}`)
         .then(response=>{
             console.log(response.data)
             setinstructor(response.data) 

@@ -3,10 +3,10 @@ import AdminNav from '../../../components/admin/AdminNav'
 import AdminSideBar from '../../../components/admin/AdminSideBar'
 import { Table, TableCell, TableBody,TableColumn, TableHeader, TableRow, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
 import {Pagination} from "@nextui-org/react";
-import axios from 'axios';
 import { API_URL } from '../../../constants/url';
 import { useNavigate } from 'react-router-dom';
 import {StripDate} from '../../../contents/dateStrip/utilities'
+import axiosInstance from '../../../axios/AxiosInstance';
 
 
 
@@ -16,7 +16,7 @@ function AdminCourse() {
     const [pageCount, setPageCount] = useState(0)
     const [courses,setCourses] = useState([])
     const fetchData = (url=initialPage)=>{
-        axios.get(url)
+        axiosInstance.get(url)
         .then(response=>{
             console.log(response.data)
             setCourses(response.data.results)

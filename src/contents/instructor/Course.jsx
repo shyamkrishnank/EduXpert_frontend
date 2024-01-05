@@ -1,7 +1,7 @@
-import axios from "axios"
 import { API_URL } from "../../constants/url"
 import { deleteCourse } from "../../Slices/CourseIdSlice"
 import { toast } from "react-toastify"
+import axiosInstance from "../../axios/AxiosInstance"
 
 export function courseChapterSubmit(obj,extra,navigate) {
     const formData = new FormData()
@@ -12,7 +12,7 @@ export function courseChapterSubmit(obj,extra,navigate) {
     })
     formData.append('user_id',extra.user_id,)
     formData.append('course_id', extra.course_id)
-    axios.post(`${API_URL}/course/chapter_upload`,formData)
+    axiosInstance.post(`${API_URL}/course/chapter_upload`,formData)
     .then(response=>{
         toast.success('Chapter Addedd Successfully', {
             position: "top-center",
@@ -32,10 +32,9 @@ export function courseChapterSubmit(obj,extra,navigate) {
 
 }
 
-export const courseDelete = (navigate,dispatch) => {
-        const id = localStorage.getItem('course_id')
-        console.log(id)
-        axios.get(`${API_URL}/course/delete_course/${id}`)
+export const courseDelete = (course_id,navigate,dispatch) => {
+       const id = course_id
+        axiosInstance.get(`${API_URL}/course/delete_course/${id}`)
         .then(response=>{
             toast.success('Course Deleted', {
                 position: "top-left",
@@ -43,7 +42,7 @@ export const courseDelete = (navigate,dispatch) => {
                 hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: false,
-                draggable: true,
+                draggable: true, 
                 progress: undefined,
                 theme: "colored",
                 })
@@ -52,6 +51,17 @@ export const courseDelete = (navigate,dispatch) => {
 
         })
         .catch(error=>{
+            console.log(error.response)
+            toast.error(error.response.data.message, {
+                position: "top-left",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true, 
+                progress: undefined,
+                theme: "colored",
+                })
 
         })
 }

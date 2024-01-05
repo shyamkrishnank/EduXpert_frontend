@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import AdminNav from '../../../components/admin/AdminNav'
 import AdminSideBar from '../../../components/admin/AdminSideBar'
 import { Button, Image, Input, Textarea } from '@nextui-org/react'
-import axios from 'axios'
 import { API_URL } from '../../../constants/url'
 import { StripDate } from '../../../contents/dateStrip/utilities'
+import axiosInstance from '../../../axios/AxiosInstance'
 
 function AdminUserView() {
     const id = localStorage.getItem('current_user')
@@ -12,7 +12,7 @@ function AdminUserView() {
     const [activebtn, setactivebtn] = useState("")
     const handleActive = () =>{
         setactivebtn("lodding")
-        axios.get(`${API_URL}/eduadmin/user_status/${id}`)
+        axiosInstance.get(`${API_URL}/eduadmin/user_status/${id}`)
         .then(response=>{
             setactivebtn(response.data.status)
         })
@@ -22,7 +22,7 @@ function AdminUserView() {
 
     }
     useEffect(()=>{
-        axios.get(`${API_URL}/eduadmin/users_details/${id}`)
+        axiosInstance.get(`${API_URL}/eduadmin/users_details/${id}`)
         .then(response=>{
             setUser(response.data) 
             setactivebtn(response.data.is_active)

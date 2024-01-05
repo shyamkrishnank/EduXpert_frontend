@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { currentCourse } from '../Slices/CourseIdSlice'
 import { API_URL } from '../constants/url'
-import axios from 'axios'
+import axiosInstance from '../axios/AxiosInstance'
 
 
 function UseCurrentChapter(id) {
    const [course,setCourse] = useState("")
    useEffect(()=>{
-        axios.get(`${API_URL}/course/ins_chapter/${id}`)
+        axiosInstance.get(`${API_URL}/course/ins_chapter/${id}`)
         .then(response=>{
             setCourse(response.data)
             console.log(response.data)

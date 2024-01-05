@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { API_URL } from '../constants/url'
 import { useSelector } from 'react-redux'
-import axios from 'axios'
+import axiosInstance from '../axios/AxiosInstance'
 
 function UseProfile() {
     const id = useSelector(state=>state.auth.id)
     const [userData,setUserData] = useState('')
     useEffect(()=>{
-         axios.get(`${API_URL}/users/profile/${id}`)
+         axiosInstance.get(`${API_URL}/users/profile/${id}`)
         .then(response=>{
             console.log(response.data)
             setUserData(response.data)

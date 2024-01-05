@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import {CardHeader, Input ,Card, CardBody} from "@nextui-org/react";import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminNav from '../../../components/admin/AdminNav';
-import axios from 'axios';
 import { API_URL } from '../../../constants/url';
 import { useDispatch } from 'react-redux';
 import { logged } from '../../../Slices/AuthSlice';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../../../axios/AxiosInstance';
 
 
 
@@ -20,7 +20,7 @@ function AdminLogin() {
         'email' : email,
         'password' : password
       }
-      axios.post(`${API_URL}/eduadmin/login`,data)
+      axiosInstance.post(`${API_URL}/eduadmin/login`,data)
       .then(response=>{
         dispatch(logged(response.data))
         toast.success('Welcome Admin', {

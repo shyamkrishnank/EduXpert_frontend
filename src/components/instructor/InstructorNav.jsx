@@ -3,12 +3,16 @@ import {Navbar, NavbarBrand, NavbarContent, Input, DropdownItem, DropdownTrigger
 import { useDispatch } from "react-redux";
 import {  logout } from "../../Slices/AuthSlice";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../axios/AxiosInstance";
 
 export default function InstructorNav () { 
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const handleClick = () =>{
         localStorage.removeItem('auth_token')
+        localStorage.removeItem('refresh_token')
+        axiosInstance.defaults.headers['Authorization'] = null
+        axiosInstance.defaults.headers['Refresh-token'] = null
         dispatch(logout())
         navigate('/login')
     }

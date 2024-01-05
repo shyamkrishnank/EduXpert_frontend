@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Navbar1 from '../../components/user/Navbar'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
 import { API_URL } from '../../constants/url';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axiosInstance from '../../axios/AxiosInstance';
 
 
 function OtpPage(prop) {
@@ -16,7 +16,7 @@ function OtpPage(prop) {
             'email' : state['email'],
             'otp' : otp
         }
-       axios.post(`${API_URL}/users/otp/`,data)
+       axiosInstance.post(`${API_URL}/users/otp/`,data)
        .then(response=>{
           if (response.data.message === 'success'){
             toast.success('Please Login to Enter!', {

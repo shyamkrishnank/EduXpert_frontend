@@ -9,8 +9,8 @@ import UseCurrentCourse from '../../../hooks/UseCurrentCourse';
 import { API_URL } from '../../../constants/url';
 import { courseDelete } from '../../../contents/instructor/Course';
 import ObjectToForm from '../util/ObjectToForm';
-import axios from 'axios';
 import { toast } from 'react-toastify';
+import axiosInstance from '../../../axios/AxiosInstance';
 
 function CourseView() {
     const navigate = useNavigate()
@@ -36,7 +36,7 @@ function CourseView() {
                 });
 
         }
-        else if(course.price <= 0){
+        else if(course.price < 0){
             toast.error('Please enter the valid amount!', {
                 position: "top-left",
                 autoClose: 3000,
@@ -55,7 +55,7 @@ function CourseView() {
         if(image){
             formData.append('image',image)
         }
-        axios.post(`${API_URL}/course/edit_course/${id}`,formData)
+        axiosInstance.post(`${API_URL}/course/edit_course/${id}`,formData)
         .then(respone=>{
             navigate(`/instructor/course/chapters/${course_id}`)
         })
@@ -75,7 +75,7 @@ function CourseView() {
         <Sidebar />
         <div className='ml-28 flex mt-4'>
             <div className='w-4/5'><span className='text-2xl italic font-bold'>{course.course_title}</span></div>
-            <div className='w-1/5 justify-end'> <Button color="danger" onClick={()=>courseDelete(navigate,dispatch)} variant="bordered" > Delete Course </Button></div>
+            <div className='w-1/5 justify-end'> <Button color="danger" onClick={()=>courseDelete(course.id,navigate,dispatch)} variant="bordered" > Delete Course </Button></div>
         </div>
         <div className='flex ml-32 mt-8'>
             <div className='w-3/5'>

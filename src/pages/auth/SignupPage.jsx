@@ -4,8 +4,10 @@ import {CardHeader,RadioGroup, Radio, Input ,Card, CardBody} from "@nextui-org/r
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
-import axios from "axios"
 import {API_URL} from "../../constants/url"
+import GoogleBtn from '../../components/google/GoogleBtn';
+import IsStaffModal from '../../contents/modals/IsStaffModal';
+import axiosInstance from '../../axios/AxiosInstance';
 
 
 function SignupPage() {
@@ -65,7 +67,7 @@ function SignupPage() {
         "password" : password,
         "is_staff" : staff
       }
-      axios.post(`${API_URL}/users/register/`,data)
+      axiosInstance.post(`${API_URL}/users/register/`,data)
       .then(()=>{
         toast.success('OTP has been sented to your mail!', {
           position: "top-center",
@@ -79,8 +81,9 @@ function SignupPage() {
           });
           navigate('otp',{state:{'email':email}})  
       })
-      .catch(()=>{
-        toast.error('Something Went Wrong!', {
+      .catch((error)=>{
+        console.log(error)
+        toast.error(error.response.data.message, {
           position: "top-center",
           autoClose: 3000,
           hideProgressBar: true,
@@ -123,7 +126,8 @@ function SignupPage() {
             type='button'>
             Sign Up
           </button>
-         
+          <h1>Or</h1>
+          <GoogleBtn url={'/users/googlesignup/'} isLogin={false} />         
         </div>
       </Card>
     </div>

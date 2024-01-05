@@ -3,7 +3,6 @@ import InstructorNav from '../../../components/instructor/InstructorNav'
 import Sidebar from '../../../components/instructor/Sidebar'
 import { Button, Chip, Image, Input, Switch, Textarea } from '@nextui-org/react'
 import { IoMdAdd} from 'react-icons/io'
-import axios from 'axios'
 import { API_URL } from '../../../constants/url'
 import ReactPlayer from 'react-player'
 import { useParams } from 'react-router-dom'
@@ -12,6 +11,8 @@ import UseCurrentChapter from '../../../hooks/UseCurrentChapter'
 import { FaRegCircleDot } from "react-icons/fa6";
 import { toast } from 'react-toastify'
 import { MdDelete } from "react-icons/md";
+import ChapterEditModal from '../../../contents/modals/ChapterEditModal'
+import axiosInstance from '../../../axios/AxiosInstance'
 
 
 
@@ -22,15 +23,16 @@ function CourseChapter() {
     video : ""
    }
     const {isOpen, onOpen,onClose, onOpenChange} = useDisclosure();
-    const [video,setVedio] = useState("")
     const {course_id} = useParams()
     const [content,setContent] = useState(0)
+    const [editChapter,setEditChapter] = useState(false)
     const [course,setCourse] = UseCurrentChapter(course_id)
     const [chapter,setChapter] = useState(objects)
     const imgRef = useRef(" ")
     const handleChapterSelected = (id) =>{
-      axios.get(`${API_URL}/course/chapter_details/${id}`)
+      axiosInstance.get(`${API_URL}/course/chapter_details/${id}`)
       .then(response=>{
+        console.log(response.data)
         setCourse(response.data)
       .catch(error=>{
         console.log(console.log(error))
@@ -53,10 +55,6 @@ function CourseChapter() {
     const handleDelete = () =>{
       
     }
-
-    const handleText = (id) =>{
-      
-    }
   const handleSubmit = () =>{
     if (chapter.title === "" || chapter.description === "" || chapter.video === ""){
       toast.error('Please fill all fields!', {
@@ -76,7 +74,7 @@ function CourseChapter() {
         formData.append(key,value)
       })
       formData.append('course',course_id)
-      axios.post(`${API_URL}/course/add_chapter`, formData)
+      axiosInstance.post(`${API_URL}/course/add_chapter`, formData)
       .then(response=>{
         setCourse(response.data) 
         handleClose()
@@ -114,8 +112,9 @@ function CourseChapter() {
       <ReactPlayer  height="auto" width="90%" url={`${API_URL}${course.initial_chapter.video}`} controls/>
       <div className='my-4 text-3xl font-bold font-sans'><span onClick={()=>handleContent(0)} className='px-8 cursor-pointer'>About</span><span onClick={()=>handleContent(1)} className='mr-8 cursor-pointer'>Reviews</span><span onClick={()=>handleContent(2)} className='mr-8 cursor-pointer'>Notes</span></div>
       {content == 0 &&  <div className='mt-8'>
-         <Input className='w-6/12 mb-2'   label="Title" variant="bordered"  value={course.initial_chapter.title} size="lg" type='text' />
+         <Input className='w-6/12 mb-2' onChange={e=>setEditChapter(prev=>({...prev,title:e.target.value}))}   label="Title" variant="bordered"  value={course.initial_chapter.title} size="lg" type='text' />
          <Textarea className='w-6/12 mb-2'  label="Description" variant="bordered" value={course.initial_chapter.description} />
+         <Button onClick={()=>setEditChapter(true)} color='success'>Edit Details</Button>
       </div>}
       {content == 1 &&  <div className='mt-8'>
          No Reviews Yet!
@@ -195,6 +194,8 @@ function CourseChapter() {
            }
         </ModalContent>
       </Modal>
+     {editChapter && <ChapterEditModal editchapter={course.initial_chapter} closefun={setEditChapter} setCourse={setCourse} />}
+      
 </div>
   )
 }

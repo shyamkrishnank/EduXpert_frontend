@@ -7,7 +7,7 @@ const initialState = {
     id :localStorage.getItem('auth_token')?jwtDecode(JSON.parse(localStorage.getItem('auth_token')).access_token).user_id:null,
 }
 
-const authSlice = createSlice({
+const authSlice = createSlice({ 
     name : 'Auth',
     initialState,
     reducers : {
@@ -15,7 +15,6 @@ const authSlice = createSlice({
             state.user = action.payload
             state.isLogged = true
             state.id = jwtDecode(action.payload.access_token).user_id
-            localStorage.setItem('auth_token',JSON.stringify(action.payload))
         },
         logout : (state)=>{
             state.user = null,
