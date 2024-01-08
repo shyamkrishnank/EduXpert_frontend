@@ -1,11 +1,8 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { API_URL } from '../../../constants/url'
-import Navbar1 from '../../../components/user/Navbar'
 import { Button, Card, CardBody, CardHeader,Image } from '@nextui-org/react'
 import { useNavigate, useParams } from 'react-router-dom'
-import Footer from '../../../components/user/Footer'
-import { useSelector } from 'react-redux'
 import axiosInstance from '../../../axios/AxiosInstance'
 
 function UserCourseView() {
@@ -29,7 +26,6 @@ function UserCourseView() {
     },[category_id])
   return (
     <div>
-        <Navbar1 />
         <div className='w-full my-7 pl-5'>
         <h1 className='text-2xl italic font-bold'>
           {`${category} Courses`}
@@ -63,7 +59,6 @@ function UserCourseView() {
           }
 
         </div> 
-      <Footer />
     </div>
   )
 }

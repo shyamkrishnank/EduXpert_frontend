@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../../axios/AxiosInstance'
 import { useNavigate, useParams } from 'react-router-dom'
-import Navbar1 from '../../../components/user/Navbar'
-import Footer from '../../../components/user/Footer'
 import { Button, Card, CardBody, CardHeader, Image, Link } from '@nextui-org/react'
 import { API_URL } from '../../../constants/url'
 import { StripDate } from '../../../contents/dateStrip/utilities'
@@ -25,8 +23,6 @@ function InstructorProfile() {
       }
   return (
     <div>
-        <Navbar1 />
-
         {instructor ? 
         <div>
          <div className='px-28 pt-14 pb-8 w-full justify-center flex gap-8'>
@@ -93,7 +89,6 @@ function InstructorProfile() {
         </div>
        
          }
-        <Footer/>
     </div>
   )
 }

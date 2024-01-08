@@ -93,7 +93,6 @@ function App() {
              <Route path='instructors'>
               <Route path="" element={<AdminInstructors />} />
               <Route path='view' element={<AdminInstructorView />} />
-
              </Route>
 
          </Route>

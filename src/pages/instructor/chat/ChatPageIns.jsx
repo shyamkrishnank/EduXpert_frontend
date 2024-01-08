@@ -40,8 +40,7 @@ function ChatPageIns() {
         setId(user_id)
         axiosInstance.get(`chat/${user_id}`)
         .then(response=>{ 
-            setChats(response.data)
-            console.log(response.data)
+            setChats(response.data)  
           })
           .catch(error=>{
             console.log(error)

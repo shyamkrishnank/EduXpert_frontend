@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Navbar1 from '../../../components/user/Navbar'
-import Footer from '../../../components/user/Footer'
 import { Button, Card, CardBody, CardHeader, Image } from '@nextui-org/react'
 import { API_URL } from '../../../constants/url'
 import {  useNavigate } from 'react-router-dom'
@@ -28,7 +26,6 @@ function OrderPage() {
     }
   return (
     <div>
-        <Navbar1 />
         <div className='flex py-8 w-full mt-5 bg-slate-900'>
             <div className=' w-6/12 pl-32 py-3'>
                 <h1 className='text-white text-4xl'>My Learnings</h1>
@@ -65,7 +62,6 @@ function OrderPage() {
             </div>
          </div>      
           }
-        <Footer />
     </div>
   )
 }

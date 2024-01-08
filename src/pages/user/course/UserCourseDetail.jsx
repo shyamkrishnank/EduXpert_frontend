@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import Navbar1 from '../../../components/user/Navbar'
 import { useNavigate, useParams } from 'react-router-dom'
-import axios from 'axios'
 import { API_URL } from '../../../constants/url'
 import { BreadcrumbItem, Breadcrumbs, Button, Image, Link } from '@nextui-org/react'
 import { StripDate } from '../../../contents/dateStrip/utilities'
 import { FaRupeeSign } from "react-icons/fa";
-import Footer from '../../../components/user/Footer'
 import RazorPay from '../../../contents/user/RazorPay'
 import useRazorpay from 'react-razorpay'
 import { useSelector } from 'react-redux'
@@ -69,7 +66,6 @@ function UserCourseDetail() {
   }
   return (
     <div >
-        <Navbar1 />
         {model ? <SuccessModal  />: null}
         {courseDetails && courseDetails.message == 'not purchased' && 
         <div>
@@ -125,8 +121,6 @@ function UserCourseDetail() {
         </div>
         }
        {courseDetails && courseDetails.message == 'purchased' && <UserOrderedCourse prop={courseDetails} />}
-
-        <Footer />
     </div>
   )
 }

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import Navbar1 from '../../../components/user/Navbar'
 import { Button, Card, CardBody, CardHeader, Image, Skeleton } from '@nextui-org/react'
 import { API_URL } from '../../../constants/url'
-import Footer from '../../../components/user/Footer'
 import axiosInstance from '../../../axios/AxiosInstance'
 import { useNavigate } from 'react-router-dom'
 
@@ -27,7 +25,6 @@ function UserPage() {
   }
   return (
     <div>
-        <Navbar1 />
         <div className='flex'>
           <div className='w-3/6 flex flex-col justify-center'>
             <div className='flex justify-center'><p className='text-6xl font-bold'> Education Opens <br/>Up the Mind</p></div>
@@ -73,7 +70,6 @@ function UserPage() {
           </Card>
           </div>)})}
         </div>
-        <Footer />
     </div>
   )
 }

@@ -1,6 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import Navbar1 from '../../../components/user/Navbar'
-import Footer from '../../../components/user/Footer'
 import { Button, Chip, Input } from '@nextui-org/react'
 import axiosInstance from '../../../axios/AxiosInstance'
 import { useParams } from 'react-router-dom'
@@ -36,6 +34,7 @@ function ChatPage() {
       console.log(e)
     }
     socket.current.onmessage = (e)=>{
+      console.log(e)
       setChats(prev=>[...prev,JSON.parse(e.data)])    
      }
      return () => {
@@ -66,7 +65,6 @@ function ChatPage() {
 
   return (
     <div>
-      <Navbar1 />
       <div className='px-14 mt-8'>
         <div className='flex flex-row h-96'>
           <div className='basis-1/4'> 
@@ -88,7 +86,6 @@ function ChatPage() {
           </div>
         </div>
       </div>
-      <Footer />
         
     </div>
   )

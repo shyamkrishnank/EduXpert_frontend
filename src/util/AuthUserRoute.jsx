@@ -1,6 +1,8 @@
 import React from 'react'
 import { useSelector } from "react-redux"
 import { Navigate, Outlet } from "react-router-dom"
+import Navbar1 from '../components/user/Navbar'
+import Footer from '../components/user/Footer'
 
  const AuthUserRoute = () =>{
     const user = useSelector(state=>state.auth.user)
@@ -15,7 +17,11 @@ import { Navigate, Outlet } from "react-router-dom"
         return <Navigate to='/eduadmin' />
       }
       else{
-        return <Outlet />
+        return<> 
+        <Navbar1 />
+        <Outlet />
+        <Footer />
+        </>
       }
     }
  }

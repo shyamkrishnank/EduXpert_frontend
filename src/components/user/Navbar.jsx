@@ -1,19 +1,26 @@
 import React, { useEffect, useMemo, useState } from "react";
-import {Navbar, Input, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Dropdown, DropdownTrigger, Avatar, DropdownMenu, DropdownItem, NavbarMenuItem} from "@nextui-org/react";
+import {Navbar, Input, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Dropdown, DropdownTrigger, Avatar, DropdownMenu, DropdownItem, NavbarMenuItem, Badge, DropdownSection} from "@nextui-org/react";
 import { CiSearch } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../Slices/AuthSlice";
 import { API_URL } from "../../constants/url";
 import axiosInstance from "../../axios/AxiosInstance";
+import UseNotification from "../../hooks/UseNotification";
+import { MdNotifications} from "react-icons/md";
+import { useRef } from "react";
+import { StripTime } from "../../contents/dateStrip/utilities";
+
 
 
 
  function Navbar1() {
   const user = useSelector(state=>state.auth.user)
+  const [notifications,setNotification] = UseNotification()
   const [category,setCategory] = useState({})
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const socket = useRef("")
   const handleClick = () =>{
         localStorage.removeItem('auth_token')
         localStorage.removeItem('refresh_token')
@@ -28,7 +35,20 @@ import axiosInstance from "../../axios/AxiosInstance";
   const handleLearning =(key,value)=>{
     navigate(`/user/mylearning/`)
   }
-  useMemo(()=>{
+
+  const handlenotification = (notification) =>{
+    if (notification.notification_type == 'message'){
+      axiosInstance.get(`/notifications/status/${notification.user}`)
+      .then(response=>{
+        setNotification(response.data)
+      })
+      .then(error=>{
+        console.log(error)
+      })
+      navigate(`/user/chat/${notification.user}`)
+    }
+  }
+  useEffect(()=>{
     axiosInstance.get(`${API_URL}/course/course_category`)
     .then(response=>{
       setCategory(response.data.data)
@@ -36,8 +56,30 @@ import axiosInstance from "../../axios/AxiosInstance";
     .catch(error=>{
       console.log(error.message)
     })
-
+    if (user){
+      socket.current = new WebSocket(`ws://127.0.0.1:8000/ws/notification/?token=${user.access_token}`)
+    user 
+    socket.current.onopen = () =>{
+      console.log('NOTIFICATON successfully')
+    }
+    socket.current.onclose = () =>{
+      console.log('connection lost');
+    }
+    socket.current.onerror = (e) =>{
+      console.log(e)
+    }
+    socket.current.onmessage = (e)=>{
+      console.log("notification came")
+      console.log(e)
+      setNotification(prev=>[...prev,JSON.parse(e.data)])    
+     }
+     return () => {
+      socket.current.close();
+    }
+  }
   },[])
+
+   
   return (
     <Navbar className="">
       <NavbarBrand>
@@ -79,6 +121,42 @@ import axiosInstance from "../../axios/AxiosInstance";
         </NavbarItem>
       </NavbarContent>
       {user?
+      <>  
+    <NavbarContent justify="end" className="gap-6">
+     <NavbarItem>
+      <Dropdown >
+        <DropdownTrigger>
+          <div as='button' className="cursor-pointer">
+           <Badge content={notifications.length>0?notifications.length:null}  shape={notifications.length > 0 ? 'circle':null}  color={notifications.length>0?'danger':null} showOutline={false}>
+               <MdNotifications  className=" text-sky-500" size={30} />
+           </Badge>
+           </div>
+        </DropdownTrigger>
+        <DropdownMenu   aria-label="Notification Action" variant="flat">
+          <DropdownSection>
+            <DropdownItem>
+              <h1 className="text-lg">Notifications</h1>
+            </DropdownItem>
+          </DropdownSection> 
+          <DropdownSection>
+            {notifications.length > 0 ?
+            notifications.map((notification) => 
+              <DropdownItem textValue='string' onClick={()=>handlenotification(notification)} >
+                <div className="flex flex-row gap-6">
+                  <div><p className="text-xs">{notification.notification_type}</p></div>
+                  <div><h1 className="font-semibold">{notification.content}</h1></div>
+                  <div><p className="text-xs">{StripTime(notification.timestamp)}</p></div>
+                </div>   
+              </DropdownItem>
+            ):
+             <DropdownItem className="justify-center">
+                <p className="">No Notifications!</p>
+            </DropdownItem>
+             }
+          </DropdownSection>
+        </DropdownMenu>
+       </Dropdown>
+      </NavbarItem>
       <NavbarItem>
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
@@ -103,6 +181,8 @@ import axiosInstance from "../../axios/AxiosInstance";
           </DropdownMenu>
         </Dropdown>
     </NavbarItem>
+    </NavbarContent>
+    </>
         :
       <NavbarContent justify="end">
       <NavbarItem className=" lg:flex">
@@ -114,10 +194,8 @@ import axiosInstance from "../../axios/AxiosInstance";
         </Button>
       </NavbarItem>
     </NavbarContent>
-
      }
-     
-       
+            
     </Navbar>
   );
 }

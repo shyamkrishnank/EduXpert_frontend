@@ -46,15 +46,17 @@ axiosInstance.interceptors.response.use(
     (error)=>{
           if (error.response.status == 401){
             if (error.response.headers['access_token']){
+            console.log('new acccess in error',error.response.headers['access_token'])
             const auth_token = localStorage.getItem('auth_token')
             const auth_token_str =JSON.parse(auth_token)
             auth_token_str.access_token = error.response.headers['access_token']
             console.log(error.response.headers['access_token'])
             localStorage.setItem('auth_token',JSON.stringify(auth_token_str))
             console.log(error.response.headers)
-            error.response.headers['Authorization'] =  localStorage.getItem('auth_token')?`Bearer ${JSON.parse(localStorage.getItem('auth_token')).refresh_token}`: null 
+            error.response.headers['Authorization'] =  `Bearer ${JSON.stringify(auth_token_str)}`
             error.response.headers['Refresh-token'] = localStorage.getItem('auth_token')?JSON.parse(localStorage.getItem('auth_token')).refresh_token:null;
             console.log(error.response.headers)
+            console.log(axiosInstance.headers)
             }
           }
             

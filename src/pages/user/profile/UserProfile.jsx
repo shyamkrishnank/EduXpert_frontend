@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react'
-import Navbar1 from '../../../components/user/Navbar'
 import UseProfile from '../../../hooks/UseProfile'
 import { API_URL } from '../../../constants/url'
 import { Button, Image, Input, Textarea } from '@nextui-org/react'
@@ -55,7 +54,6 @@ const [image,setImage] = useState('')
 
   return (
     <div>
-        <Navbar1 />
         <div className='mt-6 mx-28'>
             <h1 className='text-2xl mb-4 italic font-bold'>Personal Info</h1>
             <p>You can edit your personal informations here</p>
