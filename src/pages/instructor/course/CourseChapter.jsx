@@ -1,6 +1,4 @@
 import React, {useRef, useState } from 'react'
-import InstructorNav from '../../../components/instructor/InstructorNav'
-import Sidebar from '../../../components/instructor/Sidebar'
 import { Button, Chip, Image, Input, Switch, Textarea } from '@nextui-org/react'
 import { IoMdAdd} from 'react-icons/io'
 import { API_URL } from '../../../constants/url'
@@ -96,8 +94,6 @@ function CourseChapter() {
   }
   return (
     <div> 
-    <InstructorNav />
-    <Sidebar /> 
     <div className='mt-7 flex  justify-end mr-9 gap-7'> 
     <div className=''><Button color="primary" onClick={addChapter} endContent={<IoMdAdd />}>
       Add New Chapter

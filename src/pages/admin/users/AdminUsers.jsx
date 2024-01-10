@@ -29,8 +29,7 @@ function AdminUsers() {
   },[])
   const handleClick = (page) =>{
     const url = `${API_URL}/eduadmin/users?page=${page}`
-    fetchData(url)
-      
+    fetchData(url)     
   }
   const handleView = (id) =>{
     localStorage.setItem('current_user', id)

@@ -2,6 +2,8 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, Outlet } from 'react-router-dom'
 import { logged } from '../Slices/AuthSlice'
+import InstructorNav from '../components/instructor/InstructorNav'
+import Sidebar from '../components/instructor/Sidebar'
 
 function AuthInstructorRoute() {
     const user = useSelector(state=>state.auth.user)
@@ -17,7 +19,13 @@ function AuthInstructorRoute() {
         return <Navigate to='/user' />
         }
         else{
-          return  <Outlet />
+
+          return <>
+              <InstructorNav />
+              <Sidebar />
+              <Outlet />
+            </>
+          
         }
     }   
   

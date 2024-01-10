@@ -1,6 +1,4 @@
 import React, {  useRef, useState } from 'react'
-import InstructorNav from '../../../components/instructor/InstructorNav'
-import Sidebar from '../../../components/instructor/Sidebar'
 import {Image,Input, Textarea, Button, useDisclosure} from '@nextui-org/react'
 import UseProfile from '../../../hooks/UseProfile'
 import { API_URL } from '../../../constants/url'
@@ -58,8 +56,6 @@ function Profile() {
 
   return (
     <div>
-        <InstructorNav />
-        <Sidebar />
         <div className='mt-6 mx-28'>
             <h1 className='text-2xl mb-4 italic font-bold'>Personal Info</h1>
             <p>You can edit your personal informations here</p>

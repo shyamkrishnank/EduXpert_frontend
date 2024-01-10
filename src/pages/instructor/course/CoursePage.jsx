@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
-import Sidebar from '../../../components/instructor/Sidebar'
 import {Button} from "@nextui-org/react";
 import { IoIosAdd } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
-import InstructorNav from '../../../components/instructor/InstructorNav';
 import {Card, CardHeader, CardBody, Image} from "@nextui-org/react";
 import UseInsCourse from '../../../hooks/UseInsCourse';
 import { API_URL } from '../../../constants/url';
@@ -24,8 +22,6 @@ function CoursePage() {
     }
   return (
     <div>
-        <InstructorNav />
-        <Sidebar />
         <div className='ml-28 flex mt-4'>
           <div className='w-4/5'><span className='text-4xl italic font-bold'>Your Courses</span></div>
           <div className='w-1/5 justify-end'>  <Button className='absolute top-20 right-10 font-bold' 

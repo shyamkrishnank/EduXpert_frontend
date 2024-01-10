@@ -36,6 +36,8 @@ import OrderPage from './pages/user/course/OrderPage';
 import InstructorProfile from './pages/user/instructor/InstructorProfile';
 import ChatPage from './pages/user/chat/ChatPage';
 import ChatPageIns from './pages/instructor/chat/ChatPageIns';
+import Orders from './pages/instructor/orders/Orders';
+import OrderDetailPage from './pages/instructor/orders/OrderDetailPage';
 
 
 function App() {
@@ -67,6 +69,11 @@ function App() {
             <Route path='chats'>
               <Route index element={<ChatPageIns />} />
             </Route>
+            <Route path='orders'>
+              <Route index element={<Orders/>} />
+              <Route path='order/:order_id' element={<OrderDetailPage />} />
+            </Route>
+
          </Route>
          <Route path='user' element={<AuthUserRoute />}>
             <Route index element={<UserPage />} />

@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import InstructorNav from '../../../../components/instructor/InstructorNav'
-import Sidebar from '../../../../components/instructor/Sidebar'
 import { Input,Textarea,Image,Button } from "@nextui-org/react"
 import ReactPlayer from 'react-player'
 import UseCurrentCourse from '../../../../hooks/UseCurrentCourse'
@@ -106,8 +104,6 @@ function AddChapters() {
        }   
   return (
     <div> 
-        <InstructorNav />
-        <Sidebar /> 
         <div className='ml-28 flex mt-4'>
           <div className='w-4/5'><span className='text-2xl italic font-bold'>{title}-Chapters</span></div>
           <div className='w-1/5 justify-end'> <Button color="danger" onClick={()=>courseDelete(navigate,dispatch)} variant="bordered" > Delete Course </Button></div>

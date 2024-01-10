@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import Sidebar from '../../../../components/instructor/Sidebar'
 import {Input} from "@nextui-org/react";
 import {Textarea} from "@nextui-org/react";
 import {Button , Image} from "@nextui-org/react";
-import InstructorNav from '../../../../components/instructor/InstructorNav';
 import {  toast } from 'react-toastify';
 import { API_URL } from '../../../../constants/url';
 import { useDispatch, useSelector } from 'react-redux';
@@ -91,8 +89,6 @@ function AddTitle() {
   },[])
   return (
     <>
-        <InstructorNav />
-        <Sidebar />
         <div className='ml-28 flex mt-4'>
           <div className='w-4/5'><span className='text-2xl italic font-bold'>Course Name</span></div>
         </div>
