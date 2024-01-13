@@ -46,7 +46,7 @@ function OrderDetailPage() {
       <TableBody>
         <TableRow key="1">
           <TableCell>{order && order.course.course_title}</TableCell>
-          <TableCell>{order  && order.course.price}</TableCell>
+          <TableCell>{order  && order.amount}</TableCell>
           <TableCell>{order && order.course.chapter_count}</TableCell>
         </TableRow>
       </TableBody>
@@ -67,14 +67,14 @@ function OrderDetailPage() {
           <TableCell className='text-xm'>{order && order.order_id}</TableCell>
           <TableCell>{order  && `${StripDate(order.ordered_at)} ${StripTime(order.ordered_at)}`}</TableCell>
           <TableCell>{order && order.status ? "Success":"Failed"}</TableCell>
-          <TableCell>{order && order.course.price}</TableCell>
+          <TableCell>{order && order.amount}</TableCell>
           <TableCell>{order && order.payment_id}</TableCell>
         </TableRow>
       </TableBody>
     </Table>
     </div>
     </div> 
-    <div className='w-4/12 mt-9 px-5'>
+    <div className='w-4/12 mt-7 px-5'>
     <Card className="py-4">
       <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
          <p className="font-bold text-lg">Student</p>

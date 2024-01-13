@@ -1,7 +1,6 @@
 
 import './index.css'
 import 'video-react/dist/video-react.css';
-
 import LoginPage from './pages/auth/LoginPage'
 import OtpPage from './pages/auth/OtpPage'
 import SignupPage from './pages/auth/SignupPage'
@@ -38,9 +37,12 @@ import ChatPage from './pages/user/chat/ChatPage';
 import ChatPageIns from './pages/instructor/chat/ChatPageIns';
 import Orders from './pages/instructor/orders/Orders';
 import OrderDetailPage from './pages/instructor/orders/OrderDetailPage';
+import Wallet from './pages/instructor/wallet/Wallet';
+import { useSelector } from 'react-redux';
 
 
 function App() {
+  const loading = useSelector(state=>state.loading.loading)
 
   return (
     <>
@@ -73,7 +75,7 @@ function App() {
               <Route index element={<Orders/>} />
               <Route path='order/:order_id' element={<OrderDetailPage />} />
             </Route>
-
+            <Route path='mywallet' element={<Wallet />} />
          </Route>
          <Route path='user' element={<AuthUserRoute />}>
             <Route index element={<UserPage />} />
@@ -106,7 +108,7 @@ function App() {
     </Routes>
    </Router> 
    <ToastContainer /> 
-    </>
+   </>
   )
 }
 

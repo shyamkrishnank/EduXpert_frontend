@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import axiosInstance from '../../../axios/AxiosInstance'
-import { Chip, Input } from '@nextui-org/react'
+import { Chip, Image, Input } from '@nextui-org/react'
 import { IoSend } from 'react-icons/io5'
 import {User} from "@nextui-org/react";
 import { API_URL } from '../../../constants/url'
@@ -17,7 +17,7 @@ function ChatPageIns() {
     const instructor_id = useSelector(state=>state.auth.id)
     const token = useSelector(state=>state.auth.user.access_token)
     const [id,setId] = useState(chat_with_id)
-    const [chats, setChats] = useState([])
+    const [chats, setChats] = useState()
     const [users,setUsers] = useState([])
     const socket = useRef(null);
 
@@ -100,8 +100,8 @@ function ChatPageIns() {
         </div>
             {users.length > 0 ? 
             <div className='px-14 mt-8 ml-14 '>
-            <div className='flex flex-row h-96'>
-              <div className='basis-1/4'> 
+            <div className='flex flex-row h-96 mx-12'>
+              <div className='basis-1/6'> 
                 {
                   users && users.map((user=>{
                     return(
@@ -119,28 +119,31 @@ function ChatPageIns() {
                   })) 
                 }
               </div>
-              <div className='basis-3/4 relative h-full'>
-
-
-                <div className='w-3/6 h-5/6 grid gap-3 overflow-y-auto' ref={scrollContainerRef}>
+              <div className='basis-5/6 relative h-full'>
+                <div className='h-5/6 grid gap-3 overflow-y-auto border-3' ref={scrollContainerRef}>
                   <div >
                    {chats && chats.map((data, index) => {return (
                     <div key={index} className={`w-full px-8 ${data.user === instructor_id ? 'flex flex-row-reverse' : 'flex flex-row'} mb-2`}><Chip color={`${data.user === instructor_id ?"primary":"secondary"}`}>{data.content}</Chip></div>
                       );
                     })}
                   </div>
-                  {chats.length > 0 && 
-                  <div className="absolute flex row gap-2 h-4 inset-x-0 bottom-0">
-                     <div className='self-center h-3/12 w-6/12'><Input value={message} onChange={e=>setMessage(e.target.value)}  variant='bordered' /></div>
+                  {chats && 
+                  <div className="absolute flex justify-center row gap-2 h-4 inset-x-0 bottom-0">
+                     <div className='self-center h-3/12 w-8/12'><Input value={message} onChange={e=>setMessage(e.target.value)}  variant='bordered' /></div>
                      <div className='self-center'><IoSend onClick={handleSubmit} className='cursor-pointer' size={25}/></div>
                   </div>}
+                  {!chats && 
+                  <div className='flex justify-center'>
+                  <Image src='/messageinterface.jpg' width={300} />
+                  </div>
+                  }
                 </div>
                 
               </div>
             </div>
           </div>
             :
-            <div className='w-3/6 h-6/12 flex justify-center items-center'>No Chats Available !</div>
+            <div className='w-full mt-10 flex justify-center items-center text-xl'>No Chats Available !</div>
             }
           </div>
     )

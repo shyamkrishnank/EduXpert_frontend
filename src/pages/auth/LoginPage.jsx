@@ -75,7 +75,7 @@ function LoginPage() {
   return (
     <div>
         <Navbar1 />
-    <div className='flex justify-center items-center min-h-screen bg-gray-100'>
+    <div className='flex justify-center items-center min-h-screen bg-[url("/loginbackground.jpg")] bg-no-repeat bg-cover'>
       <Card className='max-w-md w-full text-center p-8 bg-white rounded-lg shadow-md'>
         <CardHeader>
           <h1 className='font-bold text-2xl text-center text-blue-600 mb-4'>Login</h1>

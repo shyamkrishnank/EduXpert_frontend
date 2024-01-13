@@ -31,8 +31,7 @@ function CoursePage() {
             </Button></div>
         </div>
         <div className='grid grid-cols-6 gap-4 mt-8 ml-32 mr-12'>
-          {courses && courses.map((course,index)=>{
-            console.log(course)
+          {courses ? courses.map((course,index)=>{
             return(
           <div key={index} onClick={()=>handleClick(course.id)}  className='col-span-2'>
               <Card className="py-4 cursor-pointer">
@@ -53,7 +52,11 @@ function CoursePage() {
           </Card>
           </div>
             )
-          })}
+          }):
+          <div className='flex justify-center w-full mt-10 text-xl'>
+              Create A Coursekkkkkkkkkkkkkkkkkkkkkkkkk
+           </div>
+          }
 
         </div> 
     </div>

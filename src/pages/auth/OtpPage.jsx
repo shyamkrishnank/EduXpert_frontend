@@ -54,7 +54,7 @@ function OtpPage(prop) {
   return (
     <div>
         <Navbar1 />
-        <div className="flex justify-center items-center mt-28">
+        <div className="flex justify-center items-center  mt-28 bg-[url('/loginbackground.jpg')] bg-no-repeat bg-cover">
   <div className="bg-white p-8 rounded shadow-md w-96">
     <h2 className="text-2xl font-bold mb-4">Enter OTP</h2>
     <div className="mb-4">

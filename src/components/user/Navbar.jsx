@@ -10,6 +10,9 @@ import UseNotification from "../../hooks/UseNotification";
 import { MdNotifications} from "react-icons/md";
 import { useRef } from "react";
 import { StripTime } from "../../contents/dateStrip/utilities";
+import { FaRobot } from "react-icons/fa";
+import ChatbotModal from "../../contents/modals/ChatbotModal";
+
 
 
 
@@ -17,6 +20,7 @@ import { StripTime } from "../../contents/dateStrip/utilities";
  function Navbar1() {
   const user = useSelector(state=>state.auth.user)
   const [notifications,setNotification] = UseNotification()
+  const [chatbot,setChatbot] = useState(false)
   const [category,setCategory] = useState({})
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -81,6 +85,7 @@ import { StripTime } from "../../contents/dateStrip/utilities";
 
    
   return (
+    <>
     <Navbar className="">
       <NavbarBrand>
         <img  onClick={()=>navigate("/home")} className="w-20 cursor-pointer " src={'/logo.png'} />
@@ -124,6 +129,9 @@ import { StripTime } from "../../contents/dateStrip/utilities";
       <>  
     <NavbarContent justify="end" className="gap-6">
      <NavbarItem>
+         <FaRobot onClick={()=>setChatbot(true)} className="text-success-500 cursor-pointer" size={30} />
+     </NavbarItem>
+     <NavbarItem>
       <Dropdown >
         <DropdownTrigger>
           <div as='button' className="cursor-pointer">
@@ -136,7 +144,7 @@ import { StripTime } from "../../contents/dateStrip/utilities";
           <DropdownSection>
             <DropdownItem>
               <h1 className="text-lg">Notifications</h1>
-            </DropdownItem>
+            </DropdownItem> 
           </DropdownSection> 
           <DropdownSection>
             {notifications.length > 0 ?
@@ -195,8 +203,11 @@ import { StripTime } from "../../contents/dateStrip/utilities";
       </NavbarItem>
     </NavbarContent>
      }
-            
     </Navbar>
+    {chatbot && <ChatbotModal setChatbot={setChatbot} />}
+   
+    </>
+
   );
 }
 

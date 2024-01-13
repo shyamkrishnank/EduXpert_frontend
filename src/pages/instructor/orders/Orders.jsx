@@ -4,12 +4,14 @@ import { useSelector } from 'react-redux'
 import { Button, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import { StripDate } from '../../../contents/dateStrip/utilities'
 import { useNavigate } from 'react-router-dom'
+import { IoWalletSharp } from "react-icons/io5";
+
 
 function Orders() {
     const user = useSelector(state=>state.auth)
     const initialPage = `order/instructor/${user.id}`
     const navigate = useNavigate()
-    const [orders,setOrders] = useState([])
+    const [orders,setOrders] = useState()
     const [pageCount, setPageCount] = useState(0)
     const fetchData = (url=initialPage)=>{
         axiosInstance.get(url)
@@ -40,8 +42,15 @@ function Orders() {
   return (
     <div>
         <div className='ml-28 flex mt-4'>
-            <div className='w-4/5'><span className='text-4xl italic font-bold'>Orders </span></div>
+          <div className='w-4/5'><span className='text-4xl italic font-bold'>Orders</span></div>
+          <div className='w-1/5 justify-end'> 
+           <Button className='absolute top-20 right-10 font-bold' 
+                    onClick={()=>navigate('/instructor/mywallet')} color="primary"
+                    endContent={<IoWalletSharp size={22} /> }>
+                    My Wallet
+            </Button></div>
         </div>
+        {orders && orders.length ? 
         <div className='ml-56 w-9/12 mt-10'>
         <Table aria-label="Example table with dynamic content">
       <TableHeader>   
@@ -68,9 +77,13 @@ function Orders() {
           </TableRow>
         )})}
       </TableBody>
-    </Table>  
+    </Table> 
     <div className='flex w-full justify-center mt-4'><Pagination showControls total={pageCount} onChange={(page)=>handleClick(page)} initialPage={1} /></div>
+     </div> :
+      <div className='flex justify-center w-full mt-10 text-xl'>
+        No Orders For Any Orders Yet!
      </div>
+     }
       
     </div>
   )

@@ -66,7 +66,7 @@ function Profile() {
                     width={200}
                     height={200}
                     alt="/profileicon.jpg"
-                    src={image?URL.createObjectURL(image):`${API_URL}${user.image}`}
+                    src={image?URL.createObjectURL(image):user.image?`${API_URL}${user.image}`:"/profileicon.jpg"}
                     className='cursor-pointer'
                     onClick={handleImage}
              />
