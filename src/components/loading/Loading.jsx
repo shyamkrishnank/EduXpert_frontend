@@ -1,14 +1,11 @@
-import React from 'react'
-import {Spinner} from "@nextui-org/react";
+import React, { useContext } from "react";
+import PacmanLoader from "react-spinners/PacmanLoader";
 
-
-function Loading() {
-  return (
-    <div className='flex flex-col '>
-         <div><Spinner size='lg'  color="success" /></div>
-         <div><h2 className='text-4xl ml-5'>Please Wait...</h2></div>
-    </div>
-  )
+function HashLoadingScreen() {
+    return (
+      <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-black bg-opacity-70">
+         <PacmanLoader className="relative flex justify-center " size={30} color="#36d7b7" />
+      </div>
+    );
 }
-
-export default Loading
+export default HashLoadingScreen;

@@ -6,12 +6,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import {API_URL} from "../../constants/url"
 import GoogleBtn from '../../components/google/GoogleBtn';
-import IsStaffModal from '../../contents/modals/IsStaffModal';
 import axiosInstance from '../../axios/AxiosInstance';
+import { useDispatch } from 'react-redux';
+import { end_loading, loading } from '../../Slices/LodingSlice';
 
 
 function SignupPage() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const[f_name,setF_name] = useState("")
   const[l_name,setL_name] = useState("")
   const[email,setEmail] = useState("")
@@ -60,6 +62,7 @@ function SignupPage() {
 
     }
     else{
+      dispatch(loading())
       const data = {
         "first_name":f_name,
         "last_name" :l_name,
@@ -69,6 +72,7 @@ function SignupPage() {
       }
       axiosInstance.post(`${API_URL}/users/register/`,data)
       .then(()=>{
+        dispatch(end_loading())
         toast.success('OTP has been sented to your mail!', {
           position: "top-center",
           autoClose: 3000,
@@ -82,6 +86,7 @@ function SignupPage() {
           navigate('otp',{state:{'email':email}})  
       })
       .catch((error)=>{
+        dispatch(end_loading())
         console.log(error)
         toast.error(error.response.data.message, {
           position: "top-center",
@@ -106,11 +111,11 @@ function SignupPage() {
           <h1 className='font-bold text-2xl text-center text-blue-600 mb-2'>Sign Up</h1>
         </CardHeader>
         <CardBody>
-          <Input className='my-1' value={f_name} onChange={e=>setF_name(e.target.value)} size={'md'} type="text" label="First Name" required/>
-          <Input className='my-1' value= {l_name} onChange={e=>setL_name(e.target.value)} size={'md'} type="text" label="Last Name" required />
-          <Input className='my-1'value= {email} onChange={e=>setEmail(e.target.value)}  size={'md'} type="email" label="Email" required/>
-          <Input className='my-1' value= {password} onChange={e=>setPassword(e.target.value)}  size={'md'} type="password" label="Password" required/>
-          <Input className='my-1'value= {c_password} onChange={e=>setCpassword(e.target.value)}  size={'md'} type="password" label="Confirm Password" required/>
+          <Input className='my-1' value={f_name} onChange={e=>setF_name(e.target.value.trim())} size={'md'} type="text" label="First Name" required/>
+          <Input className='my-1' value= {l_name} onChange={e=>setL_name(e.target.value.trim())} size={'md'} type="text" label="Last Name" required />
+          <Input className='my-1'value= {email} onChange={e=>setEmail(e.target.value.trim())}  size={'md'} type="email" label="Email" required/>
+          <Input className='my-1' value= {password} onChange={e=>setPassword(e.target.value.trim())}  size={'md'} type="password" label="Password" required/>
+          <Input className='my-1'value= {c_password} onChange={e=>setCpassword(e.target.value.trim())}  size={'md'} type="password" label="Confirm Password" required/>
           <RadioGroup
           className='mt-3'
           value={staff}

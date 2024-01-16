@@ -43,7 +43,6 @@ import { useSelector } from 'react-redux';
 
 function App() {
   const loading = useSelector(state=>state.loading.loading)
-
   return (
     <>
    <Router>
@@ -107,7 +106,9 @@ function App() {
          </Route>
     </Routes>
    </Router> 
-   <ToastContainer /> 
+   <ToastContainer />   
+   {loading &&   <Loading /> }
+ 
    </>
   )
 }
