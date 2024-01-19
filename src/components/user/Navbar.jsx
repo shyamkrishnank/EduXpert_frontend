@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import {Navbar, Input, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Dropdown, DropdownTrigger, Avatar, DropdownMenu, DropdownItem, NavbarMenuItem, Badge, DropdownSection} from "@nextui-org/react";
 import { CiSearch } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Navigate} from "react-router-dom";
 import { logout } from "../../Slices/AuthSlice";
 import { API_URL } from "../../constants/url";
 import axiosInstance from "../../axios/AxiosInstance";
@@ -12,6 +12,7 @@ import { useRef } from "react";
 import { StripTime } from "../../contents/dateStrip/utilities";
 import { FaRobot } from "react-icons/fa";
 import ChatbotModal from "../../contents/modals/ChatbotModal";
+import InsChatModal from "../../contents/modals/InsChatModal";
 
 
 
@@ -21,7 +22,11 @@ import ChatbotModal from "../../contents/modals/ChatbotModal";
   const user = useSelector(state=>state.auth.user)
   const [notifications,setNotification] = UseNotification()
   const [chatbot,setChatbot] = useState(false)
+  const [chatActive,setChatActive] = useState(false)
+  const [instructor_id , setInstructor_id] = useState()
   const [category,setCategory] = useState({})
+  const [search,setSearch] = useState()
+  const [searched_course,setSearched_course] = useState([])
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const socket = useRef("")
@@ -40,6 +45,24 @@ import ChatbotModal from "../../contents/modals/ChatbotModal";
     navigate(`/user/mylearning/`)
   }
 
+  const handleSearch = (e) =>{
+    setSearch(e.target.value)
+    axiosInstance.get(`/course/search_course/${e.target.value}`)
+    .then(response=>{
+      console.log('searched course',response.data)
+      setSearched_course(response.data)
+    })
+    .catch(error=>{
+      console.log(error.message)
+    })
+  }
+
+  const handleSelected = (id) =>{
+    setSearched_course([])
+    setSearch("")
+    navigate(`/user/course/view/${id}`,{replace: true })
+  }
+
   const handlenotification = (notification) =>{
     if (notification.notification_type == 'message'){
       axiosInstance.get(`/notifications/status/${notification.user}`)
@@ -49,7 +72,9 @@ import ChatbotModal from "../../contents/modals/ChatbotModal";
       .then(error=>{
         console.log(error)
       })
-      navigate(`/user/chat/${notification.user}`)
+      setInstructor_id(notification.user)
+      setChatActive(true)
+      
     }
   }
   useEffect(()=>{
@@ -86,7 +111,7 @@ import ChatbotModal from "../../contents/modals/ChatbotModal";
    
   return (
     <>
-    <Navbar className="">
+    <Navbar className="drop-shadow	">
       <NavbarBrand>
         <img  onClick={()=>navigate("/home")} className="w-20 cursor-pointer " src={'/logo.png'} />
       </NavbarBrand>
@@ -112,6 +137,7 @@ import ChatbotModal from "../../contents/modals/ChatbotModal";
       <NavbarContent>
         <NavbarItem>
         <Input
+          onChange={handleSearch}
           classNames={{
             base: "max-w-full sm:max-w-[10rem] h-10",
             mainWrapper: "h-full",
@@ -122,6 +148,7 @@ import ChatbotModal from "../../contents/modals/ChatbotModal";
           size="sm"
           startContent={<CiSearch size={18} />}
           type="search"
+          value={search}
         />
         </NavbarItem>
       </NavbarContent>
@@ -172,10 +199,9 @@ import ChatbotModal from "../../contents/modals/ChatbotModal";
               isBordered
               as="button"
               className="transition-transform"
-              color="secondary"
-              name="Jason Hughes"
+              color="default"
+              name={user?user.name:""}
               size="sm"
-              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
@@ -205,8 +231,21 @@ import ChatbotModal from "../../contents/modals/ChatbotModal";
      }
     </Navbar>
     {chatbot && <ChatbotModal setChatbot={setChatbot} />}
-   
+    {chatActive && <InsChatModal setChatActive={setChatActive} instructor_id={instructor_id} />}
+    {searched_course.length > 0 &&
+    <div className="flex bg-white justify-center w-full z-50 fixed">
+      <ul className="shadow-lg w-6/12 flex py-5 justify-center">
+        {
+          searched_course.map((course,index)=>(
+            <li onClick={()=>handleSelected(course.id)} className="font-semibold cursor-pointer hover:text-success">{course.course_title}</li>
+          ))
+        }
+      </ul>
+    </div>
+     }
+ 
     </>
+
 
   );
 }

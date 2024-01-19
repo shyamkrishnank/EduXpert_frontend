@@ -6,14 +6,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import { API_URL } from '../../constants/url';
 import { useDispatch } from 'react-redux';
 import { logged } from '../../Slices/AuthSlice'; 
-import { useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import GoogleBtn from '../../components/google/GoogleBtn';
 import axiosInstance from '../../axios/AxiosInstance';
+import { end_loading, loading } from '../../Slices/LodingSlice';
 
 
 function LoginPage() {
-    const [email,setEmail] = useState("")
-    const [password,setPassword] = useState("")
+    const { state } = useLocation()
+    const [email,setEmail] = useState(state?state.data.email:"")
+    const [password,setPassword] = useState(state?state.data.password:"")
     const dispatch = useDispatch()
     const naviate = useNavigate()
     const handleSubmit =  () =>{
@@ -31,15 +33,16 @@ function LoginPage() {
         
            }
         else{
+          dispatch(loading())
       const data = {
             'email':email,
             'password':password,
         }
-        axiosInstance.post(`${API_URL}/users/login/`,data)
+        axiosInstance.post(`/users/login/`,data)
         .then(response=>{
             dispatch(logged(response.data))
             toast.success('Successfully Signed In', {
-              position: "top-center",
+              position: "top-left",
               autoClose: 3000,
               hideProgressBar: true,
               closeOnClick: true,
@@ -47,15 +50,20 @@ function LoginPage() {
               draggable: true,
               progress: undefined,
               theme: "colored",
-              });
+              }
+              );
             if (response.data.is_staff){
+                dispatch(end_loading())
                 naviate('/instructor')
             }
             else{
+                dispatch(end_loading())
                 naviate('/user')
             }
-        })
+        }
+        )
         .catch(error=>{
+            dispatch(end_loading())
             toast.error(`${error.response.data.detail}`, {
                 position: "top-center",
                 autoClose: 3000,
@@ -94,6 +102,7 @@ function LoginPage() {
           <h1 className='text-green-950 text-xl font-medium my-1'>OR</h1>
         </div>
         <div className='w-full justify-self-center'> <GoogleBtn url={'/users/googlelogin/'} isLogin={true}/> </div>
+        <div className='text-sm text-danger-500'> <Link to={'/forget_password'}>Forget Password?</Link></div>
         
       </Card>
     </div>

@@ -12,22 +12,30 @@ function ChatbotModal({setChatbot}) {
     const scrollContainerRef = useRef();
     const [conversation,setConverstion] = useState(["Hi There! How can i help you?"])
     const [message,setMessage] = useState("")
+    const[inputActive,setInputActive] = useState(true)
     const handleClick = () =>{
         const data = {
             'message':message
         }
         setConverstion(prev=>[...prev,message])
+        setMessage("Wait a sec...")
+        setInputActive(false)
         axiosInstance.post('/chatbot',data)
         .then(response=>{
             if (response.data.message){
                 console.log(response.data.message)
                 setConverstion(prev=>[...prev,response.data.message])
+                setMessage("")
+                setInputActive(true)
             }  
         })
         .catch(error=>{
             console.log(error.message)
+            setMessage("")
+            setInputActive(true)
         })
-        setMessage("")
+        
+
         
     }
     useEffect(()=>{
@@ -65,7 +73,7 @@ function ChatbotModal({setChatbot}) {
                 </div>
               </ModalBody>
               <ModalFooter>
-                 <Input color='success' value={message} onChange={e=>setMessage(e.target.value)} size='lg' variant="bordered" endContent={<IoIosSend onClick={handleClick} className='cursor-pointer' size={40} />} />
+                 <Input color='success' value={message} isDisabled={inputActive?false:true} onChange={e=>setMessage(e.target.value)} size='lg' variant="bordered" endContent={<IoIosSend onClick={handleClick} className='cursor-pointer' size={40} />} />
               </ModalFooter>
             </>
         </ModalContent>

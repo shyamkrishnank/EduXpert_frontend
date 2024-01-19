@@ -34,7 +34,7 @@ function UserCourseDetail() {
       console.log(error.message)
     })
 
-  },[])
+  },[course_id])
   const handleBuyCourse = () =>{ 
    const data = {
       "id" : course_id,

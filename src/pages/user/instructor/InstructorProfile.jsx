@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import axiosInstance from '../../../axios/AxiosInstance'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Card, CardBody, CardHeader, Image, Link } from '@nextui-org/react'
 import { API_URL } from '../../../constants/url'
 import { StripDate } from '../../../contents/dateStrip/utilities'
+import InsChatModal from '../../../contents/modals/InsChatModal'
+import axiosInstance from '../../../axios/AxiosInstance'
 
 function InstructorProfile() {
     const {instructor_id}= useParams()
     const navigate = useNavigate()
+    const [chatActive,setChatActive] = useState(false)
     const [instructor,setInstructor] = useState()
     useEffect(()=>{
         axiosInstance(`users/instructorprofile/${instructor_id}`)
@@ -51,7 +53,9 @@ function InstructorProfile() {
             </div>  
             <div className='basis-2/4 flex flex-col gap-4'>
                 <div className='pl-8'> <Image width={200} src={`${API_URL}${instructor.image}`} alt="NextUI Album Cover" classNames="m-5"/> </div>
-                <div className='pl-16'><Button color="success" onClick={()=>navigate(`/user/chat/${instructor.id}`)} className='text-white' variant="solid" startContent={""}> Send Message </Button></div>
+                {/* <div className='pl-16'><Button color="success" onClick={()=>navigate(`/user/chat/${instructor.id}`)} className='text-white' variant="solid" startContent={""}> Send Message </Button></div> */}
+                <div className='pl-16'><Button color="success" onClick={()=>setChatActive(true)} className='text-white' variant="solid" startContent={""}> Send Message </Button></div>
+
             </div>
         </div> 
         <div className='grid grid-cols-6 gap-4 px-40'>
@@ -89,6 +93,8 @@ function InstructorProfile() {
         </div>
        
          }
+         {chatActive &&  <InsChatModal setChatActive={setChatActive} instructor_id={instructor_id} />}
+        
     </div>
   )
 }

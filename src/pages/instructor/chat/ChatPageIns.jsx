@@ -129,8 +129,8 @@ function ChatPageIns() {
                   </div>
                   {chats && 
                   <div className="absolute flex justify-center row gap-2 h-4 inset-x-0 bottom-0">
-                     <div className='self-center h-3/12 w-8/12'><Input value={message} onChange={e=>setMessage(e.target.value)}  variant='bordered' /></div>
-                     <div className='self-center'><IoSend onClick={handleSubmit} className='cursor-pointer' size={25}/></div>
+                     <div className='self-center h-3/12 w-full'><Input value={message} onChange={e=>setMessage(e.target.value)}  variant='bordered' endContent={<IoSend onClick={handleSubmit} className='cursor-pointer' size={25}/>} /></div>
+                     <div className='self-center'></div>
                   </div>}
                   {!chats && 
                   <div className='flex justify-center'>

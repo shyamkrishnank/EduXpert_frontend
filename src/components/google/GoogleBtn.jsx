@@ -10,6 +10,7 @@ import { Button } from '@nextui-org/react';
 import { FcGoogle } from "react-icons/fc";
 import axiosInstance from '../../axios/AxiosInstance';
 import IsStaffModal from '../../contents/modals/IsStaffModal';
+import { end_loading, loading } from '../../Slices/LodingSlice';
 
 
 function GoogleBtn({url,isLogin}) {
@@ -19,9 +20,11 @@ function GoogleBtn({url,isLogin}) {
   const [user,setUser] = useState()
   const login =  useGoogleLogin({
       onSuccess:token=>{
+        dispatch(loading())
         const data = {'token':token.access_token}
         axiosInstance.post(url, data)
         .then(response=>{
+          dispatch(end_loading())
           if (isLogin){
           dispatch(logged(response.data))
           if(response.data.is_staff){
@@ -32,6 +35,7 @@ function GoogleBtn({url,isLogin}) {
           }
         }
         else{
+          dispatch(end_loading())
           if (response.data.message == 'Already have an account'){
             toast.error(response.data.message, {
               position: "top-center",
@@ -52,10 +56,12 @@ function GoogleBtn({url,isLogin}) {
         }
         )
         .catch(error=>{
+          dispatch(end_loading())
           console.log(error)
         })
       },
       onError:error=>{
+        dispatch(end_loading())
         console.log(error)
       }
     })

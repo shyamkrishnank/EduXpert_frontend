@@ -58,7 +58,7 @@ function OrderPage() {
          <div>
             <div className='w-full flex flex-col gap-2 h-64 items-center justify-center'>
                 <div><h1 className='text-xl font-semibold'>No Course Purchased Yet !</h1></div>
-                <div><Button color='success' onClick={()=>navigate('/user')} variant="bordered">Browse Course</Button></div>
+                <div><Button color='success' onClick={()=>navigate('/user/courses')} variant="bordered">Browse Course</Button></div>
             </div>
          </div>      
           }

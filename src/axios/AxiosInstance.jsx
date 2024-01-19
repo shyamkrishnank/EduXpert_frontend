@@ -3,6 +3,7 @@ import axios from "axios"
 
 const token = localStorage.getItem('auth_token')?JSON.parse(localStorage.getItem('auth_token')).access_token:null
 const cookies = localStorage.getItem('refresh_token')?JSON.parse(localStorage.getItem('refresh_token')):null
+
 const axiosInstance=axios.create(
     {
         baseURL:"http://127.0.0.1:8000",
@@ -36,6 +37,7 @@ axiosInstance.interceptors.response.use(
             const auth_token = localStorage.getItem('auth_token')
             const auth_token_str = JSON.parse(auth_token)
             auth_token_str.access_token = response.headers['access_token']
+            console.log("access token",auth_token_str)
             localStorage.setItem('auth_token',JSON.stringify(auth_token_str))
             axiosInstance.defaults.headers['Authorization'] = `Bearer ${auth_token_str.access_token}`
             delete axiosInstance.defaults.headers.access_token

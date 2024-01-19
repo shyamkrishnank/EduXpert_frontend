@@ -5,9 +5,12 @@ import { Button, Image, Input, Textarea } from '@nextui-org/react'
 import ObjectToForm from '../../instructor/util/ObjectToForm'
 import { toast } from 'react-toastify'
 import axiosInstance from '../../../axios/AxiosInstance'
+import { useDispatch } from 'react-redux'
+import { end_loading, loading } from '../../../Slices/LodingSlice'
 
 function UserProfile() {
-const [image,setImage] = useState('')
+  const dispatch = useDispatch()
+  const [image,setImage] = useState('')
   const imageRef = useRef('')
   const [user,setUser] = UseProfile()
   const handleImage = (e) =>{
@@ -27,6 +30,7 @@ const [image,setImage] = useState('')
         });
     }
     else{
+    dispatch(loading())
     const id = user.id
     const data = ObjectToForm(user)
     if (image){
@@ -34,6 +38,7 @@ const [image,setImage] = useState('')
     }
     axiosInstance.post(`${API_URL}/users/profile/${id}`,data)
     .then(()=>{
+      dispatch(end_loading())
       toast.success('Profile Edited Successfully!', {
         position: "top-right",
         autoClose: 2000,
@@ -46,6 +51,7 @@ const [image,setImage] = useState('')
         });
     })
     .catch(error=>{
+      dispatch(end_loading())
       console.log(error.message)
     })
    }
@@ -64,7 +70,7 @@ const [image,setImage] = useState('')
                     width={200}
                     height={200}
                     alt="/profileicon.jpg"
-                    src={image?URL.createObjectURL(image):`${API_URL}${user.image}`}
+                    src={image?URL.createObjectURL(image):user.image?`${API_URL}${user.image}`:"/profileicon.jpg"}
                     className='cursor-pointer'
                     onClick={handleImage}
              />
@@ -81,7 +87,6 @@ const [image,setImage] = useState('')
              </div>
                <div className='col-start-1 mt-6 col-end-7 justify-self-center'>
                  <Button onClick={handleSubmit} color="success" variant="bordered" >Save Changes</Button>
-                 <h1 className='mt-3 text-danger cursor-pointer'>Change Password ?</h1>
                 </div>
             </div> 
             <div>

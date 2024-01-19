@@ -26,7 +26,7 @@ function UserPage() {
   return (
     <div>
         <div className='flex'>
-          <div className='w-3/6 flex flex-col justify-center'>
+          <div className='w-3/6 flex flex-col justify-center md:w-4/6'>
             <div className='flex justify-center'><p className='text-6xl font-bold'> Education Opens <br/>Up the Mind</p></div>
             <div><p className='text-xl font-bold pl-24 mt-4 '>Embark on a boundless learning adventure with our cutting-edge e-learning platform. </p></div>
           </div>
@@ -47,15 +47,15 @@ function UserPage() {
                   <div className='text-4xl' >Popular Courses</div>
               </div>
               <div className='w-5/12 font-semibold'>Explore an unparalleled array of courses across diverse categories as we strive to provide the best learning experiences tailored to your unique interests and ambitions.</div>
-              <div className='w-3/12 flex justify-center'>   <Button color="primary" variant="ghost">View Courses</Button> </div>
+              <div className='w-3/12 flex justify-center'>   <Button color="primary" onClick={()=>navigate('courses')} variant="ghost">View Courses</Button> </div>
         </div>     
         <div className='font-bold flex pl-6 text-3xl'>
           TOP COURSES FOR YOU
         </div>
         <div className='flex my-5 pl-6'>
           {course && course.map(course=>{return(
-          <div onClick={()=>handleClick(course.id)} className='flex-1 flex justify-center'>
-           <Card className="w-[400px] h-56 cursor-pointer">
+          <div className='flex-1 flex justify-center'>
+           <Card isPressable onPress={()=>handleClick(course.id)}  className="w-[400px] h-56 cursor-pointer">
               <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">
                 <h4 className="font-bold text-large">{course.course_title}</h4>
               </CardHeader>

@@ -70,7 +70,7 @@ function SignupPage() {
         "password" : password,
         "is_staff" : staff
       }
-      axiosInstance.post(`${API_URL}/users/register/`,data)
+      axiosInstance.post(`/users/register/`,data)
       .then(()=>{
         dispatch(end_loading())
         toast.success('OTP has been sented to your mail!', {

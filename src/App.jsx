@@ -33,12 +33,14 @@ import Loading from './components/loading/Loading';
 import UserCourseDetail from './pages/user/course/UserCourseDetail';
 import OrderPage from './pages/user/course/OrderPage';
 import InstructorProfile from './pages/user/instructor/InstructorProfile';
-import ChatPage from './pages/user/chat/ChatPage';
 import ChatPageIns from './pages/instructor/chat/ChatPageIns';
 import Orders from './pages/instructor/orders/Orders';
 import OrderDetailPage from './pages/instructor/orders/OrderDetailPage';
 import Wallet from './pages/instructor/wallet/Wallet';
 import { useSelector } from 'react-redux';
+import FullCourse from './pages/user/course/FullCourse';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import EnterNewPassword from './pages/auth/EnterNewPassword';
 
 
 function App() {
@@ -47,13 +49,14 @@ function App() {
     <>
    <Router>
     <Routes>
-      <Route path='loading' element={<Loading/>} />
         <Route path='/'  element={<InitialAuth />}>
            <Route path='home' element={<Landingpage />} /> 
            <Route path='signup/otp' element={<OtpPage/>} />
            <Route path='login' element={<LoginPage />} />
            <Route path='signup' element={<SignupPage/>} /> 
-           <Route path='admin' element={<AdminLogin />} />  
+           <Route path='admin' element={<AdminLogin />} /> 
+           <Route path='forget_password' element={<ForgotPassword />} /> 
+           <Route path='new_password' element={<EnterNewPassword />} />
         </Route> 
          <Route path='instructor' element={<AuthInstructorRoute />}  >
           <Route index element={<InstructorPage />} />
@@ -79,13 +82,13 @@ function App() {
          <Route path='user' element={<AuthUserRoute />}>
             <Route index element={<UserPage />} />
             <Route path='profile' element={<UserProfile />} />
+            <Route path='courses' element={<FullCourse />} />
             <Route path='course' >
                 <Route path=':category_id' element={<UserCourseView />} />
                 <Route path='view/:course_id' element={<UserCourseDetail />} />
             </Route>
             <Route path='mylearning' element={<OrderPage/>} /> 
             <Route path='instructor/:instructor_id' element={<InstructorProfile/>} />
-            <Route path='chat/:instructor_id' element={<ChatPage />} />
          </Route>
          <Route path="eduadmin" element={<AuthAdminAuth />}>
              <Route index element={<AdminHome />} />
