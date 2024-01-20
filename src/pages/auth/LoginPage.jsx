@@ -64,7 +64,7 @@ function LoginPage() {
         )
         .catch(error=>{
             dispatch(end_loading())
-            toast.error(`${error.response.data.detail}`, {
+            toast.error(`${error.response.data.message}`, {
                 position: "top-center",
                 autoClose: 3000,
                 hideProgressBar: true,
