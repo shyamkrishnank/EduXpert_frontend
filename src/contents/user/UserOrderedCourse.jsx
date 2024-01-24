@@ -17,7 +17,6 @@ import { toast } from 'react-toastify'
 function UserOrderedcourse({prop:courseDetails}) {
     const [content,setContent] = useState(0)
     const user_id = useSelector(state=>state.auth.id)
-    console.log(user_id)
     const {course_id}= useParams()
     const navigate = useNavigate()
     const [course,setCourse]=useState(courseDetails)
@@ -65,7 +64,7 @@ function UserOrderedcourse({prop:courseDetails}) {
         }
         axiosInstance.post('course/addreview/', data)
         .then(response=>{
-          setReviews(prev=>[...prev,response.data])
+          setReviews(prev=>[response.data,...prev])
           toast.success('Review Added Successfully!', {
             position: "bottom-right",
             autoClose: 2000,
@@ -79,7 +78,7 @@ function UserOrderedcourse({prop:courseDetails}) {
         })
         .catch(error=>{
           toast.error('Something went wrong!', {
-            position: "bottom-right",
+            position: "top-right",
             autoClose: 2000,
             hideProgressBar: true,
             closeOnClick: true,
@@ -192,6 +191,28 @@ function UserOrderedcourse({prop:courseDetails}) {
                     <div className='flex justify-start'><Badge variant="solid" color="secondary" content={review.liked_count == 0 ? null : review.liked_count} size="md"  placement="bottom-right">{review.is_liked? <AiFillLike onClick={()=>handleLike(review.id,index)} className='cursor-pointer text-primary-500' size={25} />:<AiOutlineLike onClick={()=>handleLike(review.id,index)}  className='cursor-pointer' size={25} />}</Badge></div>
                     {review.user.id == user_id &&  <div><MdDelete onClick={()=>handleDelete(review.id,index)} className='text-red-500 cursor-pointer' size={25}  /></div>}
                   </div>
+                  {review.reply.length > 0 &&
+                   <div className='mt-4'>
+                    {
+                      review.reply.map((reply,index)=>{
+                        return(
+                          <div className='flex'>
+                          <div className='w-1/12'><Avatar name={reply.user ? reply.user.get_full_name:null}  size="sm" /></div>
+                            <div className='flex flex-col gap-3 w-full'>
+                                <div className='flex fle gap-5'>
+                                  <div><h1 className='font-semibold'>{reply.user.get_full_name}</h1></div>
+                                  <div><p className='text-sm'>{StripDate(reply.timestamp)}</p></div>
+                                </div>
+                                <div><p className='break-all'>{reply.comment}</p></div>
+                            </div>
+                          </div>
+                        )
+                      })
+                    }
+
+                   </div>
+                  }
+
                </div>
             </div>
             </div>

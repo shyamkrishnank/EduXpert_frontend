@@ -15,7 +15,7 @@ function Sidebar() {
             <li onClick={()=>navigate(`${url}course`)}><GiBlackBook size={40}color='white' className='cursor-pointer'/></li>
             <li onClick={()=>navigate(`${url}chats`)}> <PiChatsLight size={40} color='white' className='cursor-pointer' /> </li>  
             <li onClick={()=>navigate(`${url}orders`)} ><GiTakeMyMoney size={40} color='white'className='cursor-pointer'  /></li>
-            <li><GiThumbUp  size={40} color='white'className='cursor-pointer' /></li>
+            <li onClick={()=>navigate(`${url}reviews`)}><GiThumbUp  size={40} color='white'className='cursor-pointer' /></li>
         </ul>
        
     </div>

@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../axios/AxiosInstance'
+import { useDispatch } from 'react-redux'
+import { end_loading, loading } from '../Slices/LodingSlice'
 
 
 function UseCurrentCourse(id) {
-   const [course,setCourse] = useState([])
+   const [course,setCourse] = useState("")
+   const dispatch = useDispatch()
    useEffect(()=>{
+        dispatch(loading())
         axiosInstance.get(`/course/get_course/${id}`)
         .then(response=>{
             setCourse(response.data)
-            console.log(response.data)
+            dispatch(end_loading())
         })
-        .catch(error=>[
-            console.log(error.message)
-        ])
+        .catch(error=>{
+            dispatch(end_loading())
+        })
     
      },[])
     return [course,setCourse]

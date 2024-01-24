@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import axiosInstance from '../../../axios/AxiosInstance'
 import { Chip, Image, Input } from '@nextui-org/react'
 import { IoSend } from 'react-icons/io5'
 import {User} from "@nextui-org/react";
 import { API_URL } from '../../../constants/url'
 import { useLocation } from 'react-router-dom'
+import { end_loading, loading } from '../../../Slices/LodingSlice'
 
 
 
@@ -19,6 +20,7 @@ function ChatPageIns() {
     const [id,setId] = useState(chat_with_id)
     const [chats, setChats] = useState()
     const [users,setUsers] = useState([])
+    const dispatch = useDispatch()
     const socket = useRef(null);
 
       const handleClick = (user_id) =>{
@@ -36,12 +38,14 @@ function ChatPageIns() {
         if (chat_with_id){
           handleClick(chat_with_id)
         }
-        
+        dispatch(loading())
         axiosInstance.get(`chat/data/${instructor_id}`)
        .then(response=>{
          setUsers(response.data)
+         dispatch(end_loading())
        })
        .catch(error=>{
+         dispatch(end_loading())
          console.log(error)
        })
       },[])
@@ -105,10 +109,8 @@ function ChatPageIns() {
                 {
                   users && users.map((user=>{
                     return(
-                    <div className='flex flex-row mb-5'>
+                    <div  onClick={()=>handleClick(user.id)}  className={`flex cursor-pointer flex-row mb-5 p-1 rounded-l-lg ${id == user.id && "bg-slate-200"} `}>
                       <User 
-                      className='cursor-pointer' 
-                      onClick={()=>handleClick(user.id)} 
                       name={user.get_full_name}
                       avatarProps={{
                         src: user.image ? `${API_URL}${user.image}`:null
@@ -120,7 +122,7 @@ function ChatPageIns() {
                 }
               </div>
               <div className='basis-5/6 relative h-full'>
-                <div className='h-5/6 grid gap-3 overflow-y-auto border-3' ref={scrollContainerRef}>
+                <div className={`h-5/6 grid gap-3 overflow-y-auto ${chats && "border-3"}`} ref={scrollContainerRef}>
                   <div >
                    {chats && chats.map((data, index) => {return (
                     <div key={index} className={`w-full px-8 ${data.user === instructor_id ? 'flex flex-row-reverse' : 'flex flex-row'} mb-2`}><Chip color={`${data.user === instructor_id ?"primary":"secondary"}`}>{data.content}</Chip></div>

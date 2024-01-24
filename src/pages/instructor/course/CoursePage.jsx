@@ -6,20 +6,19 @@ import {Card, CardHeader, CardBody, Image} from "@nextui-org/react";
 import UseInsCourse from '../../../hooks/UseInsCourse';
 import { API_URL } from '../../../constants/url';
 import { useDispatch } from 'react-redux';
-import { deleteCourse } from '../../../Slices/CourseIdSlice';
 
 
 function CoursePage() {
   const [courses,setCourses] = UseInsCourse()
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const handleClick = (id) =>{
     navigate(`/instructor/course/view/${id}`)  
   }
+
   const addCourse = () => {
-    dispatch(deleteCourse())
     navigate('addtitle')
     }
+
   return (
     <div>
         <div className='ml-28 flex mt-4'>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Input,Textarea,Image,Button } from "@nextui-org/react"
 import ReactPlayer from 'react-player'
 import UseCurrentCourse from '../../../../hooks/UseCurrentCourse'
@@ -20,10 +20,17 @@ function AddChapters() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const user_id = useSelector(state=>state.auth.id) 
+    const videoRef = useRef()
     const [formFields,setFormFields] = useState([objects])
     const {course_id} = useParams()
     const [data] = UseCurrentCourse(course_id)
     const title = data.course_title
+
+    const addVideo = () =>{
+      videoRef.current.click()
+    }
+
+
     const handleInputChange = (e,index) =>{
       const data = [...formFields]
       data[index][e.target.name] = e.target.value
@@ -134,16 +141,17 @@ function AddChapters() {
             size={'lg'}
             />
             </div>
-        <div className='col-span-5'>
+        <div className='col-span-5 '>
           {form.video?<ReactPlayer  height="30vh" width="auto"  url={URL.createObjectURL(form.video)} controls/>:
               <Image
                 width={300}
                 height={300}
                 src="/uploadimage.jpg"
-                className='mt-3'
+                className='mt-3  cursor-pointer'
+                onClick={addVideo}
               />}
-          <input name='video' onChange={e=>handleFileChange(e,index)} type='file'/>
-         
+          <input name='video' accept="video/*"  onChange={e=>handleFileChange(e,index)} type='file' ref={videoRef} hidden /> 
+          <div className='flex ml-12 text-xl'><h1>Upload the Video</h1></div>
         </div> 
         {index==0?null:<div className='justify-self-start'>
           <Button color="danger" 

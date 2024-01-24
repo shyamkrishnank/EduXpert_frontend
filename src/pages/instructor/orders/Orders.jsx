@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../../axios/AxiosInstance'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Button, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import { StripDate } from '../../../contents/dateStrip/utilities'
 import { useNavigate } from 'react-router-dom'
 import { IoWalletSharp } from "react-icons/io5";
+import { end_loading, loading } from '../../../Slices/LodingSlice'
 
 
 function Orders() {
@@ -13,15 +14,21 @@ function Orders() {
     const navigate = useNavigate()
     const [orders,setOrders] = useState()
     const [pageCount, setPageCount] = useState(0)
+    const dispatch = useDispatch()
+
+
+
+
     const fetchData = (url=initialPage)=>{
+        dispatch(loading())
         axiosInstance.get(url)
         .then(response=>{
-            console.log(response.data)
             setOrders(response.data.results)    
             setPageCount(Math.ceil(response.data.count/8))
+            dispatch(end_loading())
         })
         .catch(error=>{
-            console.log(error.message)
+          dispatch(end_loading())
         })
     }
     

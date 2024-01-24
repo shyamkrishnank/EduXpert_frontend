@@ -101,9 +101,9 @@ export default function InstructorNav () {
               as="button"
               className="transition-transform"
               color="secondary"
-              name="Jason Hughes"
+              name={user?.name}
               size="sm"
-              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+              src=""
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">

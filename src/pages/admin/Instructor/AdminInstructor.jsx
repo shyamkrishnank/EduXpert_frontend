@@ -27,6 +27,7 @@ function AdminInstructors() {
   useEffect(()=>{
       fetchData()
   },[])
+  
   const handleClick = (page) =>{
     const url = `${API_URL}/eduadmin/instructors?page=${page}`
     fetchData(url)

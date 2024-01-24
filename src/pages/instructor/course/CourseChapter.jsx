@@ -8,9 +8,10 @@ import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,useDisclosure} 
 import UseCurrentChapter from '../../../hooks/UseCurrentChapter'
 import { FaRegCircleDot } from "react-icons/fa6";
 import { toast } from 'react-toastify'
-import { MdDelete } from "react-icons/md";
 import ChapterEditModal from '../../../contents/modals/ChapterEditModal'
 import axiosInstance from '../../../axios/AxiosInstance'
+import { useDispatch } from 'react-redux'
+import { end_loading, loading } from '../../../Slices/LodingSlice'
 
 
 
@@ -22,18 +23,21 @@ function CourseChapter() {
    }
     const {isOpen, onOpen,onClose, onOpenChange} = useDisclosure();
     const {course_id} = useParams()
+    const dispatch = useDispatch()
     const [content,setContent] = useState(0)
     const [editChapter,setEditChapter] = useState(false)
     const [course,setCourse] = UseCurrentChapter(course_id)
     const [chapter,setChapter] = useState(objects)
     const imgRef = useRef(" ")
+
     const handleChapterSelected = (id) =>{
+      dispatch(loading())
       axiosInstance.get(`${API_URL}/course/chapter_details/${id}`)
       .then(response=>{
-        console.log(response.data)
         setCourse(response.data)
+        dispatch(end_loading())
       .catch(error=>{
-        console.log(console.log(error))
+        dispatch(end_loading())
       })
       })
     }
@@ -43,16 +47,17 @@ function CourseChapter() {
     const handleImageClick = () =>{
        imgRef.current.click()
     }
+
     const handleClose = () =>{
       setChapter(objects)
       onClose()
     }
+
     const handleContent = (content) =>{
       setContent(content)   
     }
-    const handleDelete = () =>{
-      
-    }
+ 
+
   const handleSubmit = () =>{
     if (chapter.title === "" || chapter.description === "" || chapter.video === ""){
       toast.error('Please fill all fields!', {
@@ -67,6 +72,8 @@ function CourseChapter() {
         });
     }
     else{ 
+      handleClose()
+      dispatch(loading())
       const formData = new FormData
       Object.entries(chapter).forEach(([key,value])=>{
         formData.append(key,value)
@@ -74,8 +81,8 @@ function CourseChapter() {
       formData.append('course',course_id)
       axiosInstance.post(`${API_URL}/course/add_chapter`, formData)
       .then(response=>{
-        setCourse(response.data) 
-        handleClose()
+        setCourse(response.data)
+        dispatch(end_loading())
         toast.success('Chapter Added Successfully!', {
           position: "top-center",
           autoClose: 1000,
@@ -88,6 +95,7 @@ function CourseChapter() {
           });
       })
       .catch(error=>{
+        dispatch(end_loading())
         console.log(error.message)
       })
     }
@@ -106,17 +114,11 @@ function CourseChapter() {
       {course.initial_chapter?
         <>
       <ReactPlayer  height="auto" width="90%" url={`${API_URL}${course.initial_chapter.video}`} controls/>
-      <div className='my-4 text-3xl font-bold font-sans'><span onClick={()=>handleContent(0)} className='px-8 cursor-pointer'>About</span><span onClick={()=>handleContent(1)} className='mr-8 cursor-pointer'>Reviews</span><span onClick={()=>handleContent(2)} className='mr-8 cursor-pointer'>Notes</span></div>
+      <div className='my-4 text-3xl font-bold font-sans'><span onClick={()=>handleContent(0)} className='px-8 cursor-pointer'>About</span></div>
       {content == 0 &&  <div className='mt-8'>
          <Input className='w-6/12 mb-2' onChange={e=>setEditChapter(prev=>({...prev,title:e.target.value}))}   label="Title" variant="bordered"  value={course.initial_chapter.title} size="lg" type='text' />
          <Textarea className='w-6/12 mb-2'  label="Description" variant="bordered" value={course.initial_chapter.description} />
          <Button onClick={()=>setEditChapter(true)} color='success'>Edit Details</Button>
-      </div>}
-      {content == 1 &&  <div className='mt-8'>
-         No Reviews Yet!
-      </div>}
-      {content == 2 &&  <div className='mt-8'>
-           No Notes Added Yet!
       </div>}
        </>:
         <h2>No Chapter Added Yet!</h2>
@@ -129,7 +131,6 @@ function CourseChapter() {
            {course.all_chapters && course.all_chapters.map(chapter=>{return(
             <div className='flex justify-between start'>
            <Chip color={chapter.id == course.initial_chapter.id?"success":"default"} variant="light" onClick={()=>handleChapterSelected(chapter.id)} startContent={<FaRegCircleDot size={15} />} className="text-base font-bold mb-4 py-2 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105">{chapter.title}</Chip> 
-           <MdDelete className='cursor-pointer' onClick={handleDelete} color='red' size={25}/>
            </div>
            )})}
         </div> 
@@ -149,7 +150,7 @@ function CourseChapter() {
                 name='title'
                 label="Chapter Heading"
                 value={chapter.title}
-                onChange={e=>setChapter(prev=>({...prev,title:e.target.value}))}
+                onChange={e=>setChapter(prev=>({...prev,title:e.target.value.trimStart()}))}
                 className='text-xl my-4'
                 size={'lg'}
                 /> 
@@ -157,24 +158,24 @@ function CourseChapter() {
                 isRequired
                 label="Discription"
                 name='description'
+                type='text'
                 placeholder="Enter your description"
                 className='text-xl my-6'
-                onChange={e=>setChapter(prev=>({...prev,description:e.target.value}))}
+                onChange={e=>setChapter(prev=>({...prev,description:e.target.value.trimStart()}))}
                 size={'lg'}
                 />
                 </div>
             <div className='col-span-5'>
+            <h1 className='ml-16 text-xl'>Upload Video</h1>
               {chapter.video?<ReactPlayer  height="30vh" width="auto" url={URL.createObjectURL(chapter.video )} controls/>:
                   <Image
                     width={300}
-                    height={300}
                     src="/uploadimage.jpg"
-                    className='mt-3'
+                    className='mt-3 cursor-pointer'
                     onClick={handleImageClick}
                   />
                   }
-              <input name='video' value={""} onChange={e=>setChapter(prev=>({...prev,video:e.target.files[0]}))} ref={imgRef} hidden type='file'/>
-            
+              <input name='video' accept="video/*"  value={""} onChange={e=>setChapter(prev=>({...prev,video:e.target.files[0]}))} ref={imgRef} hidden type='file'/>
             </div> 
         </div>      
               </ModalBody>

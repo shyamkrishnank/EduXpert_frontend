@@ -1,5 +1,4 @@
 import { API_URL } from "../../constants/url"
-import { deleteCourse } from "../../Slices/CourseIdSlice"
 import { toast } from "react-toastify"
 import axiosInstance from "../../axios/AxiosInstance"
 

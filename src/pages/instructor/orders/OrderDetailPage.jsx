@@ -12,20 +12,25 @@ import {
   } from "@nextui-org/react";
 import {Card, CardHeader, CardBody, Image} from "@nextui-org/react";
 import { StripDate, StripTime } from '../../../contents/dateStrip/utilities';
+import { useDispatch } from 'react-redux';
+import { end_loading, loading } from '../../../Slices/LodingSlice';
 
 function OrderDetailPage() {
     const {order_id} = useParams()
     const navigate = useNavigate()
     const [order,setOrder] = useState()
-    console.log("ordr",order)
+    const dispatch = useDispatch()
+
+
     useEffect(()=>{
+        dispatch(loading())
         axiosInstance.get(`/order/orderdetailview/${order_id}`)
         .then(response=>{
-            console.log(response.data)
             setOrder(response.data)
+            dispatch(end_loading())
         })
         .catch(error=>{
-            console.log('orderdetails',error)
+          dispatch(end_loading())
         })
 
     },[])

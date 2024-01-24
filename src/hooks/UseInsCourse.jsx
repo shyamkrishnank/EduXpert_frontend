@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { API_URL } from '../constants/url'
-import { useDispatch, useSelector } from 'react-redux'
-import { deleteCourse } from '../Slices/CourseIdSlice'
-import { FaCommentSlash } from 'react-icons/fa'
 import axiosInstance from '../axios/AxiosInstance'
+import { useSelector } from 'react-redux'
 
 function UseInsCourse() {
     const [courses,setCourses] = useState([])

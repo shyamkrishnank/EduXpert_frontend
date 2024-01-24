@@ -41,6 +41,7 @@ import { useSelector } from 'react-redux';
 import FullCourse from './pages/user/course/FullCourse';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import EnterNewPassword from './pages/auth/EnterNewPassword';
+import Reviews from './pages/instructor/Reviews/Reviews';
 
 
 function App() {
@@ -78,6 +79,7 @@ function App() {
               <Route path='order/:order_id' element={<OrderDetailPage />} />
             </Route>
             <Route path='mywallet' element={<Wallet />} />
+            <Route path='reviews' element = {<Reviews />} />
          </Route>
          <Route path='user' element={<AuthUserRoute />}>
             <Route index element={<UserPage />} />

@@ -1,27 +1,34 @@
-import React, { useEffect, useState } from 'react'
-import {Input} from "@nextui-org/react";
+import React, { useEffect, useRef, useState } from 'react'
+import {Input, Select, SelectItem} from "@nextui-org/react";
 import {Textarea} from "@nextui-org/react";
 import {Button , Image} from "@nextui-org/react";
 import {  toast } from 'react-toastify';
 import { API_URL } from '../../../../constants/url';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { currentCourse } from '../../../../Slices/CourseIdSlice';
 import { FaRupeeSign } from "react-icons/fa";
 import axiosInstance from '../../../../axios/AxiosInstance';
 
 
 
 function AddTitle() {
-  const [title,setTitle] = useState("")
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const imageRef = useRef()
   const [description,setDescription] = useState("")
+  const [title,setTitle] = useState("")
   const [category,setCategory] = useState("")
   const [thumbnail,setThumbnail] = useState("")
   const [price,setPrice] = useState("")
   const [course,setCourse] = useState({})
   const created_by = useSelector(state=>state.auth.id)
+
+  
+  const addImage = () =>{
+    imageRef.current.click()
+}
+
+
   const handleSubmit=()=>{
     if (title == "" || description == "" || category == "" || thumbnail == "" || price == ""){
       toast.error('Please fill all fields!', {
@@ -58,7 +65,6 @@ function AddTitle() {
    formData.append('price',price)
    axiosInstance.post(`${API_URL}/course/upload_course`,formData)
    .then(response=>{
-    dispatch(currentCourse(response.data))
     toast.success('Well done!', {
       position: "top-left",
       autoClose: 3000,
@@ -96,12 +102,11 @@ function AddTitle() {
           <div className='w-3/5'>
           <Input
             isRequired
-            type="email"
+            type="text"
             label="Course titile"
-            defaultValue=""
             value={title}
             className='w-9/12 text-xl '
-            onChange={e=>setTitle(e.target.value)}
+            onChange={e=>setTitle(e.target.value.trimStart())}
             size={'lg'}
             />
           <Textarea
@@ -110,35 +115,30 @@ function AddTitle() {
             placeholder="Enter your description"
             className='w-9/12 text-xl my-6'
             value={description}
-            onChange={e=>setDescription(e.target.value)}
+            onChange={e=>setDescription(e.target.value.trimStart())}
             size={'lg'}
             />
-              <Input
-                type="text"
-                label="Course Category"
-                id="myInput"
+              <Select 
+                isRequired
+                label="Select the category" 
+                className="max-w-xs" 
                 value={category}
                 onChange={e=>setCategory(e.target.value)}
-                list="options"
-                className="w-9/12 text-xl"
-              />
-              <datalist id="options" className="mt-2">
+              >
                 {Object.entries(course).map(([key, value]) => (
-                  <option 
-                    key={key}
-                    value={key}
-                    className="py-1 px-2 text-gray-800 hover:bg-blue-200 cursor-pointer"
-                  />
+                  <SelectItem key={key} value={key}>
+                    {key}
+                  </SelectItem>
                 ))}
-              </datalist>
+              </Select>
               <Input
                     isRequired
                     type="number"
                     label="price"
                     className='w-9/12 text-xl my-6'  
                     value={price}
-                    onChange={e=>setPrice(e.target.value)}
-                    endContent={<FaRupeeSign/> }
+                    onChange={e=>setPrice(e.target.value.trim())}
+                    startContent={<FaRupeeSign /> }
                     description="You can change the price later." 
                     size={'lg'}
                 />
@@ -146,21 +146,20 @@ function AddTitle() {
           </div>
 
           <div className='w-2/5'>
+            <h1 className='text-xl'>Upload A Thumbnail </h1>
             
           <Image
                 width={300}
                 height={200}
                 src={thumbnail?URL.createObjectURL(thumbnail):"/uploadimage.jpg"}
-                className='mt-3'
+                className='mt-3 cursor-pointer'
+                onClick={addImage}
               />
-              <input onChange={e=>setThumbnail(e.target.files[0])} type='file' />
+              <input ref={imageRef} value={""} onChange={e=>setThumbnail(e.target.files[0])} type='file'  accept="image/*" hidden />
 
           </div>
 
         </div>
-      
-
-
 
         <div className='absolute bottom-28 right-80'>
             <Button 
