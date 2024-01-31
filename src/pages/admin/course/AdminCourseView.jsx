@@ -1,32 +1,61 @@
 import React, { useEffect, useState } from 'react'
 import AdminNav from '../../../components/admin/AdminNav'
 import AdminSideBar from '../../../components/admin/AdminSideBar'
-import { Button, Card, CardBody, CardHeader, Image, Input, Textarea } from '@nextui-org/react'
+import { Button, Card, CardBody, CardHeader, Image, Input, Pagination, Textarea } from '@nextui-org/react'
 import { API_URL } from '../../../constants/url'
 import ReactPlayer from 'react-player'
 import { StripDate } from '../../../contents/dateStrip/utilities'
 import axiosInstance from '../../../axios/AxiosInstance'
+import { useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { end_loading, loading } from '../../../Slices/LodingSlice'
 
 
 function AdminCourseView() {
     const [course,setCourse] = useState({})
+    const [pageCount, setPageCount] = useState(0) 
+    const [chapters,setChapters] = useState({})
     const [activebtn,setactivebtn] =  useState()
-    const id = localStorage.getItem('course_id')
-    useEffect(()=>{
-        axiosInstance.get(`${API_URL}/eduadmin/course_details/${id}`)
+    const {course_id} = useParams()
+    const dispatch = useDispatch()
+
+    const fetchData = (page) =>{
+        dispatch(loading())
+        axiosInstance.get(`/eduadmin/course_chapter/${course_id}?page=${page}`)
         .then(response=>{
-            console.log(response.data)
+            dispatch(end_loading())
+            setChapters(response.data.results)
+            setPageCount(response.data.count)
+        })
+        .catch(error=>{
+            dispatch(end_loading())
+
+
+        })
+
+    }
+
+    const handleClick = (page) =>{
+          fetchData(page)
+
+    }
+
+    useEffect(()=>{
+        axiosInstance.get(`/eduadmin/course_details/${course_id}`)
+        .then(response=>{
             setCourse(response.data)
             setactivebtn(response.data.is_active)
+            fetchData(1)
         })
         .catch(error=>{
             console.log(error.message)
         })
 
     },[])
+
     const handleActive = () =>{
         setactivebtn('lodding')
-        axiosInstance.get(`${API_URL}/eduadmin/course_status/${id}`)
+        axiosInstance.get(`${API_URL}/eduadmin/course_status/${course_id}`)
         .then(response=>{
             setactivebtn(response.data.status)
         })
@@ -37,9 +66,7 @@ function AdminCourseView() {
 
   return (
     <div>
-        <AdminNav />
-        <AdminSideBar/>
-        <div className='ml-56 '>
+        <div className='ml-56 mb-9'>
             <Card className='flex mr-7 mt-9 py-3 px-3'>
                 <CardHeader>
                     {course.course_title}
@@ -65,7 +92,7 @@ function AdminCourseView() {
                 </CardBody>
             </Card>
             <div className='my-10'><h1>Chapters</h1></div>
-            {course.chapters && course.chapters.map((chapter,index)=>{
+            {chapters.length > 0 && chapters.map((chapter,index)=>{
                 return(
                     <div className=' mt-5'>
                         <div key={index} className='grid grid-cols-12 gap-4 mt-6 mr-3'>
@@ -84,7 +111,7 @@ function AdminCourseView() {
             
             </div>
         <div className='col-span-5'>
-          {chapter.video?<ReactPlayer  height="30vh" width="auto"  url={`${API_URL}${chapter.video}`} controls/>:
+          {chapter.video?<ReactPlayer  height="30vh" width="auto"  url={`${chapter.video}`} controls/>:
               <Image
                 width={300}
                 height={300}
@@ -93,10 +120,11 @@ function AdminCourseView() {
               />}         
         </div> 
      </div>
-                     </div> 
+     </div> 
                 )
                 
             })}
+    <div className='flex w-full justify-center mt-4'><Pagination showControls total={pageCount} onChange={(page)=>handleClick(page)} initialPage={1} /></div>
 
         </div>
       

@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { logged } from '../../../Slices/AuthSlice';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../axios/AxiosInstance';
+import { end_loading, loading } from '../../../Slices/LodingSlice';
 
 
 
@@ -20,9 +21,11 @@ function AdminLogin() {
         'email' : email,
         'password' : password
       }
+      dispatch(loading())
       axiosInstance.post(`${API_URL}/eduadmin/login`,data)
       .then(response=>{
         dispatch(logged(response.data))
+        dispatch(end_loading())
         toast.success('Welcome Admin', {
           position: "top-center",
           autoClose: 2000,
@@ -38,6 +41,7 @@ function AdminLogin() {
           
       })
       .catch(error=>{
+        dispatch(end_loading())
         toast.error(`${error.response.data.message}`, {
           position: "top-center",
           autoClose: 2000,

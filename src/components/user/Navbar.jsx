@@ -13,6 +13,7 @@ import { StripTime } from "../../contents/dateStrip/utilities";
 import { FaRobot } from "react-icons/fa";
 import ChatbotModal from "../../contents/modals/ChatbotModal";
 import InsChatModal from "../../contents/modals/InsChatModal";
+import { toast } from "react-toastify";
 
 
 
@@ -20,7 +21,7 @@ import InsChatModal from "../../contents/modals/InsChatModal";
 
  function Navbar1() {
   const user = useSelector(state=>state.auth.user)
-  const [notifications,setNotification] = UseNotification()
+  const [notifications,setNotification] = UseNotification([])
   const [chatbot,setChatbot] = useState(false)
   const [chatActive,setChatActive] = useState(false)
   const [instructor_id , setInstructor_id] = useState()
@@ -39,7 +40,21 @@ import InsChatModal from "../../contents/modals/InsChatModal";
         navigate('/login') 
   }
   const handleCourse = (key,value) =>{
-    navigate(`/user/course/${[value]}`)   
+    if (user){
+      navigate(`/user/course/${[value]}`)   
+    }
+    else{
+      toast.info('Please login to view courses', {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+    }
   }
   const handleLearning =(key,value)=>{
     navigate(`/user/mylearning/`)
@@ -113,7 +128,7 @@ import InsChatModal from "../../contents/modals/InsChatModal";
     <>
     <Navbar className="drop-shadow	">
       <NavbarBrand>
-        <img  onClick={()=>navigate("/home")} className="w-20 cursor-pointer " src={'/logo.png'} />
+        <img  onClick={()=>navigate("")} className="w-20 cursor-pointer " src={'/logo.png'} />
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
@@ -162,7 +177,7 @@ import InsChatModal from "../../contents/modals/InsChatModal";
       <Dropdown >
         <DropdownTrigger>
           <div as='button' className="cursor-pointer">
-           <Badge content={notifications.length>0?notifications.length:null}  shape={notifications.length > 0 ? 'circle':null}  color={notifications.length>0?'danger':null} showOutline={false}>
+           <Badge content={notifications && notifications.length>0?notifications.length:null}  shape={notifications.length > 0 ? 'circle':null}  color={notifications.length>0?'danger':null} showOutline={false}>
                <MdNotifications  className=" text-sky-500" size={30} />
            </Badge>
            </div>
@@ -174,9 +189,9 @@ import InsChatModal from "../../contents/modals/InsChatModal";
             </DropdownItem> 
           </DropdownSection> 
           <DropdownSection>
-            {notifications.length > 0 ?
-            notifications.map((notification) => 
-              <DropdownItem textValue='string' onClick={()=>handlenotification(notification)} >
+            {Array.isArray(notifications) && notifications.length > 0 ?
+            notifications.map((notification,index) => 
+              <DropdownItem key={index} textValue='string' onClick={()=>handlenotification(notification)} >
                 <div className="flex flex-row gap-6">
                   <div><p className="text-xs">{notification.notification_type}</p></div>
                   <div><h1 className="font-semibold">{notification.content}</h1></div>
@@ -234,10 +249,12 @@ import InsChatModal from "../../contents/modals/InsChatModal";
     {chatActive && <InsChatModal setChatActive={setChatActive} instructor_id={instructor_id} />}
     {searched_course.length > 0 &&
     <div className="flex bg-white justify-center w-full z-50 fixed">
-      <ul className="shadow-lg w-6/12 flex py-5 justify-center">
+      <ul className="shadow-lg w-6/12 flex flex-col py-5 justify-center">
         {
           searched_course.map((course,index)=>(
-            <li onClick={()=>handleSelected(course.id)} className="font-semibold cursor-pointer hover:text-success">{course.course_title}</li>
+            <li key={index} onClick={()=>handleSelected(course.id)} className="flex w-full justify-center mb-2 font-semibold cursor-pointer hover:text-success">
+              {course.course_title}
+              </li>
           ))
         }
       </ul>

@@ -78,11 +78,11 @@ function UserProfile() {
              <div className='col-span-2 gap-4 grid grid-cols-2 '>
                 <div><Input label="First Name" onChange={e=>setUser(prev=>({...prev,first_name : e.target.value}))} value={user.first_name} type='text'/></div>
                 <div><Input label="Last Name" onChange={e=>setUser(prev=>({...prev,last_name: e.target.value}))} value={user.last_name} type='text'/></div>
-                <div><Input label="Headline" value={user.headline?user.headline:null}  onChange={e=>setUser(prev=>({...prev,headline : e.target.value?e.target.value:null}))} type='text'/></div>
+                <div><Input label="Headline" value={user.headline?user.headline:""}  onChange={e=>setUser(prev=>({...prev,headline : e.target.value?e.target.value:null}))} type='text'/></div>
                 <div><Input label='Email' value={user.email}  type='text'/></div>
-                <div><Input label='Phone'  value={user.phone?user.phone:null} onChange={e=>setUser(prev=>({...prev,phone:e.target.value?e.target.value:null}))} type='text'/></div>
-                <div><Input label='Social Link'  value={user.sociallink?user.sociallink:null} onChange={e=>setUser(prev=>({...prev,sociallink:e.target.value?e.target.value:null}))} type='text'/></div>
-                <div><Textarea  label="Bio"  value={user.bio?user.bio:null} onChange={e=>setUser(prev=>({...prev,bio:e.target.value}))} /></div>
+                <div><Input label='Phone'  value={user.phone?user.phone:""} onChange={e=>setUser(prev=>({...prev,phone:e.target.value?e.target.value:null}))} type='text'/></div>
+                <div><Input label='Social Link'  value={user.sociallink?user.sociallink:""} onChange={e=>setUser(prev=>({...prev,sociallink:e.target.value?e.target.value:null}))} type='text'/></div>
+                <div><Textarea  label="Bio"  value={user.bio?user.bio:""} onChange={e=>setUser(prev=>({...prev,bio:e.target.value}))} /></div>
 
              </div>
                <div className='col-start-1 mt-6 col-end-7 justify-self-center'>

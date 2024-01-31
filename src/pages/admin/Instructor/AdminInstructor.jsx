@@ -1,27 +1,31 @@
 
 import React, { useEffect, useState } from 'react'
-import AdminNav from '../../../components/admin/AdminNav'
-import AdminSideBar from '../../../components/admin/AdminSideBar'
+
 import { Table, TableCell, TableBody,TableColumn, TableHeader, TableRow, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Avatar } from '@nextui-org/react'
 import {Pagination} from "@nextui-org/react";
 import { API_URL } from '../../../constants/url';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../axios/AxiosInstance';
+import { useDispatch } from 'react-redux';
+import { end_loading, loading } from '../../../Slices/LodingSlice';
 
 function AdminInstructors() {
-  const initialPage = `${API_URL}/eduadmin/instructors`
+  const initialPage = `/eduadmin/instructors`
   const navigate = useNavigate()
   const [pageCount, setPageCount] = useState(0)
   const [instructors,setInstructors] = useState([])
+  const dispatch = useDispatch()
+
   const fetchData = (url=initialPage)=>{
+      dispatch(loading())
       axiosInstance.get(url)
       .then(response=>{
-          console.log(response.data)
           setInstructors(response.data.results)
-          setPageCount(Math.ceil(response.data.count/2))
+          setPageCount(Math.ceil(response.data.count/6))
+          dispatch(end_loading())
       })
       .catch(error=>{
-          console.log(error.message)
+        dispatch(end_loading())
       })
   }
   useEffect(()=>{
@@ -34,16 +38,13 @@ function AdminInstructors() {
       
   }
   const handleView = (id) =>{
-    localStorage.setItem('current_instructor', id)
-    navigate('/eduadmin/instructors/view')
+    navigate(`/eduadmin/instructors/view/${id}`)
 
   }
     
 
   return (
-    <div>
-        <AdminNav />
-        <AdminSideBar/> 
+    <div> 
         <div className='ml-56 w-9/12 mt-10'>
         <Table aria-label="Example table with dynamic content">
       <TableHeader>   
@@ -57,7 +58,7 @@ function AdminInstructors() {
       <TableBody>
         {instructors.map((instructor,index)=>{return(
           <TableRow key={index} >
-               <TableCell>1</TableCell>
+               <TableCell>{index+1}</TableCell>
                <TableCell><Avatar src={instructor.image?`${instructor.image}`:"/profileicon.jpg"}/></TableCell>
                <TableCell>{instructor.first_name}</TableCell>
                <TableCell>{instructor.email}</TableCell>

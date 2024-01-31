@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 
 function UserPage() {
-  const [course,setCourse] = useState([{},{},{}])
+  const [course,setCourse] = useState([])
   const navigate = useNavigate()
   useEffect(()=>{
     axiosInstance.get(`${API_URL}/course/userhome`)
@@ -53,7 +53,7 @@ function UserPage() {
           TOP COURSES FOR YOU
         </div>
         <div className='flex my-5 pl-6'>
-          {course && course.map(course=>{return(
+          {course.length > 0 && course.map(course=>{return(
           <div className='flex-1 flex justify-center'>
            <Card isPressable onPress={()=>handleClick(course.id)}  className="w-[400px] h-56 cursor-pointer">
               <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">

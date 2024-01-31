@@ -2,17 +2,23 @@ import React, { useEffect } from 'react'
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Image} from "@nextui-org/react";
 import { useNavigate } from 'react-router-dom';
 
-function SuccessModal() {
+function SuccessModal({prop:setModal}) {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const navigate = useNavigate()
+
+  const handleClose =()=> {
+    setModal(false)
+    navigate('/user/mylearning')
+  }
+
   useEffect(()=>{
     onOpen()
   },[])
+
   return (
     <div>
-      <Modal size={'2xl'} isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal size={'2xl'} onClose={handleClose} isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
-          {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1 text-green-600 font-serif text-3xl font-bold text-center">WELL DONE</ModalHeader>
               <ModalBody >
@@ -40,7 +46,6 @@ function SuccessModal() {
                 </Button>
               </ModalFooter>
             </>
-          )}
         </ModalContent>
       </Modal>
       

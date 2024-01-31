@@ -3,19 +3,19 @@ import AdminNav from '../../../components/admin/AdminNav'
 import AdminSideBar from '../../../components/admin/AdminSideBar'
 import { Accordion, AccordionItem, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Image, Input, Listbox, ListboxItem, Textarea } from '@nextui-org/react'
 import { API_URL } from '../../../constants/url'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import {StripDate} from '../../../contents/dateStrip/utilities'
 import axiosInstance from '../../../axios/AxiosInstance'
 
 function AdminInstructorView() {
 
-    const id = localStorage.getItem('current_instructor')
+    const {instructor_id} = useParams()
     const navigate = useNavigate()
     const [instructor,setinstructor] = useState({})
     const [activebtn, setactivebtn] = useState("")
     const handleActive = () =>{
         setactivebtn("lodding")
-        axiosInstance.get(`${API_URL}/eduadmin/instructor_status/${id}`)
+        axiosInstance.get(`${API_URL}/eduadmin/instructor_status/${instructor_id}`)
         .then(response=>{
             
             setactivebtn(response.data.status)
@@ -26,13 +26,11 @@ function AdminInstructorView() {
 
     }
     const handleCourse = (id) => {
-        console.log(id)
-        localStorage.setItem('course_id', id) 
-        navigate('/eduadmin/course/view')
+        navigate(`/eduadmin/course/view/${id}`)
 
     }
     useEffect(()=>{
-        axiosInstance.get(`${API_URL}/eduadmin/instructors_details/${id}`)
+        axiosInstance.get(`/eduadmin/instructors_details/${instructor_id}`)
         .then(response=>{
             console.log(response.data)
             setinstructor(response.data) 
@@ -42,10 +40,9 @@ function AdminInstructorView() {
             console.log(error.data)
         })
     },[])
+
   return (
     <div>
-        <AdminNav />
-        <AdminSideBar/> 
         <div className='ml-56 mr-8 mt-10'>
         <div className='grid grid-cols-3 grid-flow-row-dense mt-4'>
               <div className='mx-16'> 

@@ -3,14 +3,14 @@ import React, { useState } from 'react'
 import ReactPlayer from 'react-player'
 import { API_URL } from '../../constants/url'
 import axiosInstance from '../../axios/AxiosInstance'
-import Loading from '../../components/loading/Loading'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IoSend } from 'react-icons/io5'
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { StripDate, StripTime } from '../dateStrip/utilities'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
+import { end_loading, loading } from '../../Slices/LodingSlice'
 
 
 
@@ -20,21 +20,17 @@ function UserOrderedcourse({prop:courseDetails}) {
     const {course_id}= useParams()
     const navigate = useNavigate()
     const [course,setCourse]=useState(courseDetails)
-    const[loading,setLoading] = useState(false)
     const [reviews, setReviews] = useState([])
     const [addreview, setAddreview] = useState("")
+    const dispatch = useDispatch()
 
   
     const handleChapterSelected = (id) =>{
-        setLoading(true)
         axiosInstance.get(`${API_URL}/course/chapter_details/${id}`)
         .then(response=>{
-          setLoading(false)
           setCourse(response.data)
-        .catch(error=>{
-          setLoading(false)
-          console.log(console.log(error))
         })
+        .catch(error=>{
         })
       }
 
@@ -147,7 +143,7 @@ function UserOrderedcourse({prop:courseDetails}) {
     <div className='col-span-8'>
       {course && course.initial_chapter?
         <>
-        {loading?<div className='w-full h-44'><Loading /></div>:<ReactPlayer  height="auto" width="auto" url={`${API_URL}${course.initial_chapter.video}`} controls/>}
+       <ReactPlayer  height="auto" width="auto" url={`${API_URL}${course.initial_chapter.video}`} controls/>
       <div className='my-4 text-3xl font-bold font-sans'><span onClick={()=>handleContent(0)} className='px-8 cursor-pointer'>About</span><span onClick={()=>handleContent(1)} className='mr-8 cursor-pointer'>Reviews</span></div>
       {content == 0 &&  
       <div className='mt-8 grid gap-7'>
@@ -172,7 +168,7 @@ function UserOrderedcourse({prop:courseDetails}) {
       </div>}
       {content == 1 &&  
       <div className='flex flex-col justify-center align-middle'>
-        <div className='w-full'> <Textarea value={addreview} onChange={e=>setAddreview(e.target.value)} endContent={<IoSend onClick={handleSubmit} className='cursor-pointer' size={25}/>}  variant="bordered" placeholder="Write Your Review" /></div>
+        <div className='w-full'> <Textarea value={addreview} onChange={e=>setAddreview(e.target.value.trimStart())} endContent={<IoSend onClick={handleSubmit} className='cursor-pointer' size={25}/>}  variant="bordered" placeholder="Write Your Review" /></div>
         {reviews.length > 0 ? 
         <div className='my-3'>
           <div className='flex flex-col gap-5 mt-5'>

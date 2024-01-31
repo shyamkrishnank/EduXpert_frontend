@@ -42,6 +42,9 @@ import FullCourse from './pages/user/course/FullCourse';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import EnterNewPassword from './pages/auth/EnterNewPassword';
 import Reviews from './pages/instructor/Reviews/Reviews';
+import AdminOrders from './pages/admin/orders/AdminOrders';
+import AdminOrderDetails from './pages/admin/orders/AdminOrderDetails';
+import UnAuth from './pages/auth/UnAuth';
 
 
 function App() {
@@ -51,7 +54,7 @@ function App() {
    <Router>
     <Routes>
         <Route path='/'  element={<InitialAuth />}>
-           <Route path='home' element={<Landingpage />} /> 
+           <Route index element={<Landingpage />} /> 
            <Route path='signup/otp' element={<OtpPage/>} />
            <Route path='login' element={<LoginPage />} />
            <Route path='signup' element={<SignupPage/>} /> 
@@ -96,24 +99,26 @@ function App() {
              <Route index element={<AdminHome />} />
              <Route path='course' >
                 <Route path ="" element={<AdminCourse />} />
-                 <Route path='view' element={<AdminCourseView/>} />
+                 <Route path='view/:course_id' element={<AdminCourseView/>} />
              </Route>
              <Route path='users' >
                 <Route path="" element={<AdminUsers />} />
-                <Route path='view' element={<AdminUserView />} />
-
+                <Route path='view/:user_id' element={<AdminUserView />} />
              </Route>
              <Route path='instructors'>
               <Route path="" element={<AdminInstructors />} />
-              <Route path='view' element={<AdminInstructorView />} />
+              <Route path='view/:instructor_id' element={<AdminInstructorView />} />
              </Route>
-
+             <Route path='orders'>
+                 <Route index element={<AdminOrders />} />
+                 <Route path='view/:order_id' element={<AdminOrderDetails />} />
+             </Route>
          </Route>
+         <Route path='*' element={<UnAuth />} />
     </Routes>
    </Router> 
    <ToastContainer />   
    {loading &&   <Loading /> }
- 
    </>
   )
 }

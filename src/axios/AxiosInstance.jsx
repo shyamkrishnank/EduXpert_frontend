@@ -6,7 +6,7 @@ const cookies = localStorage.getItem('refresh_token')?JSON.parse(localStorage.ge
 
 const axiosInstance=axios.create(
     {
-        baseURL:"http://127.0.0.1:8000",
+        baseURL:"http://51.21.82.18/",
         headers:{
             'Authorization':token?`Bearer ${token}`:null,
             'Accept':'application/json',

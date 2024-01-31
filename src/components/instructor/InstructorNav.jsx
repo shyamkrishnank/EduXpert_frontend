@@ -24,7 +24,15 @@ export default function InstructorNav () {
     }
     const handlenotification = (notification) =>{
       if (notification.notification_type == 'message'){
-        navigate('/instructor/chats')
+        axiosInstance.get(`/notifications/status/${notification.user}`)
+       .then(response=>{
+        setNotification(response.data)
+         })
+       .then(error=>{
+        console.log(error)
+        })
+        console.log(notification.user)
+        navigate('/instructor/chats',{state:{chat_with_id : notification.user}})
       }
     }
 

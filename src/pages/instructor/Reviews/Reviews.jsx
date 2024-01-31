@@ -134,6 +134,7 @@ export default function Reviews() {
     <div className='mt-9 ml-28'>
       <div className='w-4/5'><span className='text-3xl italic font-bold'>Reviews</span></div>
       <div>
+      {reviews && reviews.length > 0 ?
       <Table aria-label="Example static collection table" className='pr-5'>
       <TableHeader>
         <TableColumn className='w-3/12' >Student</TableColumn>
@@ -181,7 +182,12 @@ export default function Reviews() {
          }
       </TableBody>
     </Table>
-    {reviews &&  <div className='flex w-full justify-center mt-4'><Pagination showControls total={count} onChange={(page)=>handleClick(page)} initialPage={1} /></div>}
+    :
+    <div className='flex justify-center w-full mt-10 text-xl'>
+        No Reviews by the Students!
+     </div>
+     }
+    {reviews && reviews.length > 0 && <div className='flex w-full justify-center mt-4'><Pagination showControls total={count} onChange={(page)=>handleClick(page)} initialPage={1} /></div>}
       </div>
 
       

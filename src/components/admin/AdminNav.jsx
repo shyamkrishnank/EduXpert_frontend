@@ -3,6 +3,8 @@ import {Navbar, Input, NavbarBrand, NavbarContent, NavbarItem, Link, Button, use
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../Slices/AuthSlice';
 import { useNavigate } from 'react-router-dom';
+import { AiOutlineLogout } from "react-icons/ai";
+
 
 
 function AdminNav() {
@@ -12,8 +14,7 @@ function AdminNav() {
   const handleClick = () =>{
     localStorage.removeItem('auth_token')
     dispatch(logout())
-    navigate('/eduadmin')
-    
+    navigate('/admin')
   }
   return (
     <Navbar className="shadow-lg">
@@ -21,8 +22,7 @@ function AdminNav() {
       <img  onClick={()=>navigate("/")} className="w-20 cursor-pointer " src={'/logo.png'} />
     </NavbarBrand>
     <NavbarItem>
-      {check && <Button onClick={handleClick} color='danger'>Logout</Button>
-}
+      {check && <AiOutlineLogout onClick={handleClick} className='text-red-600 cursor-pointer '  size={25}/>}
     </NavbarItem>
   </Navbar>
 );

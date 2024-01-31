@@ -5,14 +5,19 @@ import { Button, Image, Input, Textarea } from '@nextui-org/react'
 import { API_URL } from '../../../constants/url'
 import { StripDate } from '../../../contents/dateStrip/utilities'
 import axiosInstance from '../../../axios/AxiosInstance'
+import { useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { end_loading, loading } from '../../../Slices/LodingSlice'
 
 function AdminUserView() {
-    const id = localStorage.getItem('current_user')
+    const {user_id} = useParams()
     const [user,setUser] = useState({})
     const [activebtn, setactivebtn] = useState("")
+    const dispatch = useDispatch()
+
     const handleActive = () =>{
         setactivebtn("lodding")
-        axiosInstance.get(`${API_URL}/eduadmin/user_status/${id}`)
+        axiosInstance.get(`${API_URL}/eduadmin/user_status/${user_id}`)
         .then(response=>{
             setactivebtn(response.data.status)
         })
@@ -21,21 +26,22 @@ function AdminUserView() {
         })
 
     }
+
     useEffect(()=>{
-        axiosInstance.get(`${API_URL}/eduadmin/users_details/${id}`)
+        dispatch(loading())
+        axiosInstance.get(`${API_URL}/eduadmin/users_details/${user_id}`)
         .then(response=>{
             setUser(response.data) 
             setactivebtn(response.data.is_active)
+            dispatch(end_loading())
         })
         .catch(error=>{
-            console.log(error.data)
+            dispatch(end_loading())
         })
 
     },[])
   return (
     <div>
-        <AdminNav />
-        <AdminSideBar/> 
         <div className='ml-56 mr-8 mt-10'>
         <div className='grid grid-cols-3 grid-flow-row-dense mt-4'>
               <div className='mx-16'> 
@@ -43,7 +49,7 @@ function AdminUserView() {
                     width={200}
                     height={200}
                     alt="/profileicon.jpg"
-                    src="/profileicon.jpg"
+                    src={user.image?`${API_URL}${user.image}`:"/profileicon.jpg"}
                     className='cursor-pointer'
                     onClick=""
              />

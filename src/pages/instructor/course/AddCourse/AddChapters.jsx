@@ -9,8 +9,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
 
-
-
 function AddChapters() {
     const objects = {
       title : "",

@@ -7,21 +7,26 @@ import {Pagination} from "@nextui-org/react";
 import { API_URL } from '../../../constants/url';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../axios/AxiosInstance';
+import { useDispatch } from 'react-redux';
+import { end_loading, loading } from '../../../Slices/LodingSlice';
 
 function AdminUsers() {
   const initialPage = `${API_URL}/eduadmin/users`
   const navigate = useNavigate()
   const [pageCount, setPageCount] = useState(0)
   const [users,setUsers] = useState([])
+  const dispatch = useDispatch()
+
   const fetchData = (url=initialPage)=>{
+      dispatch(loading())
       axiosInstance.get(url)
       .then(response=>{
-          console.log(response.data)
           setUsers(response.data.results)
-          setPageCount(Math.ceil(response.data.count/2))
+          setPageCount(Math.ceil(response.data.count/6))
+          dispatch(end_loading())
       })
       .catch(error=>{
-          console.log(error.message)
+        dispatch(end_loading())
       })
   }
   useEffect(()=>{
@@ -32,16 +37,12 @@ function AdminUsers() {
     fetchData(url)     
   }
   const handleView = (id) =>{
-    localStorage.setItem('current_user', id)
-    navigate('/eduadmin/users/view')
-
+    navigate(`/eduadmin/users/view/${id}`)
   }
     
 
   return (
     <div>
-        <AdminNav />
-        <AdminSideBar/> 
         <div className='ml-56 w-9/12 mt-10'>
         <Table aria-label="Example table with dynamic content">
       <TableHeader>   
@@ -55,8 +56,8 @@ function AdminUsers() {
       <TableBody>
         {users.map((user,index)=>{return(
           <TableRow key={index} >
-               <TableCell>1</TableCell>
-               <TableCell><Avatar src={user.image?`${API_URL}${user.image}`:"/profileicon.jpg"}/></TableCell>
+               <TableCell>{index+1}</TableCell>
+               <TableCell><Avatar src={user.image?`${user.image}`:"/profileicon.jpg"}/></TableCell>
                <TableCell>{user.first_name}</TableCell>
                <TableCell>{user.email}</TableCell>
                <TableCell>{user.is_active?"Active":"Blocked"}</TableCell> 
@@ -69,8 +70,6 @@ function AdminUsers() {
     </Table>  
     <div className='flex w-full justify-center mt-4'><Pagination showControls total={pageCount} onChange={(page)=>handleClick(page)} initialPage={1} /></div>
      </div>
-      
-      
     </div>
   )
 }

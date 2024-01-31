@@ -85,7 +85,6 @@ function Profile() {
              </div>
                <div className='col-start-1 mt-6 col-end-7 justify-self-center'>
                  <Button onClick={handleSubmit} color="success" variant="bordered" >Save Changes</Button>
-                 <h1 className='mt-3 text-danger cursor-pointer'>Change Password ?</h1>
                 </div>
             </div> 
             <div>

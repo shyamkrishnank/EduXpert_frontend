@@ -37,7 +37,7 @@ function FullCourse() {
                    {`${key} Courses `} 
                 </h1>
                 {
-                category[key].length > 0 ?
+               category[key] && category[key].length > 0 ?
                 <div className='grid grid-cols-12 gap-4 px-5 my-8 flex-nowrap '>
                     {
                 category[key].map((course,index)=>

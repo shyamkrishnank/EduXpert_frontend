@@ -13,6 +13,7 @@ import { end_loading, loading } from '../../../Slices/LodingSlice'
 function ChatPageIns() {
     const location = useLocation()
     const chat_with_id = location.state ? location.state.chat_with_id : null
+    console.log('chat with',chat_with_id)
     const [message, setMessage] = useState()
     const scrollContainerRef = useRef();
     const instructor_id = useSelector(state=>state.auth.id)
@@ -32,8 +33,8 @@ function ChatPageIns() {
           .catch(error=>{
             console.log(error)
           })
-
       }
+      
       useEffect(()=>{
         if (chat_with_id){
           handleClick(chat_with_id)
@@ -49,6 +50,7 @@ function ChatPageIns() {
          console.log(error)
        })
       },[])
+
       useEffect(()=>{
         socket.current  = new WebSocket(`ws://127.0.0.1:8000/ws/chat/?token=${token}&chat_with=${id}`)
         socket.current.onopen = () =>{

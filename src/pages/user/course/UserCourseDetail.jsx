@@ -28,7 +28,6 @@ function UserCourseDetail() {
     axiosInstance.post(`/course/get_course/${course_id}`,data)
     .then(response=>{
       setCourseDetails(response.data)
-      console.log(response.data)
     })
     .catch(error=>{
       console.log(error.message)
@@ -40,12 +39,11 @@ function UserCourseDetail() {
       "id" : course_id,
       "amount" : courseDetails.price
     }
-    console.log(data)
     axiosInstance.post(`${API_URL}/order/razorpay`, data)
     .then((response)=>{
      RazorPay(response.data,Razorpay,user_id)
       .then(response=>{
-        // setModel(true)
+        setModel(true)
         toast.success('Course Ordered Successfully!', {
           position: "top-center",
           autoClose: 2000,
@@ -56,7 +54,6 @@ function UserCourseDetail() {
           progress: undefined,
           theme: "colored",
           })
-        navigate('/user/mylearning')
       })
     })
     .catch(error=>{
@@ -66,7 +63,7 @@ function UserCourseDetail() {
   }
   return (
     <div >
-        {model ? <SuccessModal  />: null}
+        {model ? <SuccessModal prop={setModel} />: null}
         {courseDetails && courseDetails.message == 'not purchased' && 
         <div>
         <div className='flex py-8 w-full mt-5 bg-slate-900'>

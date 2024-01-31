@@ -7,6 +7,8 @@ import { API_URL } from '../../../constants/url';
 import { useNavigate } from 'react-router-dom';
 import {StripDate} from '../../../contents/dateStrip/utilities'
 import axiosInstance from '../../../axios/AxiosInstance';
+import { useDispatch } from 'react-redux';
+import { end_loading, loading } from '../../../Slices/LodingSlice';
 
 
 
@@ -15,15 +17,19 @@ function AdminCourse() {
     const navigate = useNavigate()
     const [pageCount, setPageCount] = useState(0)
     const [courses,setCourses] = useState([])
+    const dispatch = useDispatch()
+
+
     const fetchData = (url=initialPage)=>{
+        dispatch(loading())
         axiosInstance.get(url)
         .then(response=>{
-            console.log(response.data)
             setCourses(response.data.results)
-            setPageCount(Math.ceil(response.data.count/2))
+            setPageCount(Math.ceil(response.data.count/6))
+            dispatch(end_loading())
         })
         .catch(error=>{
-            console.log(error.message)
+            dispatch(end_loading())
         })
     }
     useEffect(()=>{
@@ -36,14 +42,11 @@ function AdminCourse() {
 
     }
     const handleView = (id) =>{
-        localStorage.setItem('course_id', id) 
-        navigate('view')
+        navigate(`view/${id}`)
     }
    
   return (
     <div>
-        <AdminNav />
-        <AdminSideBar/> 
         <div className='ml-56 w-9/12 mt-10'>
         <Table aria-label="Example table with dynamic content">
       <TableHeader>   
@@ -56,26 +59,12 @@ function AdminCourse() {
       <TableBody>
         {courses.map((course,index)=>{return(
           <TableRow key={index} >
-               <TableCell>1</TableCell>
+               <TableCell>{index+1}</TableCell>
                <TableCell>{course.course_title}</TableCell>
                <TableCell>{StripDate(course.created_at)}</TableCell>
                <TableCell>{course.status}</TableCell>
                <TableCell>
-                <Dropdown>
-                <DropdownTrigger>
-                    <Button 
-                    isIconOnly
-                    size="sm" variant="light"
-                    >
-                        :
-                    </Button>
-                </DropdownTrigger>
-                <DropdownMenu 
-                    aria-label="Action event example">
-                    <DropdownItem onClick={()=>handleView(course.id)} key="view">View</DropdownItem>
-                    <DropdownItem key="delete" className="text-danger" color="danger"> Delete  </DropdownItem>
-                </DropdownMenu>
-                </Dropdown>
+                    <Button onClick={()=>handleView(course.id)} >View</Button>
                 </TableCell>
           </TableRow>
         )})}
