@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Chip, useSelect} from "@nextui-org/react";
+import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Chip} from "@nextui-org/react";
 import axiosInstance from '../../axios/AxiosInstance';
 import { jwtDecode } from 'jwt-decode';
 import { useDispatch } from 'react-redux';

@@ -1,4 +1,4 @@
-import { Accordion, AccordionItem, Avatar, Badge, Checkbox, Chip, Input, Link, Textarea, useAccordion } from '@nextui-org/react'
+import { Accordion, AccordionItem, Avatar, Badge, Checkbox, Link, Textarea} from '@nextui-org/react'
 import React, { useState } from 'react'
 import ReactPlayer from 'react-player'
 import { API_URL } from '../../constants/url'
@@ -7,7 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { IoSend } from 'react-icons/io5'
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
-import { StripDate, StripTime } from '../dateStrip/utilities'
+import { StripDate } from '../dateStrip/utilities'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { end_loading, loading } from '../../Slices/LodingSlice'
@@ -26,17 +26,21 @@ function UserOrderedcourse({prop:courseDetails}) {
 
   
     const handleChapterSelected = (id) =>{
-        axiosInstance.get(`${API_URL}/course/chapter_details/${id}`)
+        dispatch(loading())
+        axiosInstance.get(`/course/chapter_details/${id}`)
         .then(response=>{
           setCourse(response.data)
+          dispatch(end_loading())
         })
         .catch(error=>{
+          dispatch(end_loading())
+
         })
       }
 
       const handleContent = (content) =>{
         if (content == 1){
-          axiosInstance.get(`course/get_review/${course_id}`)
+          axiosInstance.get(`/course/get_review/${course_id}`)
           .then(response=>{
             setReviews(response.data)
           })
@@ -58,7 +62,7 @@ function UserOrderedcourse({prop:courseDetails}) {
           'course' : course_id,
           'comment' : addreview,
         }
-        axiosInstance.post('course/addreview/', data)
+        axiosInstance.post('/course/addreview/', data)
         .then(response=>{
           setReviews(prev=>[response.data,...prev])
           toast.success('Review Added Successfully!', {
@@ -95,12 +99,6 @@ function UserOrderedcourse({prop:courseDetails}) {
           ...prev.slice(index + 1)
         ])
         axiosInstance.get(`/course/like_review/${id}`)
-        .then(response=>{
-          console.log(response)
-        })
-        .catch(error=>{
-          console.log(error)
-        })
       }
 
       const handleDelete =(id,index)=>{
@@ -143,7 +141,7 @@ function UserOrderedcourse({prop:courseDetails}) {
     <div className='col-span-8'>
       {course && course.initial_chapter?
         <>
-       <ReactPlayer  height="auto" width="auto" url={`${API_URL}${course.initial_chapter.video}`} controls/>
+       <ReactPlayer height={500} width="auto" fallback="https://www.youtube.com/watch?v=qxOkaU6RVz4" url={`${API_URL}${course.initial_chapter.video}`} controls/>
       <div className='my-4 text-3xl font-bold font-sans'><span onClick={()=>handleContent(0)} className='px-8 cursor-pointer'>About</span><span onClick={()=>handleContent(1)} className='mr-8 cursor-pointer'>Reviews</span></div>
       {content == 0 &&  
       <div className='mt-8 grid gap-7'>
@@ -192,7 +190,7 @@ function UserOrderedcourse({prop:courseDetails}) {
                     {
                       review.reply.map((reply,index)=>{
                         return(
-                          <div className='flex'>
+                          <div key={index} className='flex'>
                           <div className='w-1/12'><Avatar name={reply.user ? reply.user.get_full_name:null}  size="sm" /></div>
                             <div className='flex flex-col gap-3 w-full'>
                                 <div className='flex fle gap-5'>

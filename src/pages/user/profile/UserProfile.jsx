@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import UseProfile from '../../../hooks/UseProfile'
-import { API_URL } from '../../../constants/url'
+import { API_URL, STATIC_IMAGE_URL } from '../../../constants/url'
 import { Button, Image, Input, Textarea } from '@nextui-org/react'
 import ObjectToForm from '../../instructor/util/ObjectToForm'
 import { toast } from 'react-toastify'
@@ -13,9 +13,11 @@ function UserProfile() {
   const [image,setImage] = useState('')
   const imageRef = useRef('')
   const [user,setUser] = UseProfile()
+
   const handleImage = (e) =>{
         imageRef.current.click()
   }
+
   const handleSubmit = () =>{
     if (user.first_name == "" || user.last_name == "" ){
       toast.error('First name and Last name should be filled!', {
@@ -36,7 +38,7 @@ function UserProfile() {
     if (image){
       data.append('image',image)
     }
-    axiosInstance.post(`${API_URL}/users/profile/${id}`,data)
+    axiosInstance.post(`/users/profile/${id}`,data)
     .then(()=>{
       dispatch(end_loading())
       toast.success('Profile Edited Successfully!', {
@@ -65,12 +67,12 @@ function UserProfile() {
             <p>You can edit your personal informations here</p>
             <div className='grid grid-cols-3 grid-flow-row-dense mt-4'>
               <div className='mx-16'> 
-              <input type='file' value={''} onChange={e=>{setImage(e.target.files[0])}}  ref={imageRef} className='hidden' />
+              <input type='file' accept="image/*" value={''} onChange={e=>{setImage(e.target.files[0])}}  ref={imageRef} className='hidden' />
                 <Image
                     width={200}
                     height={200}
                     alt="/profileicon.jpg"
-                    src={image?URL.createObjectURL(image):user.image?`${API_URL}${user.image}`:"/profileicon.jpg"}
+                    src={image?URL.createObjectURL(image):user.image?`${API_URL}${user.image}`:`${STATIC_IMAGE_URL}/profileicon.jpg`}
                     className='cursor-pointer'
                     onClick={handleImage}
              />

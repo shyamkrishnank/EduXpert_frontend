@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import AdminNav from '../../../components/admin/AdminNav'
-import AdminSideBar from '../../../components/admin/AdminSideBar'
 import { Button, Image, Input, Textarea } from '@nextui-org/react'
-import { API_URL } from '../../../constants/url'
+import { API_URL, STATIC_IMAGE_URL } from '../../../constants/url'
 import { StripDate } from '../../../contents/dateStrip/utilities'
 import axiosInstance from '../../../axios/AxiosInstance'
 import { useParams } from 'react-router-dom'
@@ -17,7 +15,7 @@ function AdminUserView() {
 
     const handleActive = () =>{
         setactivebtn("lodding")
-        axiosInstance.get(`${API_URL}/eduadmin/user_status/${user_id}`)
+        axiosInstance.get(`/eduadmin/user_status/${user_id}`)
         .then(response=>{
             setactivebtn(response.data.status)
         })
@@ -29,7 +27,7 @@ function AdminUserView() {
 
     useEffect(()=>{
         dispatch(loading())
-        axiosInstance.get(`${API_URL}/eduadmin/users_details/${user_id}`)
+        axiosInstance.get(`/eduadmin/users_details/${user_id}`)
         .then(response=>{
             setUser(response.data) 
             setactivebtn(response.data.is_active)
@@ -49,7 +47,7 @@ function AdminUserView() {
                     width={200}
                     height={200}
                     alt="/profileicon.jpg"
-                    src={user.image?`${API_URL}${user.image}`:"/profileicon.jpg"}
+                    src={user.image?`${API_URL}/${user.image}`:`${STATIC_IMAGE_URL}/profileicon.jpg`}
                     className='cursor-pointer'
                     onClick=""
              />

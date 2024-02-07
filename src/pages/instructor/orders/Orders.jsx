@@ -10,13 +10,11 @@ import { end_loading, loading } from '../../../Slices/LodingSlice'
 
 function Orders() {
     const user = useSelector(state=>state.auth)
-    const initialPage = `order/instructor/${user.id}`
+    const initialPage = `/order/instructor/${user.id}`
     const navigate = useNavigate()
     const [orders,setOrders] = useState()
     const [pageCount, setPageCount] = useState(0)
     const dispatch = useDispatch()
-
-
 
 
     const fetchData = (url=initialPage)=>{
@@ -34,7 +32,7 @@ function Orders() {
     
     const handleClick = (page) =>{
         console.log(page)
-        const url = `order/instructor/${user.id}?page=${page}`
+        const url = `/order/instructor/${user.id}?page=${page}`
         fetchData(url)   
     }
     

@@ -39,7 +39,7 @@ function UserCourseDetail() {
       "id" : course_id,
       "amount" : courseDetails.price
     }
-    axiosInstance.post(`${API_URL}/order/razorpay`, data)
+    axiosInstance.post(`/order/razorpay`, data)
     .then((response)=>{
      RazorPay(response.data,Razorpay,user_id)
       .then(response=>{

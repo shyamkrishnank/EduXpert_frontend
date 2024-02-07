@@ -35,7 +35,7 @@ function OrderPage() {
         <div className='grid grid-cols-12 gap-3 px-10 mt-5'>
             {courses && courses.map((course,index)=>{
                return(
-                <div onClick={()=>handleClick(course.id)}  className='col-span-3'>
+                <div key={index} onClick={()=>handleClick(course.id)}  className='col-span-3'>
                      <Card className="h-[250px] cursor-pointer">
                         <CardHeader className="pb-0 pt-2  flex-col items-center">
                         <h4 className="font-bold text-large">{course.course_title}</h4>

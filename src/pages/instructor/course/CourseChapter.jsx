@@ -1,7 +1,7 @@
 import React, {useRef, useState } from 'react'
-import { Button, Chip, Image, Input, Switch, Textarea } from '@nextui-org/react'
+import { Button, Chip, Image, Input, Textarea } from '@nextui-org/react'
 import { IoMdAdd} from 'react-icons/io'
-import { API_URL } from '../../../constants/url'
+import { API_URL, STATIC_IMAGE_URL } from '../../../constants/url'
 import ReactPlayer from 'react-player'
 import { useParams } from 'react-router-dom'
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,useDisclosure} from "@nextui-org/react";
@@ -32,7 +32,7 @@ function CourseChapter() {
 
     const handleChapterSelected = (id) =>{
       dispatch(loading())
-      axiosInstance.get(`${API_URL}/course/chapter_details/${id}`)
+      axiosInstance.get(`/course/chapter_details/${id}`)
       .then(response=>{
         setCourse(response.data)
         dispatch(end_loading())
@@ -72,14 +72,14 @@ function CourseChapter() {
         });
     }
     else{ 
-      handleClose()
       dispatch(loading())
+      handleClose()
       const formData = new FormData
       Object.entries(chapter).forEach(([key,value])=>{
         formData.append(key,value)
       })
       formData.append('course',course_id)
-      axiosInstance.post(`${API_URL}/course/add_chapter`, formData)
+      axiosInstance.post(`/course/add_chapter`, formData)
       .then(response=>{
         setCourse(response.data)
         dispatch(end_loading())
@@ -113,7 +113,7 @@ function CourseChapter() {
     <div className='col-span-8'>
       {course.initial_chapter?
         <>
-      <ReactPlayer  height="auto" width="90%" url={`${API_URL}${course.initial_chapter.video}`} controls/>
+      <ReactPlayer  height="auto" width="90%" url={`${API_URL}/${course.initial_chapter.video}`} controls/>
       <div className='my-4 text-3xl font-bold font-sans'><span onClick={()=>handleContent(0)} className='px-8 cursor-pointer'>About</span></div>
       {content == 0 &&  <div className='mt-8'>
          <Input className='w-6/12 mb-2' onChange={e=>setEditChapter(prev=>({...prev,title:e.target.value}))}   label="Title" variant="bordered"  value={course.initial_chapter.title} size="lg" type='text' />
@@ -128,8 +128,8 @@ function CourseChapter() {
         <div className='col-span-3'> 
         {course.initial_chapter && <div className='mb-7'><h1 className='text-2xl font-bold font-sans'>Chapters</h1></div> } 
            
-           {course.all_chapters && course.all_chapters.map(chapter=>{return(
-            <div className='flex justify-between start'>
+           {course.all_chapters && course.all_chapters.map((chapter,index)=>{return(
+            <div key={index} className='flex justify-between start'>
            <Chip color={chapter.id == course.initial_chapter.id?"success":"default"} variant="light" onClick={()=>handleChapterSelected(chapter.id)} startContent={<FaRegCircleDot size={15} />} className="text-base font-bold mb-4 py-2 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105">{chapter.title}</Chip> 
            </div>
            )})}
@@ -170,7 +170,7 @@ function CourseChapter() {
               {chapter.video?<ReactPlayer  height="30vh" width="auto" url={URL.createObjectURL(chapter.video )} controls/>:
                   <Image
                     width={300}
-                    src="/uploadimage.jpg"
+                    src={`${STATIC_IMAGE_URL}/uploadimage.jpg`}
                     className='mt-3 cursor-pointer'
                     onClick={handleImageClick}
                   />

@@ -9,6 +9,7 @@ import { courseDelete } from '../../../contents/instructor/Course';
 import ObjectToForm from '../util/ObjectToForm';
 import { toast } from 'react-toastify';
 import axiosInstance from '../../../axios/AxiosInstance';
+import { end_loading, loading } from '../../../Slices/LodingSlice';
 
 function CourseView() {
     const navigate = useNavigate()
@@ -53,6 +54,7 @@ function CourseView() {
 
         }
         else{
+        dispatch(loading())
         if (course.price == ""){
             course.price = 0
         }
@@ -61,8 +63,9 @@ function CourseView() {
         if(image){
             formData.append('image',image)
         }
-        axiosInstance.post(`${API_URL}/course/edit_course/${id}`,formData)
+        axiosInstance.post(`/course/edit_course/${id}`,formData)
         .then(respone=>{
+            dispatch(end_loading())
             navigate(`/instructor/course/chapters/${course_id}`)
             toast.success('Course Edited Successfully!', {
                 position: "top-left",
@@ -76,6 +79,7 @@ function CourseView() {
                 });
         })
         .catch(error=>{
+            dispatch(end_loading())
             console.log(error)
 
         })

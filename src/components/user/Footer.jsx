@@ -1,10 +1,11 @@
+import React from 'react'
 import { Image } from '@nextui-org/react'
-import React, { useEffect } from 'react'
+import { STATIC_IMAGE_URL } from '../../constants/url'
 
 function Footer() {
   return (
     <div className='h-56 shadow-xl text-white bg-black mt-9 flex'>
-        <div className='flex-2 pt-6  pl-20'><Image width={90} src="/logo.png" />
+        <div className='flex-2 pt-6  pl-20'><Image width={90} src={`${STATIC_IMAGE_URL}/logo.png`}  />
         <p className='text-md w-9/12 font-semibold'>Unlocking Knowledge, Empowering Minds: eduXpert  Your Pathway to Excellence!</p>
         </div>
         <div className='flex-1  pt-6 pl-6'>

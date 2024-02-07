@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../../axios/AxiosInstance'
-import { Table, TableCell, TableBody,TableColumn, TableHeader, TableRow, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Avatar, Pagination } from '@nextui-org/react'
+import { Table, TableCell, TableBody,TableColumn, TableHeader, TableRow, Button, Pagination } from '@nextui-org/react'
 import { StripDate } from '../../../contents/dateStrip/utilities'
 import { useDispatch } from 'react-redux'
 import { end_loading, loading } from '../../../Slices/LodingSlice'

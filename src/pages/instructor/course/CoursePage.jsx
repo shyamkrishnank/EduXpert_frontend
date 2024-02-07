@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {Button} from "@nextui-org/react";
 import { IoIosAdd } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
 import {Card, CardHeader, CardBody, Image} from "@nextui-org/react";
 import UseInsCourse from '../../../hooks/UseInsCourse';
 import { API_URL } from '../../../constants/url';
-import { useDispatch } from 'react-redux';
 
 
 function CoursePage() {
@@ -43,7 +42,7 @@ function CoursePage() {
                 <Image
                   alt="Card background"
                   className="object-cover rounded-xl"
-                  src={course.image?`${API_URL}${course.image}`:null}
+                  src={course.image?`${API_URL}/${course.image}`:null}
                   width={270}
                 />
                 <h4 >{course.status}</h4>
@@ -52,9 +51,9 @@ function CoursePage() {
           </div>
             )
           }):
-          <div className='flex justify-center w-full mt-10 text-xl'>
-              Create A Coursekkkkkkkkkkkkkkkkkkkkkkkkk
-           </div>
+          <div className='flex justify-center col-span-12 w-full mt-10 ml-56 text-xl'>
+              No Orders For Any Orders Yet!
+          </div>
           }
 
         </div> 

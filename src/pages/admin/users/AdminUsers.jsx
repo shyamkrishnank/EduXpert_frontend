@@ -1,17 +1,15 @@
 
 import React, { useEffect, useState } from 'react'
-import AdminNav from '../../../components/admin/AdminNav'
-import AdminSideBar from '../../../components/admin/AdminSideBar'
-import { Table, TableCell, TableBody,TableColumn, TableHeader, TableRow, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Avatar } from '@nextui-org/react'
+import { Table, TableCell, TableBody,TableColumn, TableHeader, TableRow, Button, Avatar } from '@nextui-org/react'
 import {Pagination} from "@nextui-org/react";
-import { API_URL } from '../../../constants/url';
+import { STATIC_IMAGE_URL } from '../../../constants/url';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../axios/AxiosInstance';
 import { useDispatch } from 'react-redux';
 import { end_loading, loading } from '../../../Slices/LodingSlice';
 
 function AdminUsers() {
-  const initialPage = `${API_URL}/eduadmin/users`
+  const initialPage = `/eduadmin/users`
   const navigate = useNavigate()
   const [pageCount, setPageCount] = useState(0)
   const [users,setUsers] = useState([])
@@ -33,7 +31,7 @@ function AdminUsers() {
       fetchData()
   },[])
   const handleClick = (page) =>{
-    const url = `${API_URL}/eduadmin/users?page=${page}`
+    const url = `/eduadmin/users?page=${page}`
     fetchData(url)     
   }
   const handleView = (id) =>{
@@ -57,7 +55,7 @@ function AdminUsers() {
         {users.map((user,index)=>{return(
           <TableRow key={index} >
                <TableCell>{index+1}</TableCell>
-               <TableCell><Avatar src={user.image?`${user.image}`:"/profileicon.jpg"}/></TableCell>
+               <TableCell><Avatar src={user.image?`${user.image}`:`${STATIC_IMAGE_URL}/profileicon.jpg`}/></TableCell>
                <TableCell>{user.first_name}</TableCell>
                <TableCell>{user.email}</TableCell>
                <TableCell>{user.is_active?"Active":"Blocked"}</TableCell> 

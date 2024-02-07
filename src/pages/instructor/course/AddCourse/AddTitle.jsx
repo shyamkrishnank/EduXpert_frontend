@@ -3,11 +3,12 @@ import {Input, Select, SelectItem} from "@nextui-org/react";
 import {Textarea} from "@nextui-org/react";
 import {Button , Image} from "@nextui-org/react";
 import {  toast } from 'react-toastify';
-import { API_URL } from '../../../../constants/url';
+import { STATIC_IMAGE_URL } from '../../../../constants/url';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FaRupeeSign } from "react-icons/fa";
 import axiosInstance from '../../../../axios/AxiosInstance';
+import { end_loading, loading } from '../../../../Slices/LodingSlice';
 
 
 
@@ -56,6 +57,7 @@ function AddTitle() {
 
     }
     else{
+   dispatch(loading())
    const formData = new FormData
    formData.append("course_title",title)
    formData.append('course_description',description)
@@ -63,8 +65,9 @@ function AddTitle() {
    formData.append('created_by',created_by)
    formData.append('image',thumbnail)
    formData.append('price',price)
-   axiosInstance.post(`${API_URL}/course/upload_course`,formData)
+   axiosInstance.post(`/course/upload_course`,formData)
    .then(response=>{
+    dispatch(end_loading())
     toast.success('Well done!', {
       position: "top-left",
       autoClose: 3000,
@@ -79,14 +82,14 @@ function AddTitle() {
 
    })
    .catch(error=>{
+    dispatch(end_loading())
     console.log(error)
    })
   }
   }
   useEffect(()=>{
-    axiosInstance.get(`${API_URL}/course/course_category`)
+    axiosInstance.get(`/course/course_category`)
     .then(response=>{
-      console.log(response)
       setCourse(response.data.data)
     })
   .catch(error=>{
@@ -151,7 +154,7 @@ function AddTitle() {
           <Image
                 width={300}
                 height={200}
-                src={thumbnail?URL.createObjectURL(thumbnail):"/uploadimage.jpg"}
+                src={thumbnail?URL.createObjectURL(thumbnail):`${STATIC_IMAGE_URL}/uploadimage.jpg`}
                 className='mt-3 cursor-pointer'
                 onClick={addImage}
               />

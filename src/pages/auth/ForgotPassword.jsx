@@ -135,7 +135,7 @@ function ForgotPassword() {
   return (
     <div>
           <Navbar1 />
-          <div className='flex justify-center items-center min-h-screen bg-[url("/loginbackground.jpg")] bg-no-repeat bg-cover'>
+          <div className={`flex justify-center items-center min-h-screen bg-[url("https://eduxpert.cloud/static/loginbackground.jpg")] bg-no-repeat bg-cover`}>
         {otpsend?
         <div>
 

@@ -7,6 +7,7 @@ import {  toast } from 'react-toastify';
 import { courseChapterSubmit, courseDelete } from '../../../../contents/instructor/Course'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import { STATIC_IMAGE_URL } from '../../../../constants/url';
 
 
 function AddChapters() {
@@ -104,14 +105,14 @@ function AddChapters() {
           user_id : user_id,
           course_id : course_id
           }
-          courseChapterSubmit(formFields,data,navigate)
+          courseChapterSubmit(formFields,data,navigate,dispatch)
         }
        }   
   return (
     <div> 
         <div className='ml-28 flex mt-4'>
           <div className='w-4/5'><span className='text-2xl italic font-bold'>{title}-Chapters</span></div>
-          <div className='w-1/5 justify-end'> <Button color="danger" onClick={()=>courseDelete(navigate,dispatch)} variant="bordered" > Delete Course </Button></div>
+          <div className='w-1/5 justify-end'> <Button color="danger" onClick={()=>courseDelete(course_id,navigate)} variant="bordered" > Delete Course </Button></div>
         </div>
         {formFields.map((form,index)=>{
           return(
@@ -144,7 +145,7 @@ function AddChapters() {
               <Image
                 width={300}
                 height={300}
-                src="/uploadimage.jpg"
+                src={`${STATIC_IMAGE_URL}/uploadimage.jpg`}
                 className='mt-3  cursor-pointer'
                 onClick={addVideo}
               />}

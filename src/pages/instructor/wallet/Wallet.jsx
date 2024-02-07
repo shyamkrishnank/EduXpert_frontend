@@ -2,6 +2,7 @@ import { Image } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../../axios/AxiosInstance'
 import { useSelector } from 'react-redux'
+import { STATIC_IMAGE_URL } from '../../../constants/url'
 
 function Wallet() {
     const [wallet,setWallet] = useState()
@@ -21,7 +22,7 @@ function Wallet() {
     <div className='mt-6 mx-28 h-96 flex flex-col justify-center'>
         <div className='w-full flex justify-center align-middle'>
            <p className='text-4xl font-semibold mt-4'> My Wallet</p>
-           <Image src='/Wallet.jpg'  width={80}/>
+           <Image src={`${STATIC_IMAGE_URL}/Wallet.jpg`}  width={80}/>
         </div>
         <div className='w-full flex justify-center mt-4'>
             {wallet &&  <h1 className='text-2xl'>Available Amount : <span className='text-success'>{wallet.amount}</span></h1>}

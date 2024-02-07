@@ -1,6 +1,6 @@
 import React from 'react'
-import { API_URL } from '../../constants/url'
 import axiosInstance from '../../axios/AxiosInstance'
+import { toast } from 'react-toastify'
 
 async function RazorPay(data,RazorPay,user_id){
     return new Promise((resolve, reject) => {
@@ -38,9 +38,17 @@ async function RazorPay(data,RazorPay,user_id){
     }
 
     const rzp1 = new RazorPay(options)
-
     rzp1.on('payment.failed', function (response){
-        console.log(response.error)
+        toast.error('Something went wrong!', {
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            })
     })
     rzp1.open()
 })

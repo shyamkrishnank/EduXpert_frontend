@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Pagination, Textarea} from "@nextui-org/react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell,Pagination, Textarea} from "@nextui-org/react";
 import axiosInstance from '../../../axios/AxiosInstance';
 import { useDispatch, useSelector } from 'react-redux';
 import { StripDate } from '../../../contents/dateStrip/utilities';

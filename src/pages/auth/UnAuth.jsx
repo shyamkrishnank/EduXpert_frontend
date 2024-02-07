@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar1 from '../../components/user/Navbar'
 import { Link } from 'react-router-dom'
 import { Image } from '@nextui-org/react'
+import { STATIC_IMAGE_URL } from '../../constants/url'
 
 function UnAuth() {
   return (
@@ -9,7 +10,7 @@ function UnAuth() {
     <Navbar1 />
     <div className='w-full flex justify-center h-full items-center'>
     <div>
-        <Image width={300} src='/error.jpg' />
+        <Image width={300} src={`${STATIC_IMAGE_URL}/error.jpg`} />
      <h1 className="text-4xl font-bold text-red-500 mb-4">404 PAGE NOT FOUND</h1>
       <p className="text-gray-700 mb-8">
         Oops! The page is not available at this moment

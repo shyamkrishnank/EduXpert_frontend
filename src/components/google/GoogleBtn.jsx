@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import {GoogleLogin } from "@react-oauth/google"
 import { useGoogleLogin } from '@react-oauth/google';
-import {jwtDecode} from "jwt-decode"
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { logged } from '../../Slices/AuthSlice'
@@ -18,11 +16,12 @@ function GoogleBtn({url,isLogin}) {
   const[modal,setModal] = useState(false)
   const dispatch = useDispatch()
   const [user,setUser] = useState()
-  const login =  useGoogleLogin({
+  const login = () =>  useGoogleLogin({
       onSuccess:token=>{
         dispatch(loading())
+        console.log("onSuccess")
         const data = {'token':token.access_token}
-        axiosInstance.post(url, data)
+        axiosInstance.post(`${url}`, data)
         .then(response=>{
           dispatch(end_loading())
           if (isLogin){
@@ -67,7 +66,7 @@ function GoogleBtn({url,isLogin}) {
     })
   return (
     <>
-        <Button startContent={<FcGoogle size={25} />} color='' onClick={login} > Sign in with Google</Button>
+        <Button startContent={<FcGoogle size={25} />} onClick={login} > Sign in with Google</Button>
         {modal && <IsStaffModal userdetails={user}/>}
     </>    
 

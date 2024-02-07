@@ -1,4 +1,3 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { API_URL } from '../../../constants/url'
 import { Button, Card, CardBody, CardHeader,Image } from '@nextui-org/react'
@@ -14,7 +13,7 @@ function UserCourseView() {
       navigate(`/user/course/view/${id}`)
     }
     useEffect(()=>{
-     axiosInstance.get(`${API_URL}/course/course_view/${category_id}`)
+     axiosInstance.get(`/course/course_view/${category_id}`)
      .then(response=>{
         setCourses(response.data.course)
         setCategory(response.data.category)

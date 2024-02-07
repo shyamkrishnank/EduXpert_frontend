@@ -1,10 +1,12 @@
 import React, {  useRef, useState } from 'react'
 import {Image,Input, Textarea, Button, useDisclosure} from '@nextui-org/react'
 import UseProfile from '../../../hooks/UseProfile'
-import { API_URL } from '../../../constants/url'
+import { API_URL, STATIC_IMAGE_URL } from '../../../constants/url'
 import { toast } from 'react-toastify'
 import ObjectToForm from '../util/ObjectToForm'
 import axiosInstance from '../../../axios/AxiosInstance'
+import { useDispatch } from 'react-redux'
+import { end_loading, loading } from '../../../Slices/LodingSlice'
 
 
 
@@ -12,6 +14,7 @@ function Profile() {
   const [image,setImage] = useState('')
   const imageRef = useRef('')
   const [user,setUser] = UseProfile()
+  const dispatch = useDispatch()
   const handleImage = (e) =>{
         imageRef.current.click()
   }
@@ -29,13 +32,15 @@ function Profile() {
         });
     }
     else{
+    dispatch(loading())
     const id = user.id
     const data = ObjectToForm(user)
     if (image){
       data.append('image',image)
     }
-    axiosInstance.post(`${API_URL}/users/profile/${id}`,data)
+    axiosInstance.post(`/users/profile/${id}`,data)
     .then(()=>{
+      dispatch(end_loading())
       toast.success('Profile Edited Successfully!', {
         position: "top-right",
         autoClose: 2000,
@@ -48,7 +53,7 @@ function Profile() {
         });
     })
     .catch(error=>{
-      console.log(error.message)
+      dispatch(end_loading())
     })
    }
 
@@ -65,8 +70,8 @@ function Profile() {
                 <Image
                     width={200}
                     height={200}
-                    alt="/profileicon.jpg"
-                    src={image?URL.createObjectURL(image):user.image?`${API_URL}${user.image}`:"/profileicon.jpg"}
+                    alt={`${STATIC_IMAGE_URL}/profileicon.jpg`}
+                    src={image?URL.createObjectURL(image):user.image?`${API_URL}${user.image}`:`${STATIC_IMAGE_URL}/profileicon.jpg`}
                     className='cursor-pointer'
                     onClick={handleImage}
              />

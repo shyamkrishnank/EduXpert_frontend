@@ -1,10 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
-import {Navbar, Input, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Dropdown, DropdownTrigger, Avatar, DropdownMenu, DropdownItem, NavbarMenuItem, Badge, DropdownSection} from "@nextui-org/react";
+import React, { useEffect, useState } from "react";
+import {Navbar, Input, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Dropdown, DropdownTrigger, Avatar, DropdownMenu, DropdownItem, Badge, DropdownSection} from "@nextui-org/react";
 import { CiSearch } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate , Navigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { logout } from "../../Slices/AuthSlice";
-import { API_URL } from "../../constants/url";
+import { STATIC_IMAGE_URL, WEB_SOCKET_URL } from "../../constants/url";
 import axiosInstance from "../../axios/AxiosInstance";
 import UseNotification from "../../hooks/UseNotification";
 import { MdNotifications} from "react-icons/md";
@@ -26,11 +26,12 @@ import { toast } from "react-toastify";
   const [chatActive,setChatActive] = useState(false)
   const [instructor_id , setInstructor_id] = useState()
   const [category,setCategory] = useState({})
-  const [search,setSearch] = useState()
+  const [search,setSearch] = useState("")
   const [searched_course,setSearched_course] = useState([])
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const socket = useRef("")
+
   const handleClick = () =>{
         localStorage.removeItem('auth_token')
         localStorage.removeItem('refresh_token')
@@ -39,10 +40,12 @@ import { toast } from "react-toastify";
         dispatch(logout())
         navigate('/login') 
   }
+
   const handleCourse = (key,value) =>{
     if (user){
       navigate(`/user/course/${[value]}`)   
     }
+
     else{
       toast.info('Please login to view courses', {
         position: "top-center",
@@ -56,6 +59,7 @@ import { toast } from "react-toastify";
         });
     }
   }
+
   const handleLearning =(key,value)=>{
     navigate(`/user/mylearning/`)
   }
@@ -93,7 +97,7 @@ import { toast } from "react-toastify";
     }
   }
   useEffect(()=>{
-    axiosInstance.get(`${API_URL}/course/course_category`)
+    axiosInstance.get(`/course/course_category`)
     .then(response=>{
       setCategory(response.data.data)
     })
@@ -101,7 +105,7 @@ import { toast } from "react-toastify";
       console.log(error.message)
     })
     if (user){
-      socket.current = new WebSocket(`ws://127.0.0.1:8000/ws/notification/?token=${user.access_token}`)
+      socket.current = new WebSocket(`${WEB_SOCKET_URL}/ws/notification/?token=${user.access_token}`)
     user 
     socket.current.onopen = () =>{
       console.log('NOTIFICATON successfully')
@@ -128,7 +132,7 @@ import { toast } from "react-toastify";
     <>
     <Navbar className="drop-shadow	">
       <NavbarBrand>
-        <img  onClick={()=>navigate("")} className="w-20 cursor-pointer " src={'/logo.png'} />
+        <img  onClick={()=>navigate("/")} className="w-20 cursor-pointer " src={`${STATIC_IMAGE_URL}/logo.png`} />
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
@@ -140,7 +144,7 @@ import { toast } from "react-toastify";
         </Button>
       </DropdownTrigger>
       <DropdownMenu aria-label="Example with disabled actions" >
-      {Object.entries(category).map(([key,value])=>(
+      {category && Object.entries(category).map(([key,value])=>(
           <DropdownItem onClick={()=>handleCourse(key,value)} key={value}>{key}</DropdownItem>
         
       ))}
@@ -235,10 +239,10 @@ import { toast } from "react-toastify";
         :
       <NavbarContent justify="end">
       <NavbarItem className=" lg:flex">
-        <Link href="/login">Login</Link>
+        <Link onClick={()=>navigate('/login')} className="cursor-pointer" to="login">Login</Link>
       </NavbarItem>
       <NavbarItem>
-        <Button as={Link} color="primary" href="/signup" variant="flat">
+        <Button onClick={()=>navigate('/signup')} color="primary"  variant="flat">
           Sign Up
         </Button>
       </NavbarItem>

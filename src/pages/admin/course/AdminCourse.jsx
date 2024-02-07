@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import AdminNav from '../../../components/admin/AdminNav'
-import AdminSideBar from '../../../components/admin/AdminSideBar'
 import { Table, TableCell, TableBody,TableColumn, TableHeader, TableRow, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
 import {Pagination} from "@nextui-org/react";
-import { API_URL } from '../../../constants/url';
 import { useNavigate } from 'react-router-dom';
 import {StripDate} from '../../../contents/dateStrip/utilities'
 import axiosInstance from '../../../axios/AxiosInstance';
@@ -13,7 +10,7 @@ import { end_loading, loading } from '../../../Slices/LodingSlice';
 
 
 function AdminCourse() {
-    const initialPage = `${API_URL}/eduadmin/course`
+    const initialPage = `/eduadmin/course`
     const navigate = useNavigate()
     const [pageCount, setPageCount] = useState(0)
     const [courses,setCourses] = useState([])

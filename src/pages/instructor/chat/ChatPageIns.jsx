@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, {  useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import axiosInstance from '../../../axios/AxiosInstance'
 import { Chip, Image, Input } from '@nextui-org/react'
 import { IoSend } from 'react-icons/io5'
 import {User} from "@nextui-org/react";
-import { API_URL } from '../../../constants/url'
+import { API_URL, STATIC_IMAGE_URL, WEB_SOCKET_URL } from '../../../constants/url'
 import { useLocation } from 'react-router-dom'
 import { end_loading, loading } from '../../../Slices/LodingSlice'
 
@@ -13,7 +13,6 @@ import { end_loading, loading } from '../../../Slices/LodingSlice'
 function ChatPageIns() {
     const location = useLocation()
     const chat_with_id = location.state ? location.state.chat_with_id : null
-    console.log('chat with',chat_with_id)
     const [message, setMessage] = useState()
     const scrollContainerRef = useRef();
     const instructor_id = useSelector(state=>state.auth.id)
@@ -26,7 +25,7 @@ function ChatPageIns() {
 
       const handleClick = (user_id) =>{
         setId(user_id)
-        axiosInstance.get(`chat/${user_id}`)
+        axiosInstance.get(`/chat/${user_id}`)
         .then(response=>{ 
             setChats(response.data)  
           })
@@ -40,7 +39,7 @@ function ChatPageIns() {
           handleClick(chat_with_id)
         }
         dispatch(loading())
-        axiosInstance.get(`chat/data/${instructor_id}`)
+        axiosInstance.get(`/chat/data/${instructor_id}`)
        .then(response=>{
          setUsers(response.data)
          dispatch(end_loading())
@@ -52,7 +51,7 @@ function ChatPageIns() {
       },[])
 
       useEffect(()=>{
-        socket.current  = new WebSocket(`ws://127.0.0.1:8000/ws/chat/?token=${token}&chat_with=${id}`)
+        socket.current  = new WebSocket(`${WEB_SOCKET_URL}/ws/chat/?token=${token}&chat_with=${id}`)
         socket.current.onopen = () =>{
           console.log('connected successfully')
         }
@@ -115,7 +114,7 @@ function ChatPageIns() {
                       <User 
                       name={user.get_full_name}
                       avatarProps={{
-                        src: user.image ? `${API_URL}${user.image}`:null
+                        src: user.image ? `${API_URL}/${user.image}`: `${STATIC_IMAGE_URL}/profile.jpg`
                       }}
                     />
                   </div>
@@ -138,7 +137,7 @@ function ChatPageIns() {
                   </div>}
                   {!chats && 
                   <div className='flex justify-center'>
-                  <Image src='/messageinterface.jpg' width={300} />
+                  <Image src={`${STATIC_IMAGE_URL}/messageinterface.jpg`} width={300} />
                   </div>
                   }
                 </div>

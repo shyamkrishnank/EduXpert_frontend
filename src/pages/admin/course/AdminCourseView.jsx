@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import AdminNav from '../../../components/admin/AdminNav'
-import AdminSideBar from '../../../components/admin/AdminSideBar'
 import { Button, Card, CardBody, CardHeader, Image, Input, Pagination, Textarea } from '@nextui-org/react'
-import { API_URL } from '../../../constants/url'
+import { API_URL, STATIC_IMAGE_URL } from '../../../constants/url'
 import ReactPlayer from 'react-player'
 import { StripDate } from '../../../contents/dateStrip/utilities'
 import axiosInstance from '../../../axios/AxiosInstance'
@@ -55,7 +53,7 @@ function AdminCourseView() {
 
     const handleActive = () =>{
         setactivebtn('lodding')
-        axiosInstance.get(`${API_URL}/eduadmin/course_status/${course_id}`)
+        axiosInstance.get(`/eduadmin/course_status/${course_id}`)
         .then(response=>{
             setactivebtn(response.data.status)
         })
@@ -91,11 +89,12 @@ function AdminCourseView() {
                     </div>
                 </CardBody>
             </Card>
+            
             <div className='my-10'><h1>Chapters</h1></div>
             {chapters.length > 0 && chapters.map((chapter,index)=>{
                 return(
-                    <div className=' mt-5'>
-                        <div key={index} className='grid grid-cols-12 gap-4 mt-6 mr-3'>
+                    <div key={index} className='mt-5'>
+                        <div  className='grid grid-cols-12 gap-4 mt-6 mr-3'>
           <div className='col-span-1'>{index+1}</div>
           <div className='col-span-5'>
           <div className="bg-white shadow-md rounded-lg overflow-hidden w-64 mx-4 my-6">
@@ -111,11 +110,11 @@ function AdminCourseView() {
             
             </div>
         <div className='col-span-5'>
-          {chapter.video?<ReactPlayer  height="30vh" width="auto"  url={`${chapter.video}`} controls/>:
+          {chapter.modified_video_url?<ReactPlayer  height="30vh" width="auto"  url={`${chapter.modified_video_url}`} controls/>:
               <Image
                 width={300}
                 height={300}
-                src="/uploadimage.jpg"
+                src={`${STATIC_IMAGE_URL}/uploadimage.jpg`}
                 className='mt-3'
               />}         
         </div> 

@@ -6,7 +6,8 @@ const cookies = localStorage.getItem('refresh_token')?JSON.parse(localStorage.ge
 
 const axiosInstance=axios.create(
     {
-        baseURL:"http://51.21.82.18/",
+        baseURL:"https://eduxpert.cloud",
+        // baseURL:"http://127.0.0.1:8000",
         headers:{
             'Authorization':token?`Bearer ${token}`:null,
             'Accept':'application/json',

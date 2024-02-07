@@ -1,5 +1,6 @@
 import { Image } from '@nextui-org/react'
 import React from 'react'
+import { STATIC_IMAGE_URL } from '../../../constants/url'
 
 
 function InstructorPage() { 
@@ -7,7 +8,9 @@ function InstructorPage() {
     <div className='mt-10 mx-28'>
       <div className='w-full flex '>
         <div className='w-6/12 flex justify-center ' >
-          <Image width={250} src='/intructorBanner1.jpg' />
+          <Image width={250} 
+          fallbackSrc="https://placehold.co/250x200?text=Loading..." 
+          src={`${STATIC_IMAGE_URL}/intructorBanner1.jpg`} />
         </div>
         <div className='w-6/12'>
           <div className='pt-4'>
@@ -24,7 +27,11 @@ function InstructorPage() {
       <div className='mt-10 flex'>
         <div className='flex w-6/12 gap-5'>
           <div>
-            <Image width={250} src='/instructorBanner2.jpg' />
+            <Image width={250}
+             src={`${STATIC_IMAGE_URL}/instructorBanner2.jpg`}
+             fallbackSrc="https://placehold.co/250x200?text=Loading..." 
+              />
+                      
           </div>
           <div className='w-6/12'>
           <div className='pt-4'>
@@ -39,7 +46,9 @@ function InstructorPage() {
         </div>
         <div className='flex w-6/12 gap-3'>
           <div className='pt-5'>
-            <Image width={400} src='/instructorBanner3.jpg' />
+            <Image width={400}
+            fallbackSrc="https://placehold.co/250x200?text=Loading..." 
+             src={`${STATIC_IMAGE_URL}/instructorBanner3.jpg`} />
           </div>
           <div className='w-6/12'>
           <div className='pt-4'>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import {CardHeader, Input ,Card, CardBody} from "@nextui-org/react";import { ToastContainer, toast } from 'react-toastify';
+import {CardHeader, Input ,Card, CardBody} from "@nextui-org/react"
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminNav from '../../../components/admin/AdminNav';
 import { API_URL } from '../../../constants/url';
@@ -22,7 +23,7 @@ function AdminLogin() {
         'password' : password
       }
       dispatch(loading())
-      axiosInstance.post(`${API_URL}/eduadmin/login`,data)
+      axiosInstance.post(`/eduadmin/login`,data)
       .then(response=>{
         dispatch(logged(response.data))
         dispatch(end_loading())

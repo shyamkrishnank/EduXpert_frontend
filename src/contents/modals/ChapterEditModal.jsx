@@ -5,6 +5,8 @@ import { API_URL } from '../../constants/url';
 import { FaEdit } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import axiosInstance from '../../axios/AxiosInstance';
+import { useDispatch } from 'react-redux';
+import { end_loading, loading } from '../../Slices/LodingSlice';
 
 
 
@@ -12,6 +14,7 @@ function ChapterEditModal({editchapter,closefun, setCourse}) {
     const {isOpen,onClose, onOpen, onOpenChange} = useDisclosure();
     const [chapter,setEditChapter] = useState(editchapter)
     const imgRef = useRef(" ")
+    const dispatch = useDispatch()
     const [video,setVideo] = useState("")
     const handleSubmit = ()=>{
         if (chapter.title == "" || chapter.description == ""){
@@ -27,6 +30,8 @@ function ChapterEditModal({editchapter,closefun, setCourse}) {
                 });     
         }
         else{
+            handleClose() 
+            dispatch(loading())
             const formFields = new FormData
             formFields.append('title',chapter.title)
             formFields.append('description',chapter.description)
@@ -37,6 +42,7 @@ function ChapterEditModal({editchapter,closefun, setCourse}) {
             axiosInstance.post(`/course/edit_chapter/${chapter.id}`,formFields)
             .then(response=>{
                 setCourse(prev=>({...prev,initial_chapter:response.data}))
+                dispatch(end_loading())
                 toast.success('Chapter Edited Succesfully!', {
                     position: "top-center",
                     autoClose: 3000,
@@ -47,10 +53,11 @@ function ChapterEditModal({editchapter,closefun, setCourse}) {
                     progress: undefined,
                     theme: "colored",
                     });  
-                    handleClose() 
+                    
 
             })
             .then(error=>{
+                dispatch(end_loading())
                 console.log(error)
             })
         }
@@ -111,7 +118,7 @@ function ChapterEditModal({editchapter,closefun, setCourse}) {
             <ReactPlayer  height="30vh" width="auto" url={video ? URL.createObjectURL(video ):`${API_URL}${chapter.video}`} controls/>
             <FaEdit size={30} onClick={handleClick}/>
             </div> 
-            <input name='video' value={""} onChange={e=>setVideo(e.target.files[0])} ref={imgRef} hidden type='file'/>
+            <input name='video' accept="video/*"  value={""} onChange={e=>setVideo(e.target.files[0])} ref={imgRef} hidden type='file'/>
         </div>      
               </ModalBody>
               <ModalFooter>

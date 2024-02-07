@@ -1,8 +1,9 @@
-import { API_URL } from "../../constants/url"
 import { toast } from "react-toastify"
 import axiosInstance from "../../axios/AxiosInstance"
+import { end_loading, loading } from "../../Slices/LodingSlice"
 
-export function courseChapterSubmit(obj,extra,navigate) {
+export function courseChapterSubmit(obj,extra,navigate,dispatch) {
+    dispatch(loading())
     const formData = new FormData()
     obj.forEach((data,index )=> {
         Object.entries(data).forEach(([key,value])=>{
@@ -11,8 +12,9 @@ export function courseChapterSubmit(obj,extra,navigate) {
     })
     formData.append('user_id',extra.user_id,)
     formData.append('course_id', extra.course_id)
-    axiosInstance.post(`${API_URL}/course/chapter_upload`,formData)
+    axiosInstance.post(`/course/chapter_upload`,formData)
     .then(response=>{
+        dispatch(end_loading())
         toast.success('Chapter Addedd Successfully', {
             position: "top-center",
             autoClose: 3000,
@@ -26,14 +28,15 @@ export function courseChapterSubmit(obj,extra,navigate) {
         return navigate('/instructor/course')
     })
     .catch(error=>{
+        dispatch(end_loading())
 
     })  
 
 }
 
-export const courseDelete = (course_id,navigate,dispatch) => {
+export const courseDelete = (course_id,navigate) => {
        const id = course_id
-        axiosInstance.get(`${API_URL}/course/delete_course/${id}`)
+        axiosInstance.get(`/course/delete_course/${id}`)
         .then(response=>{
             toast.success('Course Deleted', {
                 position: "top-left",
@@ -45,7 +48,6 @@ export const courseDelete = (course_id,navigate,dispatch) => {
                 progress: undefined,
                 theme: "colored",
                 })
-            dispatch(deleteCourse())
             navigate('/instructor/course')
 
         })

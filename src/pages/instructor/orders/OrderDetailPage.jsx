@@ -14,6 +14,7 @@ import {Card, CardHeader, CardBody, Image} from "@nextui-org/react";
 import { StripDate, StripTime } from '../../../contents/dateStrip/utilities';
 import { useDispatch } from 'react-redux';
 import { end_loading, loading } from '../../../Slices/LodingSlice';
+import { STATIC_IMAGE_URL } from '../../../constants/url';
 
 function OrderDetailPage() {
     const {order_id} = useParams()
@@ -97,7 +98,7 @@ function OrderDetailPage() {
             <Image
                 alt="Card background"
                 className="object-cover rounded-xl"
-                src={order.user.image?`${order.user.image}`:'/profileicon.jpg'}
+                src={order.user.image?`${order.user.image}`:`${STATIC_IMAGE_URL}/profileicon.jpg`}
                 width={200}
                 />
             </div>

@@ -4,7 +4,7 @@ import axiosInstance from '../axios/AxiosInstance'
 function UseNotification() {
     const[notification, setNotification] = useState([ ])
     useEffect(()=>{
-        axiosInstance.get('/notifications')
+        axiosInstance.get('/notifications/')
         .then(response=>{
             setNotification(response.data)
         })

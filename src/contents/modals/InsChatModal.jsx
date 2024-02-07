@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { Button, Chip, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/react'
+import React, { useEffect, useRef, useState } from 'react'
+import { Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/react'
 import { useSelector } from 'react-redux'
-import { IoSend } from "react-icons/io5";
 import axiosInstance from '../../axios/AxiosInstance';
 import { IoIosSend } from 'react-icons/io';
+import { WEB_SOCKET_URL } from '../../constants/url';
 
 function InsChatModal({setChatActive,instructor_id}) {
  const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -15,14 +15,14 @@ function InsChatModal({setChatActive,instructor_id}) {
 
   useEffect(()=>{
     onOpen()
-    axiosInstance.get(`chat/${instructor_id}`)
+    axiosInstance.get(`/chat/${instructor_id}`)
     .then(response=>{
       setChats(response.data)
     })
     .catch(error=>{
       console.log(error)
     })
-    socket.current = new WebSocket(`ws://127.0.0.1:8000/ws/chat/?token=${token}&chat_with=${instructor_id}`)
+    socket.current = new WebSocket(`${WEB_SOCKET_URL}/ws/chat/?token=${token}&chat_with=${instructor_id}`)
     socket.current.onopen = () =>{
       console.log('connected successfully')
     }

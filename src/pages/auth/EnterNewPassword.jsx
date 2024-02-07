@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 import axiosInstance from '../../axios/AxiosInstance'
 import { useDispatch } from 'react-redux'
 import { end_loading, loading } from '../../Slices/LodingSlice'
+import { STATIC_IMAGE_URL } from '../../constants/url'
 
 function EnterNewPassword() {
     const location = useLocation()
@@ -69,7 +70,7 @@ function EnterNewPassword() {
   return (
     <div>
         <Navbar1 />
-    <div className='flex justify-center items-center min-h-screen bg-[url("/loginbackground.jpg")] bg-no-repeat bg-cover'>
+    <div className={`flex justify-center items-center min-h-screen bg-[url("https://eduxpert.cloud/static/loginbackground.jpg")] bg-no-repeat bg-cover`}>
       <Card className='max-w-md w-full text-center p-8 bg-white rounded-lg shadow-md'>
         <CardHeader>
           <h1 className='font-bold text-2xl text-center text-blue-600 mb-4'>Enter New Password</h1>

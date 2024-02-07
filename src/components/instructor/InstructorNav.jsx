@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import {Navbar, NavbarBrand, NavbarContent, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar, NavbarItem, Badge, DropdownSection} from "@nextui-org/react";
+import {Navbar, NavbarBrand, NavbarContent, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar, NavbarItem, Badge, DropdownSection} from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
 import {  logout } from "../../Slices/AuthSlice";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import axiosInstance from "../../axios/AxiosInstance";
 import UseNotification from "../../hooks/UseNotification";
 import { MdNotifications } from "react-icons/md";
 import { StripTime } from "../../contents/dateStrip/utilities";
+import { STATIC_IMAGE_URL, WEB_SOCKET_URL } from "../../constants/url";
 
 export default function InstructorNav () { 
     const dispatch = useDispatch()
@@ -38,7 +39,7 @@ export default function InstructorNav () {
 
     useEffect(()=>{
       if (user){
-        socket.current = new WebSocket(`ws://127.0.0.1:8000/ws/notification/?token=${user.access_token}`)
+        socket.current = new WebSocket(`${WEB_SOCKET_URL}/ws/notification/?token=${user.access_token}`)
       user 
       socket.current.onopen = () =>{
         console.log('NOTIFICATON successfully')
@@ -63,7 +64,7 @@ export default function InstructorNav () {
     <Navbar isBordered>
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
-           <img  onClick={()=>navigate("/instructor")} className="w-20 cursor-pointer" src="/logo.png" ></img>
+           <img  onClick={()=>navigate("/instructor")} className="w-20 cursor-pointer" src={`${STATIC_IMAGE_URL}/logo.png`} ></img>
         </NavbarBrand>
       </NavbarContent>
 

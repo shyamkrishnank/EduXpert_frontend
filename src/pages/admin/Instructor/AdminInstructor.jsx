@@ -1,9 +1,8 @@
 
 import React, { useEffect, useState } from 'react'
-
-import { Table, TableCell, TableBody,TableColumn, TableHeader, TableRow, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Avatar } from '@nextui-org/react'
+import { Table, TableCell, TableBody,TableColumn, TableHeader, TableRow,Button, Avatar } from '@nextui-org/react'
 import {Pagination} from "@nextui-org/react";
-import { API_URL } from '../../../constants/url';
+import { STATIC_IMAGE_URL } from '../../../constants/url';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../axios/AxiosInstance';
 import { useDispatch } from 'react-redux';
@@ -33,7 +32,7 @@ function AdminInstructors() {
   },[])
   
   const handleClick = (page) =>{
-    const url = `${API_URL}/eduadmin/instructors?page=${page}`
+    const url = `/eduadmin/instructors?page=${page}`
     fetchData(url)
       
   }
@@ -59,7 +58,7 @@ function AdminInstructors() {
         {instructors.map((instructor,index)=>{return(
           <TableRow key={index} >
                <TableCell>{index+1}</TableCell>
-               <TableCell><Avatar src={instructor.image?`${instructor.image}`:"/profileicon.jpg"}/></TableCell>
+               <TableCell><Avatar src={instructor.image?`${instructor.image}`:`${STATIC_IMAGE_URL}/profileicon.jpg`}/></TableCell>
                <TableCell>{instructor.first_name}</TableCell>
                <TableCell>{instructor.email}</TableCell>
                <TableCell>{instructor.is_active?"Active":"Blocked"}</TableCell> 

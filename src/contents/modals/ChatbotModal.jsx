@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Chip} from "@nextui-org/react";
+import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input} from "@nextui-org/react";
 import { FaRobot } from "react-icons/fa";
 import { IoIosSend } from "react-icons/io";
 import axiosInstance from '../../axios/AxiosInstance';

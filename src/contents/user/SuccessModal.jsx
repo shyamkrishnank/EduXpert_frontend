@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Image} from "@nextui-org/react";
 import { useNavigate } from 'react-router-dom';
+import { STATIC_IMAGE_URL } from '../../constants/url';
 
 function SuccessModal({prop:setModal}) {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -25,7 +26,7 @@ function SuccessModal({prop:setModal}) {
                 <div className='flex flex-col'>
                    <div className='grid'>
                         <div className='justify-self-center'>
-                            <Image width={200} src='/success.jpg' />
+                            <Image width={200} src={`${STATIC_IMAGE_URL}/success.jpg`} />
                         </div>
                     </div>
                     <div className='grid'>

@@ -166,64 +166,6 @@ function AdminHome() {
 
 
             </div>
-
-
-{/* 
-      </div>
-         <div className='flex flex-row gap-6 ml-6 mt-5'>
-           <div className='basis-1/2'><Line data={data} /> </div>
-           <div className='flex flex-col justify-center gap-4 '>
-            <div className='flex w-full justify-center'> 
-                <h1 className='text-3xl'>Instructors - {orders?.instructor_count}</h1>
-            </div>
-            <div>
-              <h1 className='text-3xl'>Students - {orders?.user_count}</h1>
-            </div>
-            <div>
-              <h1 className='text-3xl'>Courses - {orders?.course_count}</h1>
-            </div>
-           </div>
-          </div>
-          <div className='flex flow-row mt-6 ml-6 '>
-            <div className='basis-1/2'>
-              <div className='mb-3'>
-              <h1 className='text-xl'>
-                  PENDING COURSES
-              </h1>
-              </div>
-              <div>
-              <Table 
-              selectionMode="single" 
-              aria-label="Example static collection table">
-                <TableHeader>
-                  <TableColumn>No</TableColumn>
-                  <TableColumn>Id</TableColumn>
-                  <TableColumn>Title</TableColumn>
-                </TableHeader>
-                <TableBody>
-                  {orders && orders.pending_courses?.length > 0 ?
-                  orders.pending_courses.map((course,index)=>{
-                    return( 
-                  <TableRow className='cursor-pointer hover:text-green-500' key={index}>
-                    <TableCell>{index+1}</TableCell>
-                    <TableCell>{course.id}</TableCell>
-                    <TableCell>{course.course_title}</TableCell>
-                  </TableRow>
-                   )
-                  })
-                  :
-                  null
-                  }
-                </TableBody>
-              </Table>
-              </div>
-
-            </div>
-            <div>
-
-            </div>
-
-          </div> */}
     </div>
   )
 }

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import Navbar1 from '../../components/user/Navbar'
 import {CardHeader,RadioGroup, Radio, Input ,Card, CardBody} from "@nextui-org/react";
-import { ToastContainer, toast } from 'react-toastify';
+import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
-import {API_URL} from "../../constants/url"
+import { STATIC_IMAGE_URL} from "../../constants/url"
 import GoogleBtn from '../../components/google/GoogleBtn';
 import axiosInstance from '../../axios/AxiosInstance';
 import { useDispatch } from 'react-redux';
@@ -105,7 +105,7 @@ function SignupPage() {
   return (
     <>
     <Navbar1 />
-    <div className='flex justify-center items-center min-h-screen bg-[url("/loginbackground.jpg")] bg-no-repeat bg-cover'>
+    <div className={`flex justify-center items-center min-h-screen bg-[url("https://eduxpert.cloud/static/loginbackground.jpg")]  bg-no-repeat bg-cover`}>
       <Card className='max-w-md w-full text-center p-8 bg-white rounded-lg shadow-md'>
         <CardHeader>
           <h1 className='font-bold text-2xl text-center text-blue-600 mb-2'>Sign Up</h1>
