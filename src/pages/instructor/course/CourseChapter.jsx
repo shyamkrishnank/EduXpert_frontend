@@ -56,7 +56,26 @@ function CourseChapter() {
     const handleContent = (content) =>{
       setContent(content)   
     }
- 
+    
+    const handleChapter = (e) =>{
+      const fileSize = e.target.files[0].size / (1024 * 1024)
+      if (fileSize > 40){
+          toast.error('Sorry,Video File Should be less than 40 mb!', {
+          position: "top-left",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+      }
+      else{
+      setChapter(prev=>({...prev,video:e.target.files[0]}))
+      }
+
+    }
 
   const handleSubmit = () =>{
     if (chapter.title === "" || chapter.description === "" || chapter.video === ""){
@@ -175,7 +194,7 @@ function CourseChapter() {
                     onClick={handleImageClick}
                   />
                   }
-              <input name='video' accept="video/*"  value={""} onChange={e=>setChapter(prev=>({...prev,video:e.target.files[0]}))} ref={imgRef} hidden type='file'/>
+              <input name='video' accept="video/*"  value={""} onChange={(e)=>handleChapter(e)} ref={imgRef} hidden type='file'/>
             </div> 
         </div>      
               </ModalBody>

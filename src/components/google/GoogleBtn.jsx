@@ -16,7 +16,7 @@ function GoogleBtn({url,isLogin}) {
   const[modal,setModal] = useState(false)
   const dispatch = useDispatch()
   const [user,setUser] = useState()
-  const login = () =>  useGoogleLogin({
+  const login =  useGoogleLogin({
       onSuccess:token=>{
         dispatch(loading())
         console.log("onSuccess")
@@ -66,7 +66,7 @@ function GoogleBtn({url,isLogin}) {
     })
   return (
     <>
-        <Button startContent={<FcGoogle size={25} />} onClick={login} > Sign in with Google</Button>
+        <Button startContent={<FcGoogle size={25} />} onClick={()=>login()} > Sign in with Google</Button>
         {modal && <IsStaffModal userdetails={user}/>}
     </>    
 

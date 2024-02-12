@@ -38,9 +38,24 @@ function AddChapters() {
       console.log(data)
     }
     const handleFileChange = (e,index) =>{
+      const fileSize = e.target.files[0].size / (1024 * 1024)
+      if (fileSize > 40){
+          toast.error('Sorry,Video File Should be less than 40 mb!', {
+          position: "top-left",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+      }
+      else{
       const data = [...formFields]
       data[index][e.target.name] = e.target.files[0]
       setFormFields(data)
+      }
     }
     
     const removeChapter = (index) =>{
