@@ -79,12 +79,12 @@ function Profile() {
              <div className='col-span-2 gap-4 grid grid-cols-2 '>
                 <div><Input label="First Name" onChange={e=>setUser(prev=>({...prev,first_name : e.target.value}))} value={user.first_name} type='text'/></div>
                 <div><Input label="Last Name" onChange={e=>setUser(prev=>({...prev,last_name: e.target.value}))} value={user.last_name} type='text'/></div>
-                <div><Input label="Headline" value={user.headline?user.headline:null}  onChange={e=>setUser(prev=>({...prev,headline : e.target.value?e.target.value:null}))} type='text'/></div>
-                <div><Input label='Email' value={user.email}  type='text'/></div>
-                <div><Input label='Phone'  value={user.phone?user.phone:null} onChange={e=>setUser(prev=>({...prev,phone:e.target.value?e.target.value:null}))} type='text'/></div>
-                <div><Input label='Social Link'  value={user.sociallink?user.sociallink:null} onChange={e=>setUser(prev=>({...prev,sociallink:e.target.value?e.target.value:null}))} type='text'/></div>
-                <div><Textarea  label="Bio"  value={user.bio?user.bio:null} onChange={e=>setUser(prev=>({...prev,bio:e.target.value}))} /></div>
-                <div><Input label='Experience'  value={user.experience?user.experience:0} onChange={e=>setUser(prev=>({...prev,experience:e.target.value?e.target.value:null}))} type='number'/></div>
+                <div><Input label="Headline" value={user?.headline=="null"?"":user.headline}  onChange={e=>setUser(prev=>({...prev,headline : e.target.value?e.target.value:null}))} type='text'/></div>
+                <div><Input label='Email' value={user?.email=="null"?"":user.email}  type='text'/></div>
+                <div><Input label='Phone'  value={user?.phone=="null"?"":user.phone} onChange={e=>setUser(prev=>({...prev,phone:e.target.value?e.target.value:null}))} type='text'/></div>
+                <div><Input label='Social Link'  value={user?.sociallink=="null"?"":user.sociallink} onChange={e=>setUser(prev=>({...prev,sociallink:e.target.value?e.target.value:null}))} type='text'/></div>
+                <div><Textarea  label="Bio"  value={user?.bio=="null"?"":user.bio} onChange={e=>setUser(prev=>({...prev,bio:e.target.value}))} /></div>
+                <div><Input label='Experience'  value={user.experience<=0?"":user.experience} onChange={e=>setUser(prev=>({...prev,experience:e.target.value?e.target.value:null}))} type='number'/></div>
 
 
              </div>
